@@ -36,7 +36,7 @@ class funCommands(commands.Cog):
 
     @commands.command(aliases=["Hello", "hi", "Hi"])
     async def hello(self, ctx):
-        await ctx.send("Why hello there")
+        await ctx.send("Hello! :smiley:")
 
     @commands.command(aliases=["hellothere", "HelloThere"])
     async def helloThere(self, ctx):

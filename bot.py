@@ -4,6 +4,7 @@ import os
 from itertools import cycle
 from botKey import botKey
 
+os.system("cls")
 print ("Initializing PixelBot v0.2")
 
 commandPrefix = "!"

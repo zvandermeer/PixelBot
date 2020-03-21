@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import time
+import os 
 
 class modCommands(commands.Cog):
 
@@ -52,6 +53,13 @@ class modCommands(commands.Cog):
     async def shutdown(self, ctx):
         await ctx.send("Bot is shutting down. Please wait..")
         print("Shutting down PixelBot")
+        exit()
+    
+    @commands.command()
+    async def restart(self, ctx):
+        print("PixelBot is restarting")
+        await ctx.send("Bot is rebooting. Please wait..")
+        os.system("python bot.py")
         exit()
 
 def setup(client):
