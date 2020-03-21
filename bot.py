@@ -4,7 +4,7 @@ import os
 from itertools import cycle
 from botKey import botKey
 
-print ("Initializing bot")
+print ("Initializing PixelBot v0.2")
 
 commandPrefix = "!"
 client = commands.Bot(command_prefix = commandPrefix)
@@ -16,7 +16,7 @@ debugger = False
 # async def on_ready():
 #     change_status.start()
 
-#cogs
+#cogs commands
 @client.command()
 async def load(ctx, extension):
     client.load_extension(f"cogs.{extension}")
@@ -40,7 +40,6 @@ for filename in os.listdir("./cogs"):
     if filename.endswith(".py"):
        client.load_extension(f"cogs.{filename[:-3]}")
 
-
 #tasks
 # @tasks.loop(seconds=10)
 # async def change_status():
@@ -50,8 +49,9 @@ for filename in os.listdir("./cogs"):
 @client.event
 async def on_command_error(ctx, error):
     print(f"{error}")
-    if debugger == True:
-        await ctx.send(f"{error}")
+    # if debugger == True:
+    #     await ctx.send(f"{error}")
+    await ctx.send("An error has occured. Please contact the bot author or check the console for more details.")
     if isinstance(error, commands.CommandNotFound):
         await ctx.send("Invalid command!")
 
@@ -86,14 +86,14 @@ async def loadNonexistantError(ctx, error):
     if isinstance(error, commands.CommandInvokeError):
         await ctx.send("That cog does not exist!")
 
-@client.command(aliases=["Debug", "debug", "enableDebugMode", "DebugMode", "debugmode", "Debugmode"])
-async def debugMode(ctx):
-    if debugger == False:
-        debugger = True
-        await ctx.send("Debugger enabled!")
-    elif debugger == True:
-        debugger = False
-        await ctx.send("Debugger disabled!")
+# @client.command(aliases=["Debug", "debug", "enableDebugMode", "DebugMode", "debugmode", "Debugmode"])
+# async def debugMode(ctx):
+#     if debugger == False:
+#         debugger = True
+#         await ctx.send("Debugger enabled!")
+#     elif debugger == True:
+#         debugger = False
+#         await ctx.send("Debugger disabled!")
     
 
 client.run(botKey)

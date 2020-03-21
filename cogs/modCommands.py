@@ -48,5 +48,11 @@ class modCommands(commands.Cog):
                 await ctx.send(f"Sucessfully unbanned {user.mention}")
                 return
 
+    @commands.command(aliases=['quit', 'stop', 'exit'])
+    async def shutdown(self, ctx):
+        await ctx.send("Bot is shutting down. Please wait..")
+        print("Shutting down PixelBot")
+        exit()
+
 def setup(client):
     client.add_cog(modCommands(client))

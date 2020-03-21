@@ -24,7 +24,7 @@ class funCommands(commands.Cog):
         time.sleep(.5)
         await ctx.send("The number is " + str(randint(1, sides)) + "!")
 
-    @commands.command(ailises=["flipcoin", "coinflip"])
+    @commands.command(aliases=["FlipACoin", "flipacoin", "coinflip", "flipcoin"])
     async def coinFlip(self, ctx):
         coinState = randint(0,1)
         if coinState == 0: 
@@ -34,11 +34,11 @@ class funCommands(commands.Cog):
         else:
             await ctx.send("An internal error has occured")
 
-    @commands.command(ailises=["Hello", "hi", "Hi"])
+    @commands.command(aliases=["Hello", "hi", "Hi"])
     async def hello(self, ctx):
         await ctx.send("Why hello there")
 
-    @commands.command(ailises=["hellothere", "HelloThere"])
+    @commands.command(aliases=["hellothere", "HelloThere"])
     async def helloThere(self, ctx):
         await ctx.send("General Kenobi!")
 
