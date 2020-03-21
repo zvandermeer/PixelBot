@@ -34,5 +34,13 @@ class funCommands(commands.Cog):
         else:
             await ctx.send("An internal error has occured")
 
+    @commands.command(ailises=["Hello", "hi", "Hi"])
+    async def hello(self, ctx):
+        await ctx.send("Why hello there")
+
+    @commands.command(ailises=["hellothere", "HelloThere"])
+    async def helloThere(self, ctx):
+        await ctx.send("General Kenobi!")
+
 def setup(client):
     client.add_cog(funCommands(client))

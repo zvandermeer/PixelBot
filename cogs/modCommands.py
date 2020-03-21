@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import time
 
-class ModCommands(commands.Cog):
+class modCommands(commands.Cog):
 
     def __init__(self, client):
         self.client = client
@@ -11,14 +11,19 @@ class ModCommands(commands.Cog):
     @commands.command()
     async def clear(self, ctx, amount=0):
         if amount == 0:
-            await ctx.send("Please enter the number of messages to be deleted")
+            await ctx.send("Please enter a number of messages to be deleted.")
         else:
             amount += 1
             await ctx.channel.purge(limit=amount)
             amount -= 1
-            await ctx.channel.send(f"{amount} messages deleted!")
-            time.sleep(2)
-            await ctx.channel.purge(limit=1)
+            if amount == 1:
+                await ctx.channel.send(f"{amount} message deleted!")
+                time.sleep(2)
+                await ctx.channel.purge(limit=1)
+            else:
+                await ctx.channel.send(f"{amount} messages deleted!")
+                time.sleep(2)
+                await ctx.channel.purge(limit=1)
 
     @commands.command()
     async def kick(self, ctx, member : discord.Member, *, reason=None):
@@ -44,4 +49,4 @@ class ModCommands(commands.Cog):
                 return
 
 def setup(client):
-    client.add_cog(ModCommands(client))
+    client.add_cog(modCommands(client))
