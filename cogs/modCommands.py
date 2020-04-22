@@ -14,17 +14,15 @@ class modCommands(commands.Cog):
         if amount == 0:
             await ctx.send("Please enter a number of messages to be deleted.")
         else:
+            pluralString = ""
+            if amount != 1:
+                pluralString = "s"
             amount += 1
             await ctx.channel.purge(limit=amount)
             amount -= 1
-            if amount == 1:
-                await ctx.channel.send(f"{amount} message deleted!")
-                time.sleep(2)
-                await ctx.channel.purge(limit=1)
-            else:
-                await ctx.channel.send(f"{amount} messages deleted!")
-                time.sleep(2)
-                await ctx.channel.purge(limit=1)
+            await ctx.channel.send(f"{amount} message{pluralString} deleted!")
+            time.sleep(2)
+            await ctx.channel.purge(limit=1)
 
     @commands.command()
     async def kick(self, ctx, member : discord.Member, *, reason=None):
@@ -51,14 +49,14 @@ class modCommands(commands.Cog):
 
     @commands.command(aliases=['quit', 'stop', 'exit'])
     async def shutdown(self, ctx):
-        await ctx.send("Bot is shutting down. Please wait..")
+        await ctx.send("Bot is shutting down. Please wait...")
         print("Shutting down PixelBot")
         exit()
     
-    @commands.command()
+    @commands.command(aliases=['reboot'])
     async def restart(self, ctx):
-        print("PixelBot is restarting")
-        await ctx.send("Bot is rebooting. Please wait..")
+        print("PixelBot restarting")
+        await ctx.send("Bot is rebooting. Please wait...")
         os.system("python bot.py")
         exit()
 

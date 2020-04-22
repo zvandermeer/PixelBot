@@ -12,8 +12,8 @@ class funCommands(commands.Cog):
         self.client = client
 
     @commands.command(aliases=["8ball", "eightball", "EightBall", "8Ball"])
-    async def _8ball(self, ctx, *, question="blankMessage-NoInput"):
-        if question == "blankMessage-NoInput":
+    async def _8ball(self, ctx, *, question=""):
+        if question == "":
             await ctx.send("Please enter a question!")
         else:
             await ctx.send(f"Question: {question}\nAnswer: {random.choice(_8BallResponses)}")
