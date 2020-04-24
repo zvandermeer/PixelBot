@@ -3,6 +3,8 @@ from discord.ext import commands
 import time
 import os 
 
+exitLoop = False
+
 class modCommands(commands.Cog):
 
     def __init__(self, client):
@@ -23,6 +25,7 @@ class modCommands(commands.Cog):
             await ctx.channel.send(f"{amount} message{pluralString} deleted!")
             time.sleep(2)
             await ctx.channel.purge(limit=1)
+            exitLoop = True
 
     @commands.command()
     async def kick(self, ctx, member : discord.Member, *, reason=None):
@@ -59,6 +62,19 @@ class modCommands(commands.Cog):
         await ctx.send("Bot is rebooting. Please wait...")
         os.system("python bot.py")
         exit()
+
+    @commands.command(aliases=['spamMe'])
+    async def spam(self, ctx):
+        while exitLoop == False:
+            #await ctx.send("@everyone get yeeted")
+            #await ctx.send("You have been yote in the boat")
+            print("I BE SPAMMING")
+            await ctx.send("https://cdn.discordapp.com/attachments/440261154439168001/700080379184545802/i249711442305187847.mp4")
+
+    @commands.command()
+    async def stopSpam(self, ctx):
+        exitLoop = True
+        await ctx.send("FINE")
 
 def setup(client):
     client.add_cog(modCommands(client))
