@@ -40,7 +40,7 @@ class funCommands(commands.Cog):
 
     @commands.command(aliases=["hellothere", "HelloThere"])
     async def helloThere(self, ctx):
-        await ctx.send("General Kenobi!")
+        await ctx.send("General Kenobi")
 
 def setup(client):
     client.add_cog(funCommands(client))
