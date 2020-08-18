@@ -54,13 +54,13 @@ class modCommands(commands.Cog):
     async def shutdown(self, ctx):
         await ctx.send("Bot is shutting down. Please wait...")
         print("Shutting down PixelBot")
-        exit()
+        quit()
     
     @commands.command(aliases=['reboot'])
     async def restart(self, ctx):
-        print("PixelBot restarting")
+        print("PixelBot restarting\n\n")
         await ctx.send("Bot is rebooting. Please wait...")
-        os.system("python bot.py")
+        os.system("python3 bot.py")
         exit()
 
     @commands.command(aliases=['spamMe'])

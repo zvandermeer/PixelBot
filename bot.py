@@ -4,9 +4,6 @@ import os
 from itertools import cycle
 from botKey import botKey
 
-os.system("cls")
-print ("Initializing PixelBot v0.2")
-
 commandPrefix = "!"
 client = commands.Bot(command_prefix = commandPrefix)
 #status = cycle(["Status 1", "Status 2"])
@@ -40,6 +37,7 @@ async def reload(ctx, extension):
 for filename in os.listdir("./cogs"):
     if filename.endswith(".py"):
        client.load_extension(f"cogs.{filename[:-3]}")
+print("Initializing pixelbot 0.2")
 
 #tasks
 # @tasks.loop(seconds=10)
