@@ -1,1 +1,0 @@
-botKey = "NjkwNjM5OTc0NzcyNjM3ODI2.XnYemA.LHFHksj7bGSknL39vmHrlP0BOEI"
