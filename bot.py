@@ -2,10 +2,17 @@ import discord
 from discord.ext import commands, tasks
 import os
 from itertools import cycle
-from botKey import botKey
 
-os.system("cls")
+os.system("clear")
 print ("Initializing PixelBot v0.2")
+
+try:
+    with open('botToken.txt', 'r') as file:
+        botKey = file.read()
+        print("|" + botKey + "|")
+except(FileNotFoundError):
+    print("Please add a 'botToken.txt' file containing the token for your bot. Please do not include any other text in this file.")
+    exit()
 
 commandPrefix = "!"
 client = commands.Bot(command_prefix = commandPrefix)
