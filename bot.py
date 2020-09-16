@@ -4,7 +4,7 @@ import os
 from itertools import cycle
 
 os.system("clear")
-print ("Initializing PixelBot v0.2")
+print ("Initializing PixelBot v0.3")
 
 try:
     with open('botToken.txt', 'r') as file:
@@ -54,46 +54,61 @@ print("Initializing pixelbot 0.2")
 # async def change_status():
 #     await client.change_presence(activity=discord.Game(next(status)))
 
-#errorHandler
-@client.event
-async def on_command_error(ctx, error):
-    print(f"{error}")
-    # if debugger == True:
-    #     await ctx.send(f"{error}")
-    await ctx.send("An error has occured. Please contact the bot author or check the console for more details.")
-    if isinstance(error, commands.CommandNotFound):
-        await ctx.send("Invalid command!")
-
 #cogErrorHandler
 @load.error
 async def loadBlankError(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Please specify the cog you would like to load")
+        handledError = True
 
 @reload.error
 async def reloadBlankError(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Please specify the cog you would like to reload")
+        handledError = True
 
 @unload.error
 async def unloadBlankError(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Please specify the cog you would like to unload")
+        handledError = True
 
 @unload.error
 async def unloadNonexistantError(ctx, error):
     if isinstance(error, commands.CommandInvokeError):
         await ctx.send("That cog does not exist!")
+        handledError = True
 
 @reload.error
 async def reloadNonexistantError(ctx, error):
     if isinstance(error, commands.CommandInvokeError):
         await ctx.send("That cog does not exist!")
+        handledError = True
 
 @load.error
 async def loadNonexistantError(ctx, error):
     if isinstance(error, commands.CommandInvokeError):
         await ctx.send("That cog does not exist!")
+        handledError = True
+
+#errorHandler
+@client.event
+async def on_command_error(ctx, error):
+    print(f"{error}")
+    #if debugger == True:
+    #     await ctx.send(f"{error}")
+    handledError = False
+    if isinstance(error, commands.CommandNotFound):
+        handledError = True
+        await ctx.send("Invalid command!")
+    elif isinstance(error, commands.MissingRole or commands.MissingPermissions):
+        handledError = True
+        await ctx.send("You do not have sufficent permissions to use this command. Please contact the server administrator if you belive this to be a mistake.")
+    elif isinstance(error, commands.MissingRequiredArgument):
+        handledError = True
+        await ctx.send("You are missing arguments for this command. Type !help <command> for help with the command.")
+    elif(handledError == False):
+        await ctx.send("An error has occured. This should not happen. Please contact your server admin or the bot author for details.")
 
 # @client.command(aliases=["Debug", "debug", "enableDebugMode", "DebugMode", "debugmode", "Debugmode"])
 # async def debugMode(ctx):
