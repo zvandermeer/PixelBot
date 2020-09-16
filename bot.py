@@ -4,7 +4,7 @@ import os
 from itertools import cycle
 
 os.system("clear")
-print ("Initializing PixelBot v0.3")
+print ("Initializing PixelBot v0.2.1")
 
 try:
     with open('botToken.txt', 'r') as file:
