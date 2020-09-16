@@ -80,11 +80,11 @@ class modCommands(commands.Cog):
     #        print("I BE SPAMMING")
     #        await ctx.send("https://cdn.discordapp.com/attachments/440261154439168001/700080379184545802/i249711442305187847.mp4")
 
-    @commands.has_permissions(administrator=True)
-    @commands.command()
-    async def stopSpam(self, ctx):
-        exitLoop = True
-        await ctx.send("FINE")
+    #@commands.has_permissions(administrator=True)
+    #@commands.command()
+    #async def stopSpam(self, ctx):
+    #    exitLoop = True
+    #    await ctx.send("FINE")
 
 def setup(client):
     client.add_cog(modCommands(client))
