@@ -3,7 +3,7 @@
 
 ---
 
-<h1 id="pixels-bot">Pixels-bot</h1>
+<h1 id="pixelbot">Pixelbot</h1>
 <p>A basic discord chatbot created using <a href="http://discord.py">discord.py</a>. The bot has a few basic features, but I plan to add onto it soon. To use this code for your own bot, create a file called <a href="http://botKey.py">botKey.py</a>, and make a string variable called botKey that contains your botKey. Please contact me if reusing code.</p>
 <h2 id="features">Features</h2>
 <ul>
