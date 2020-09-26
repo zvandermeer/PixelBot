@@ -41,13 +41,17 @@ class AmongUs(commands.Cog):
         for member in members:
             await member.edit(mute=True)
 
-    @commands.command(aliases=["umute", "umutea"])
+        await ctx.send("Muted channel!")
+
+    @commands.command(aliases=["umute", "umutea", "unmute", "unmutea"])
     async def unmuteAll(self, ctx):
         channel = self.client.get_channel(759234633647915009)
         members = channel.members
 
         for member in members:
             await member.edit(mute=False)
+
+        await ctx.send("Unmuted channel!")    
 
 
 def setup(client):
