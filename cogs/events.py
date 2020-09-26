@@ -17,7 +17,7 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print("PixelBot sucessfully connected to Discord servers")
-        await self.client.change_presence(status=discord.Status.online, activity=discord.Game("Version 0.2.2"))
+        await self.client.change_presence(status=discord.Status.online, activity=discord.Game("Version 0.3.0"))
 
 def setup(client):
     client.add_cog(Events(client))

@@ -40,7 +40,7 @@ class funCommands(commands.Cog):
 
     @commands.command(aliases=["hellothere", "HelloThere"])
     async def helloThere(self, ctx):
-        await ctx.send("General Kenobi")
+        await ctx.send("https://tenor.com/view/grevious-general-kenobi-star-wars-gif-11406339")
 
 def setup(client):
     client.add_cog(funCommands(client))

@@ -3,3 +3,4 @@ botToken.txt
 /cogs/__pycache__/
 /.vscode/
 /.idea/
+/.run/

@@ -4,20 +4,16 @@ import os
 
 from discord.ext import commands
 
-os.system("clear")
-print("Initializing PixelBot v0.2.1")
-
 try:
     with open('botToken.txt', 'r') as file:
         botKey = file.read()
-        print("|" + botKey + "|")
 except(FileNotFoundError):
     print(
         "Please add a 'botToken.txt' file containing the token for your bot. Please do not include any other text in "
         "this file.")
     exit()
 
-commandPrefix = "!"
+commandPrefix = "?"
 client = commands.Bot(command_prefix=commandPrefix)
 # status = cycle(["Status 1", "Status 2"])
 debugger = False
@@ -54,7 +50,6 @@ async def reload(ctx, extension):
 for filename in os.listdir("./cogs"):
     if filename.endswith(".py"):
         client.load_extension(f"cogs.{filename[:-3]}")
-print("Initializing PixelBot 0.2")
 
 
 # tasks
@@ -138,4 +133,5 @@ async def on_command_error(ctx, error):
 #         await ctx.send("Debugger disabled!")
 
 if __name__ == "__main__":
+    print("Initializing PixelBot v0.3.0")
     client.run(botKey)
