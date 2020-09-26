@@ -56,14 +56,14 @@ class modCommands(commands.Cog):
 
     @commands.has_permissions(administrator=True)
     @commands.command(aliases=['quit', 'stop', 'exit'])
-    @commands.has_role('Dat dere smart people setter uppers')
+    @commands.has_role('Bot Admin')
     async def shutdown(self, ctx):
         await ctx.send("Bot is shutting down. Please wait...")
         print("Shutting down PixelBot")
         quit()
     
     @commands.has_permissions(administrator=True)
-    @commands.has_role('Dat dere smart people setter uppers')
+    @commands.has_role('Bot Admin')
     @commands.command(aliases=['reboot'])
     async def restart(self, ctx):
         print("PixelBot restarting\n\n")
