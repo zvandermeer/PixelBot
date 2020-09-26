@@ -19,4 +19,6 @@
 <h2 id="try-it-before-you-download">Try it before you download!</h2>
 <p>You can run PixelBot in <a href="http://repl.it">repl.it</a> to try it out without having to dowload it! Click the link below to try it now!<br>
 <a href="https://repl.it/github/ovandermeer/PixelBot"><img src="https://repl.it/badge/github/ovandermeer/PixelBot" alt="Try me in repl.it!"></a></p>
+<h2 id="bot-credits">Bot Credits</h2>
+<p>-Bot profile picture is credit to <a href="https://twitter.com/Meviusss7">@Meviusss7</a> on twitter. Click <a href="https://twitter.com/Meviusss7/status/1306917334506823681">here</a> for the image</p>
 
