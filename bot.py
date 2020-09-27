@@ -13,7 +13,7 @@ except(FileNotFoundError):
         "this file.")
     exit()
 
-commandPrefix = "?"
+commandPrefix = "&"
 client = commands.Bot(command_prefix=commandPrefix)
 # status = cycle(["Status 1", "Status 2"])
 debugger = False
