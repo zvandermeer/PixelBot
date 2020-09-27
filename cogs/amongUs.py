@@ -10,7 +10,7 @@ class AmongUs(commands.Cog):
     @commands.command(aliases=['kill', 'die'])
     async def killPlayer(self, ctx, *, members=None):
         if members is None:
-            await ctx.send('Please pass in at least one valid user')
+            await ctx.send('Please mention at least one valid user!')
             return
         members = members.split(" ")
 

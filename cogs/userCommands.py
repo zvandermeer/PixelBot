@@ -31,19 +31,40 @@ class userCommands(commands.Cog):
                 await ctx.send(f'Status updated to "Playing {statusInput}"! Please note this is not permenant, and will be reset when the bot is rebooted.')
                 print(f"Status updated to 'playing {statusInput}''")
     
-    @commands.command(aliases=["prefix", "changeprefix"])
-    async def changePrefix(self, ctx, newPrefix=""):
-        if newPrefix == "":
-            await ctx.send("Please enter a prefix.")
-        elif newPrefix == self.commandPrefix:
-            await ctx.send("That is the current prefix. Please enter a new prefix!")
-        else:
-            with open("botData.json") as file:
-                jsonData = file.read()
-                jsonFormatted = json.loads(jsonData)
-                jsonFormatted["prefix"] = newPrefix
-                jsonData = json.dumps(jsonFormatted)
-                file.write(jsonData)
+    # @commands.command(aliases=["prefix", "changeprefix"])
+    # async def changePrefix(self, ctx, newPrefix=""):
+    #     if newPrefix == "":
+    #         await ctx.send("Please enter a prefix.")
+    #     elif newPrefix == self.commandPrefix:
+    #         await ctx.send("That is the current prefix. Please enter a new prefix!")
+    #     else:
+    #         with open("botData.json") as file:
+    #             jsonData = file.read()
+    #             jsonFormatted = json.loads(jsonData)
+    #             jsonFormatted["prefix"] = newPrefix
+    #             jsonData = json.dumps(jsonFormatted)
+    #             file.write(jsonData)
+
+    @commands.command(aliases=["creator", "info"])
+    async def about(self, ctx):
+        embed = discord.Embed(title="PixelBot v0.3.1", description="This bot is running PixelBot v0.3.1. Developed by "
+                                                                   "NinjaPixels. Code is hosted at "
+                                                                   "https://github.com/ovandermeer/PixelBot",
+                              color=discord.Color.green())
+
+        embed.add_field(name="Command help",
+                        value="Type &help for a list of commands and how to use them.",
+                        inline=True)
+        embed.add_field(name="Bugs? Issues?",
+                        value="Report problems with the bot at:\n https://github.com/ovandermeer/PixelBot/issues",
+                        inline=False)
+        embed.add_field(name="Documentation",
+                        value="Documentation and more detailed command help can be found at: "
+                              "https://ovandermeer.github.io/PixelBot/",
+                        inline=False)
+
+        await ctx.send(embed=embed)
+
 
 def setup(client):
     client.add_cog(userCommands(client))

@@ -133,5 +133,5 @@ async def on_command_error(ctx, error):
 #         await ctx.send("Debugger disabled!")
 
 if __name__ == "__main__":
-    print("Initializing PixelBot v0.3.0")
+    print("Initializing PixelBot v0.3.1")
     client.run(botKey)
