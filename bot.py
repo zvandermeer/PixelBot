@@ -1,4 +1,3 @@
-
 try:
     import discord
 except(ModuleNotFoundError):
@@ -47,11 +46,14 @@ debugger = False
 #     change_status.start()
 
 # cogs commands
-@client.command()
-async def load(ctx, extension):
-    client.load_extension(f"cogs.{extension}")
-    await ctx.send("Successfully loaded!")
-    print(f"Loaded {extension} cog")
+try:
+    @client.command()
+    async def load(ctx, extension):
+        client.load_extension(f"cogs.{extension}")
+        await ctx.send("Successfully loaded!")
+        print(f"Loaded {extension} cog")
+except(SyntaxError):
+    print()
 
 
 @client.command()
@@ -155,5 +157,14 @@ async def on_command_error(ctx, error):
 #         await ctx.send("Debugger disabled!")
 
 if __name__ == "__main__":
+    import sys
+    pythonVersion = sys.version
+    pythonVersion = pythonVersion.split(" ")
+    pythonVersion = pythonVersion[0].replace(".", "")
+
+    if(int(pythonVersion) < 360):
+        print("This program only supports Python 3.6 or later. Please update your Python version.")
+        exit()
+
     print("Initializing PixelBot v0.3.1")
     client.run(botKey)
