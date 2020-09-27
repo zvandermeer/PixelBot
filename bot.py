@@ -120,7 +120,7 @@ async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         handledError = True
         await ctx.send("Invalid command!")
-        print("[{currentDT}] Message was sent by " + str(ctx.message.author) + " in '" + str(ctx.message.guild.name) + "' in the '" + ctx.message.channel.name + "' text channel.")
+        print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in '" + str(ctx.message.guild.name) + "' in the '" + ctx.message.channel.name + "' text channel.")
     elif isinstance(error, commands.MissingRole or commands.MissingPermissions):
         handledError = True
         await ctx.send("You do not have sufficient permissions to use this command. Please contact the server "
@@ -131,6 +131,10 @@ async def on_command_error(ctx, error):
     elif (handledError == False):
         await ctx.send("An error has occurred. This should not happen. Please contact your server admin or the bot "
                        "author for details.")
+
+        user = client.get_user(309771442763857931)
+        await user.send("An error has occurred. Message details: \n" + f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in '" + str(ctx.message.guild.name) + "' in the '" + ctx.message.channel.name + f"' text channel. \nError details: '{error}'")
+        
 
     # @client.command(aliases=["Debug", "debug", "enableDebugMode", "DebugMode", "debugmode", "Debugmode"])
 

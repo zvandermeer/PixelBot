@@ -13,6 +13,11 @@ class Events(commands.Cog):
         currentDT = SupportingFuctions.getTime()
         print(f'[{currentDT}] {member} has joined a server')
 
+        memberString = str(member)
+        memberString = memberString.split("#")
+
+        await member.send(f"Welcome {memberString[0]}, to the Epic 5head Server!")
+
     @commands.Cog.listener()
     async def on_member_remove(self, member):
         currentDT = SupportingFuctions.getTime()
