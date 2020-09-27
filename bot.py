@@ -1,4 +1,26 @@
-import discord
+
+try:
+    import discord
+except(ModuleNotFoundError):
+    while True:
+        installDiscordResponse = input("We have detected that the required discord.py library is not installed on your system. Would you like to install it? (Y/N)\n> ")
+        installDiscordResponse = installDiscordResponse.lower()
+
+        if installDiscordResponse == "y":
+            import os
+            import platform
+            if(platform.system == "Linux" or platform.system == "Darwin"):
+                os.system("pip3 install discord.py")
+                os.system("python3 bot.py")
+            if(platform.system == "Windows"):
+                os.system("pip install discord")
+                os.system("python bot.py")
+        elif installDiscordResponse == "n":
+            print("To install the discord.py library, use 'pip/pip3 install discord'")
+            exit()
+        else:
+            print("Please enter either y or n.")
+
 from discord.ext import commands, tasks
 import os
 
