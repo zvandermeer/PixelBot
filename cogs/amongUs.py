@@ -23,6 +23,8 @@ class AmongUs(commands.Cog):
             await memberObject.add_roles(deadRole)
             await memberObject.edit(mute=True)
 
+        await ctx.send("Player(s) killed!")
+
     @commands.command(aliases=['reset', 'restart'])
     async def resetGame(self, ctx):
         deadRole = discord.utils.get(ctx.guild.roles, name="Among Us - Dead")
@@ -32,6 +34,8 @@ class AmongUs(commands.Cog):
             await member.remove_roles(deadRole)
 
         await self.unmuteAllUsers(ctx)
+
+        await ctx.send("Game reset!")
 
     @commands.command(aliases=["mute", "mutea"])
     async def muteAll(self, ctx):
@@ -59,7 +63,6 @@ class AmongUs(commands.Cog):
             for role in member.roles:
                 role = str(role)
                 if role == "Among Us - Dead":
-                    print("Dead found")
                     dead = True
 
             if not dead:
