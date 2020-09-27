@@ -76,7 +76,7 @@ class modCommands(commands.Cog):
     async def reboot(self, ctx):
         print("PixelBot restarting\n\n")
         await ctx.send("Bot is rebooting. Please wait...")
-        os.system("python bot.py")
+        os.system("python3.8 bot.py")
         exit()
 
     #@commands.has_permissions(administrator=True)
