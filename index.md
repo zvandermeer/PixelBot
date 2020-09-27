@@ -1,3 +1,8 @@
+---
+
+
+---
+
 <h1 id="pixelbot">Pixelbot</h1>
 <h2 id="installation">Installation</h2>
 <p>Download the most recent release from the <a href="https://github.com/ovandermeer/PixelBot/releases">releases</a> page. Once the source code is downloaded, add a file called botToken.txt to the root directory. This file should contain your bot’s token, and nothing else. Then, just run <a href="http://bot.py">bot.py</a> and the bot will start!<br>
