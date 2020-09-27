@@ -1,3 +1,5 @@
+import datetime
+from supportingFunctions import SupportingFuctions
 import discord
 from discord.ext import commands
 from bot import commandPrefix
@@ -25,11 +27,13 @@ class userCommands(commands.Cog):
                 statusOutput = statusInput.split(" ", 1)
                 await self.client.change_presence(status=discord.Status.online, activity=discord.Game(statusOutput[1]))
                 await ctx.send(f'Status updated to "Playing {statusOutput[1]}"! Please note this is not permenant, and will be reset when the bot is rebooted.')
-                print(f"Status updated to playing '{statusOutput[1]}''")
+                currentDT = SupportingFuctions.getTime()
+                print(f"[{currentDT}] Status updated to playing '{statusOutput[1]}''")
             else:
                 await self.client.change_presence(status=discord.Status.online, activity=discord.Game(statusInput))
                 await ctx.send(f'Status updated to "Playing {statusInput}"! Please note this is not permenant, and will be reset when the bot is rebooted.')
-                print(f"Status updated to 'playing {statusInput}''")
+                currentDT = SupportingFuctions.getTime()
+                print(f"[{currentDT}] Status updated to 'playing {statusInput}''")
     
     # @commands.command(aliases=["prefix", "changeprefix"])
     # async def changePrefix(self, ctx, newPrefix=""):

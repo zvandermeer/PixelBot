@@ -4,8 +4,10 @@ except(ModuleNotFoundError):
     print("We have detected that the required discord.py library is not installed on your system. To install the discord.py library, use 'pip/pip3 install discord'")
     exit()
 
+from supportingFunctions import SupportingFuctions
 from discord.ext import commands, tasks
 import os
+import datetime
 
 from discord.ext import commands
 
@@ -30,21 +32,19 @@ debugger = False
 #     change_status.start()
 
 # cogs commands
-try:
-    @client.command()
-    async def load(ctx, extension):
-        client.load_extension(f"cogs.{extension}")
-        await ctx.send("Successfully loaded!")
-        print(f"Loaded {extension} cog")
-except(SyntaxError):
-    print()
-
+@client.command()
+async def load(ctx, extension):
+    client.load_extension(f"cogs.{extension}")
+    await ctx.send("Successfully loaded!")
+    currentDT = SupportingFuctions.getTime()
+    print(f"[{currentDT}] Loaded {extension} cog")
 
 @client.command()
 async def unload(ctx, extension):
     client.unload_extension(f"cogs.{extension}")
     await ctx.send("Successfully unloaded!")
-    print(f"Unloaded {extension} cog")
+    currentDT = SupportingFuctions.getTime()
+    print(f"[{currentDT}] Unloaded {extension} cog")
 
 
 @client.command(aliases=["refresh"])
@@ -52,7 +52,8 @@ async def reload(ctx, extension):
     client.unload_extension(f"cogs.{extension}")
     client.load_extension(f"cogs.{extension}")
     await ctx.send("Successfully reloaded!")
-    print(f"Reloaded {extension} cog")
+    currentDT = SupportingFuctions.getTime()
+    print(f"[{currentDT}] Reloaded {extension} cog")
 
 
 for filename in os.listdir("./cogs"):
@@ -111,13 +112,15 @@ async def loadNonExistentError(ctx, error):
 # errorHandler
 @client.event
 async def on_command_error(ctx, error):
-    print(f"{error}")
+    currentDT = SupportingFuctions.getTime()
+    print(f"[{currentDT}] {error}")
     # if debugger == True:
     #     await ctx.send(f"{error}")
     handledError = False
     if isinstance(error, commands.CommandNotFound):
         handledError = True
         await ctx.send("Invalid command!")
+        print("[{currentDT}] Message was sent by " + str(ctx.message.author) + " in '" + str(ctx.message.guild.name) + "' in the '" + ctx.message.channel.name + "' text channel.")
     elif isinstance(error, commands.MissingRole or commands.MissingPermissions):
         handledError = True
         await ctx.send("You do not have sufficient permissions to use this command. Please contact the server "
@@ -142,6 +145,7 @@ async def on_command_error(ctx, error):
 
 if __name__ == "__main__":
     import sys
+    import datetime
     pythonVersion = sys.version
     pythonVersion = pythonVersion.split(" ")
     pythonVersion = pythonVersion[0].replace(".", "")
@@ -150,5 +154,12 @@ if __name__ == "__main__":
         print("This program only supports Python 3.6 or later. Please update your Python version.")
         exit()
 
-    print("Initializing PixelBot v0.3.1")
+    currentDT = datetime.datetime.now()
+    currentDT = str(currentDT)
+    currentDT = currentDT.split(" ")
+    currentDT = currentDT[1].split(".")
+    currentDT = currentDT[0]
+
+    currentDT = SupportingFuctions.getTime()
+    print(f"[{currentDT}] Initializing PixelBot v0.3.1")
     client.run(botKey)

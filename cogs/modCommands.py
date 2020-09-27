@@ -1,3 +1,5 @@
+import datetime
+from supportingFunctions import SupportingFuctions
 import discord
 from discord.ext import commands
 import time
@@ -67,14 +69,16 @@ class modCommands(commands.Cog):
     @commands.has_role('Bot Admin')
     async def shutdown(self, ctx):
         await ctx.send("Bot is shutting down. Please wait...")
-        print("Shutting down PixelBot")
+        currentDT = SupportingFuctions.getTime()
+        print(f"[{currentDT}] Shutting down PixelBot")
         quit()
     
     @commands.has_permissions(administrator=True)
     @commands.has_role('Bot Admin')
     @commands.command()
     async def reboot(self, ctx):
-        print("PixelBot restarting\n\n")
+        currentDT = SupportingFuctions.getTime()
+        print(f"[{currentDT}] PixelBot restarting\n\n")
         await ctx.send("Bot is rebooting. Please wait...")
         os.system("python3.8 bot.py")
         exit()
@@ -85,7 +89,7 @@ class modCommands(commands.Cog):
     #    while exitLoop == False:
             #await ctx.send("@everyone get yeeted")
             #await ctx.send("You have been yote in the boat")
-    #        print("I BE SPAMMING")
+    #        print(f"I BE SPAMMING")
     #        await ctx.send("https://cdn.discordapp.com/attachments/440261154439168001/700080379184545802/i249711442305187847.mp4")
 
     #@commands.has_permissions(administrator=True)
