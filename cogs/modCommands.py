@@ -54,6 +54,14 @@ class modCommands(commands.Cog):
                 await ctx.send(f"Sucessfully unbanned {user.mention}")
                 return
 
+    @commands.command(aliases=["muteu"])
+    async def muteUser(self, ctx, member: discord.Member = None):
+        await member.edit(mute=True)
+
+    @commands.command(aliases=["umuteu"])
+    async def unmuteUser(self, ctx, member: discord.Member = None):
+        await member.edit(mute=False)
+
     @commands.has_permissions(administrator=True)
     @commands.command(aliases=['quit', 'stop', 'exit'])
     @commands.has_role('Bot Admin')
@@ -64,8 +72,8 @@ class modCommands(commands.Cog):
     
     @commands.has_permissions(administrator=True)
     @commands.has_role('Bot Admin')
-    @commands.command(aliases=['reboot'])
-    async def restart(self, ctx):
+    @commands.command()
+    async def reboot(self, ctx):
         print("PixelBot restarting\n\n")
         await ctx.send("Bot is rebooting. Please wait...")
         os.system("python bot.py")
@@ -85,6 +93,7 @@ class modCommands(commands.Cog):
     #async def stopSpam(self, ctx):
     #    exitLoop = True
     #    await ctx.send("FINE")
+
 
 def setup(client):
     client.add_cog(modCommands(client))

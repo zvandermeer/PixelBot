@@ -8,34 +8,34 @@ class AmongUs(commands.Cog):
         self.client = client
 
     @commands.command(aliases=['kill', 'die'])
-    async def moveToDead(self, ctx, member : discord.Member = None):
-        if member is None:
-            await ctx.send('Please pass in a valid user')
+    async def killPlayer(self, ctx, *, members=None):
+        if members is None:
+            await ctx.send('Please pass in at least one valid user')
             return
+        members = members.split(" ")
 
-        deadChannel = discord.utils.get(ctx.guild.voice_channels, name='Among Us - Dead', bitrate=64000)
-        await member.move_to(deadChannel)
+        for member in members:
+            member = member[3:]
+            member = member[:-1]
+            member = int(member)
+            memberObject = ctx.guild.get_member(member)
+            deadRole = discord.utils.get(ctx.guild.roles, name="Among Us - Dead")
+            await memberObject.add_roles(deadRole)
+            await memberObject.edit(mute=True)
 
-    @commands.command(aliases=['revive', 'alive'])
-    async def moveToAlive(self, ctx, member : discord.Member = None):
-        if member is None:
-            await ctx.send('Please pass in a valid user')
-            return
+    @commands.command(aliases=['reset', 'restart'])
+    async def resetGame(self, ctx):
+        deadRole = discord.utils.get(ctx.guild.roles, name="Among Us - Dead")
+        deadMembers = deadRole.members
 
-        aliveChannel = discord.utils.get(ctx.guild.voice_channels, name='Among Us - Alive', bitrate=64000)
-        await member.move_to(aliveChannel)
+        for member in deadMembers:
+            await member.remove_roles(deadRole)
 
-    @commands.command(aliases=["muteu"])
-    async def muteUser(self, ctx, member : discord.Member = None):
-        await member.edit(mute=True)
-
-    @commands.command(aliases=["umuteu"])
-    async def unmuteUser(self, ctx, member : discord.Member = None):
-        await member.edit(mute=False)
+        await self.unmuteAllUsers(ctx)
 
     @commands.command(aliases=["mute", "mutea"])
     async def muteAll(self, ctx):
-        channel = self.client.get_channel(759234633647915009)
+        channel = discord.utils.get(ctx.guild.voice_channels, name='Among Us', bitrate=64000)
         members = channel.members
 
         for member in members:
@@ -43,15 +43,36 @@ class AmongUs(commands.Cog):
 
         await ctx.send("Muted channel!")
 
-    @commands.command(aliases=["umute", "umutea", "unmute", "unmutea"])
+    @commands.command(aliases=["umutea", "unmutea"])
     async def unmuteAll(self, ctx):
-        channel = self.client.get_channel(759234633647915009)
+        await self.unmuteAllUsers(ctx)
+
+        await ctx.send("Unmuted all players!")
+
+    @commands.command(aliases=["umute", "unmute"])
+    async def unmuteAlive(self, ctx):
+        channel = discord.utils.get(ctx.guild.voice_channels, name='Among Us', bitrate=64000)
+        members = channel.members
+
+        for member in members:
+            dead = False
+            for role in member.roles:
+                role = str(role)
+                if role == "Among Us - Dead":
+                    print("Dead found")
+                    dead = True
+
+            if not dead:
+                await member.edit(mute=False)
+
+        await ctx.send("Unmuted alive players!")
+
+    async def unmuteAllUsers(self, ctx):
+        channel = discord.utils.get(ctx.guild.voice_channels, name='Among Us', bitrate=64000)
         members = channel.members
 
         for member in members:
             await member.edit(mute=False)
-
-        await ctx.send("Unmuted channel!")    
 
 
 def setup(client):
