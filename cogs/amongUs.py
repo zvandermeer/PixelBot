@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 
+from time import sleep
 
 class AmongUs(commands.Cog):
 
@@ -23,6 +24,8 @@ class AmongUs(commands.Cog):
             await memberObject.add_roles(deadRole)
             await memberObject.edit(mute=True)
 
+            sleep(.3)
+
         await ctx.send("Player(s) killed!")
 
     @commands.command(aliases=['reset', 'restart', 'r'])
@@ -32,6 +35,7 @@ class AmongUs(commands.Cog):
 
         for member in deadMembers:
             await member.remove_roles(deadRole)
+            sleep(.3)
 
         await self.unmuteAllUsers(ctx)
 
@@ -44,6 +48,7 @@ class AmongUs(commands.Cog):
 
         for member in members:
             await member.edit(mute=True)
+            sleep(.3)
 
         await ctx.send("Muted channel!")
 
@@ -64,6 +69,8 @@ class AmongUs(commands.Cog):
                 role = str(role)
                 if role == "Among Us - Dead":
                     dead = True
+                sleep(.3)
+            
 
             if not dead:
                 await member.edit(mute=False)
@@ -76,6 +83,7 @@ class AmongUs(commands.Cog):
 
         for member in members:
             await member.edit(mute=False)
+            sleep(.3)
 
 
 def setup(client):
