@@ -4,20 +4,49 @@ from discord.ext import commands
 from random import randint
 import random
 import time
+import json
 
-_8BallResponses = ["It is certain.", "It is decidedly so.", "Without a doubt.", "Yes - definitely.", "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.", "Signs point to yes.", "Reply hazy, try again.", "Ask again later.", "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again.", "Don't count on it.", "My reply is no.", "My sources say no." "Outlook not so good.", "Very doubtful."]
+eightBallResponses = ["It is certain.", "It is decidedly so.", "Without a doubt.", "Yes - definitely.",
+                      "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.",
+                      "Signs point to yes.", "Reply hazy, try again.", "Ask again later.", "Better not tell you now.",
+                      "Cannot predict now.", "Concentrate and ask again.", "Don't count on it.", "My reply is no.",
+                      "My sources say no." "Outlook not so good.", "Very doubtful."]
 
-class funCommands(commands.Cog):
+
+class FunCommands(commands.Cog):
 
     def __init__(self, client):
         self.client = client
 
+    @commands.command(aliases=['aq'])
+    async def addQuote(self, ctx, *, quote=""):
+        if quote == "":
+            await ctx.send("Please enter a quote!")
+        else:
+            if '-' in quote:
+                if quote.count('-') > 1:
+                    quote = quote.split("-")
+                else:
+                    quote = quote.rsplit("-")
+                fullQuote = quote[0]
+                quoteAuthor = quote[1]
+            else:
+                fullQuote = quote
+                quoteAuthor = "Unknown"
+
+            quoteData = {"user": ctx.message.author, "quote": fullQuote, "quoteAuthor": quoteAuthor}
+            quoteJSON = json.dumps(quoteData)
+
+            print(quoteJSON)
+
+
+
     @commands.command(aliases=["8ball", "eightball", "EightBall", "8Ball"])
-    async def _8ball(self, ctx, *, question=""):
+    async def eightBall(self, ctx, *, question=""):
         if question == "":
             await ctx.send("Please enter a question!")
         else:
-            await ctx.send(f"Question: {question}\nAnswer: {random.choice(_8BallResponses)}")
+            await ctx.send(f"Question: {question}\nAnswer: {random.choice(eightBallResponses)}")
 
     @commands.command(aliases=["rolldice"])
     async def dice(self, ctx, sides=6):
@@ -27,8 +56,8 @@ class funCommands(commands.Cog):
 
     @commands.command(aliases=["FlipACoin", "flipacoin", "coinflip", "flipcoin"])
     async def coinFlip(self, ctx):
-        coinState = randint(0,1)
-        if coinState == 0: 
+        coinState = randint(0, 1)
+        if coinState == 0:
             await ctx.send("The coin landed on heads!")
         elif coinState == 1:
             await ctx.send("The coin landed on tails!")
@@ -42,6 +71,7 @@ class funCommands(commands.Cog):
     @commands.command(aliases=["hellothere", "HelloThere"])
     async def helloThere(self, ctx):
         await ctx.send("https://tenor.com/view/grevious-general-kenobi-star-wars-gif-11406339")
+
 
 def setup(client):
     client.add_cog(funCommands(client))
