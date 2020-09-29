@@ -16,18 +16,18 @@
 </ol>
 <p>Command list:</p>
 <ul>
-<li>&amp;kill<br>
+<li>&amp;kill/&amp;k<br>
 Mention member(s) after this command to give them the role “Among Us - Dead” When a user has this role, the bot will not unmute them when &amp;unmute is called.<br>
-Example: “&amp;kill @NinjaPixels @bobIsCool @yay121”</li>
-<li>&amp;reset<br>
+Example: “&amp;kill/&amp;k @NinjaPixels @bobIsCool @yay121”</li>
+<li>&amp;reset/&amp;r<br>
 Removed the “Among Us - Dead” role from all users in the “Among Us” voice channel. Use this at the end of the round so that everyone can talk again. Also unmutes all users.<br>
-Example: “&amp;reset”</li>
-<li>&amp;mute<br>
+Example: “&amp;reset/&amp;r”</li>
+<li>&amp;mute/&amp;m<br>
 Mutes all users in the “Among Us” voice channel.<br>
-Example: “&amp;mute”</li>
-<li>&amp;unmute<br>
+Example: “&amp;mute/&amp;m”</li>
+<li>&amp;unmute/&amp;u/&amp;um<br>
 Unmutes all users that do not have the “Among Us - Dead” role in the “Among Us” voice channel.<br>
-Example: “&amp;unmute”</li>
+Example: “&amp;unmute/&amp;u/&amp;um”</li>
 <li>&amp;muteAll / unmuteAll<br>
 Mutes or unmutes all users in the “Among Us” voice channel, regardless of role.<br>
 Example: “&amp;mute/&amp;unmute”</li>

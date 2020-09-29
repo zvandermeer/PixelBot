@@ -54,7 +54,7 @@ class AmongUs(commands.Cog):
 
         await ctx.send("Unmuted all players!")
 
-    @commands.command(aliases=["umute", "unmute", 'u'])
+    @commands.command(aliases=["umute", "unmute", 'u', 'um'])
     async def unmuteAlive(self, ctx):
         channel = discord.utils.get(ctx.guild.voice_channels, name='Among Us', bitrate=64000)
         members = channel.members
