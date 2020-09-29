@@ -22,9 +22,7 @@ class AmongUs(commands.Cog):
             memberObject = ctx.guild.get_member(member)
             deadRole = discord.utils.get(ctx.guild.roles, name="Among Us - Dead")
             await memberObject.add_roles(deadRole)
-            await memberObject.edit(mute=True)
-
-            sleep(.3)
+            await memberObject.edit(mute=True)        
 
         await ctx.send("Player(s) killed!")
 
@@ -34,8 +32,7 @@ class AmongUs(commands.Cog):
         deadMembers = deadRole.members
 
         for member in deadMembers:
-            await member.remove_roles(deadRole)
-            sleep(.3)
+            await member.remove_roles(deadRole)           
 
         await self.unmuteAllUsers(ctx)
 
@@ -47,8 +44,7 @@ class AmongUs(commands.Cog):
         members = channel.members
 
         for member in members:
-            await member.edit(mute=True)
-            sleep(.3)
+            await member.edit(mute=True)          
 
         await ctx.send("Muted channel!")
 
@@ -68,8 +64,7 @@ class AmongUs(commands.Cog):
             for role in member.roles:
                 role = str(role)
                 if role == "Among Us - Dead":
-                    dead = True
-                sleep(.3)
+                    dead = True               
             
 
             if not dead:
@@ -82,8 +77,7 @@ class AmongUs(commands.Cog):
         members = channel.members
 
         for member in members:
-            await member.edit(mute=False)
-            sleep(.3)
+            await member.edit(mute=False)           
 
 
 def setup(client):
