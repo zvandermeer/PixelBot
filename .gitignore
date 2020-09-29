@@ -1,0 +1,5 @@
+/__pycache__/
+/.idea/
+/.run/
+/cogs/__pycache__/
+botToken.txt
