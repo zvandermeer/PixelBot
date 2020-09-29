@@ -16,21 +16,21 @@
 </ol>
 <p>Command list:</p>
 <ul>
-<li>&amp;kill<br>
+<li>&amp;kill/&amp;k<br>
 Mention member(s) after this command to give them the role “Among Us - Dead” When a user has this role, the bot will not unmute them when &amp;unmute is called.<br>
 Example: “&amp;kill/&amp;k @NinjaPixels @bobIsCool @yay121”</li>
-<li>&amp;reset<br>
+<li>&amp;reset/&amp;r<br>
 Removed the “Among Us - Dead” role from all users in the “Among Us” voice channel. Use this at the end of the round so that everyone can talk again. Also unmutes all users.<br>
 Example: “&amp;reset/&amp;r”</li>
-<li>&amp;mute<br>
+<li>&amp;mute/&amp;m<br>
 Mutes all users in the “Among Us” voice channel.<br>
 Example: “&amp;mute/&amp;m”</li>
-<li>&amp;unmute<br>
+<li>&amp;unmute/&amp;u/&amp;um<br>
 Unmutes all users that do not have the “Among Us - Dead” role in the “Among Us” voice channel.<br>
 Example: “&amp;unmute/&amp;u/&amp;um”</li>
 <li>&amp;muteAll / unmuteAll<br>
 Mutes or unmutes all users in the “Among Us” voice channel, regardless of role.<br>
-Example: “&amp;mute/&amp;unmute”</li>
+Example: “&amp;mutea / &amp;unmutea”</li>
 </ul>
 <h2 id="try-it-before-you-download">Try it before you download!</h2>
 <p>You can run PixelBot in <a href="http://repl.it">repl.it</a> to try it out without having to dowload it! Click the link below to try it now!<br>
