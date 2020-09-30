@@ -120,7 +120,11 @@ async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         handledError = True
         await ctx.send("Invalid command!")
-        print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in '" + str(ctx.message.guild.name) + "' in the '" + ctx.message.channel.name + "' text channel.")
+        try:
+            print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in '" + str(
+                ctx.message.guild.name) + "' in the '" + ctx.message.channel.name + "' text channel.")
+        except AttributeError:
+            print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in DM")
     elif isinstance(error, commands.MissingRole or commands.MissingPermissions):
         handledError = True
         await ctx.send("You do not have sufficient permissions to use this command. Please contact the server "
@@ -133,8 +137,13 @@ async def on_command_error(ctx, error):
                        "author for details.")
 
         user = client.get_user(309771442763857931)
-        await user.send("An error has occurred. Message details: \n" + f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in '" + str(ctx.message.guild.name) + "' in the '" + ctx.message.channel.name + f"' text channel. \nError details: '{error}'")
-        
+        try:
+            await user.send("An error has occurred. Message details: \n" + f"[{currentDT}] Message was sent by " + str(
+                ctx.message.author) + " in '" + str(ctx.message.guild.name) + "' in the '" + ctx.message.channel.name +
+                            f"' text channel. \nError details: '{error}'")
+        except AttributeError:
+            await user.send("An error has occurred. Message details: \n" + f"[{currentDT}] Message was sent by " + str(
+                ctx.message.author) + f" in DM. \nError details: '{error}'")
 
     # @client.command(aliases=["Debug", "debug", "enableDebugMode", "DebugMode", "debugmode", "Debugmode"])
 

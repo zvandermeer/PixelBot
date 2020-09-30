@@ -51,10 +51,14 @@ class userCommands(commands.Cog):
 
     @commands.command(aliases=["creator", "info"])
     async def about(self, ctx):
-        embed = discord.Embed(title="PixelBot v0.3.1", description="This bot is running PixelBot v0.3.1. Developed by "
+        embed = discord.Embed(title="**PixelBot v0.3.1**", description="This bot is running PixelBot v0.3.1. "
+                                                                       "Developed by "
                                                                    "NinjaPixels. Code is hosted at "
                                                                    "https://github.com/ovandermeer/PixelBot",
                               color=discord.Color.green())
+
+        embed.set_author(name="Jeff", icon_url="https://cdn.discordapp.com/avatars/690639974772637826"
+                                               "/dae6197fc28fdd6a6fb73a9909397556.webp?size=256")
 
         embed.add_field(name="Command help",
                         value="Type &help for a list of commands and how to use them.",
@@ -67,6 +71,16 @@ class userCommands(commands.Cog):
                               "https://ovandermeer.github.io/PixelBot/",
                         inline=False)
 
+        await ctx.send(embed=embed)
+
+    @commands.command()
+    async def testing(self, ctx):
+        embed = discord.Embed(title="*Quote*", description="-quote author", color=discord.Color.green())
+
+
+
+        embed.set_author(name="Jeff", icon_url="https://cdn.discordapp.com/avatars/690639974772637826"
+                                               "/dae6197fc28fdd6a6fb73a9909397556.webp?size=256")
         await ctx.send(embed=embed)
 
 

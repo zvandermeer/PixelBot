@@ -4,7 +4,6 @@ from discord.ext import commands
 from random import randint
 import random
 import time
-import json
 
 eightBallResponses = ["It is certain.", "It is decidedly so.", "Without a doubt.", "Yes - definitely.",
                       "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.",
@@ -13,15 +12,42 @@ eightBallResponses = ["It is certain.", "It is decidedly so.", "Without a doubt.
                       "My sources say no." "Outlook not so good.", "Very doubtful."]
 
 
-class FunCommands(commands.Cog):
+def loadRandomQuote():
+    quoteTotal = 0
+    with open("quotes.txt", "r") as fileReader:
+        allQuotes = []
+        for line in fileReader:
+            allQuotes.append(line)
+        print(f"allQuotes: {allQuotes}")
+        quoteTotal = len(allQuotes)
+        print(f"quoteTotal: {quoteTotal}")
+        quoteInt = randint(1, quoteTotal)
+        print(f"quoteInt: {quoteInt}")
+        selectedQuote = allQuotes[quoteInt - 1]
+        print(f"selectedQuote: {selectedQuote}")
+        parsedQuote = selectedQuote.split(';')
+        print(f"parsedQuote: {parsedQuote}")
+        quoteDict = {"name": parsedQuote[0], "quote": parsedQuote[1], "author": parsedQuote[2]}
+
+        return quoteDict
+
+
+class funCommands(commands.Cog):
 
     def __init__(self, client):
         self.client = client
 
-    @commands.command(aliases=['aq'])
-    async def addQuote(self, ctx, *, quote=""):
+    @commands.command()
+    async def quote(self, ctx, *, quote=""):
         if quote == "":
-            await ctx.send("Please enter a quote!")
+            randomQuote = loadRandomQuote()
+
+            embed = discord.Embed(title=randomQuote["quote"], description=f"-{randomQuote['author']}",
+                                  color=discord.Color.blue())
+            embed.set_author(name=randomQuote["name"], icon_url="https://cdn.discordapp.com/avatars/690639974772637826"
+                                                                "/dae6197fc28fdd6a6fb73a9909397556.webp?size=256")
+            await ctx.send(embed=embed)
+
         else:
             if '-' in quote:
                 if quote.count('-') > 1:
@@ -34,12 +60,10 @@ class FunCommands(commands.Cog):
                 fullQuote = quote
                 quoteAuthor = "Unknown"
 
-            quoteData = {"user": ctx.message.author, "quote": fullQuote, "quoteAuthor": quoteAuthor}
-            quoteJSON = json.dumps(quoteData)
+            quoteData = f"{ctx.message.author};{fullQuote};{quoteAuthor}"
 
-            print(quoteJSON)
-
-
+            with open("quotes.txt", 'a') as fileWriter:
+                fileWriter.write(f"{quoteData}\n")
 
     @commands.command(aliases=["8ball", "eightball", "EightBall", "8Ball"])
     async def eightBall(self, ctx, *, question=""):
