@@ -18,15 +18,15 @@ def loadRandomQuote():
         allQuotes = []
         for line in fileReader:
             allQuotes.append(line)
-        print(f"allQuotes: {allQuotes}")
+        # print(f"allQuotes: {allQuotes}")
         quoteTotal = len(allQuotes)
-        print(f"quoteTotal: {quoteTotal}")
+        # print(f"quoteTotal: {quoteTotal}")
         quoteInt = randint(1, quoteTotal)
-        print(f"quoteInt: {quoteInt}")
+        # print(f"quoteInt: {quoteInt}")
         selectedQuote = allQuotes[quoteInt - 1]
-        print(f"selectedQuote: {selectedQuote}")
+        # print(f"selectedQuote: {selectedQuote}")
         parsedQuote = selectedQuote.split(';')
-        print(f"parsedQuote: {parsedQuote}")
+        # print(f"parsedQuote: {parsedQuote}")
         quoteDict = {"name": parsedQuote[0], "quote": parsedQuote[1], "author": parsedQuote[2]}
 
         return quoteDict
@@ -44,8 +44,7 @@ class funCommands(commands.Cog):
 
             embed = discord.Embed(title=randomQuote["quote"], description=f"-{randomQuote['author']}",
                                   color=discord.Color.blue())
-            embed.set_author(name=randomQuote["name"], icon_url="https://cdn.discordapp.com/avatars/690639974772637826"
-                                                                "/dae6197fc28fdd6a6fb73a9909397556.webp?size=256")
+            embed.set_author(name=randomQuote["name"], icon_url="")
             await ctx.send(embed=embed)
 
         else:
@@ -64,6 +63,8 @@ class funCommands(commands.Cog):
 
             with open("quotes.txt", 'a') as fileWriter:
                 fileWriter.write(f"{quoteData}\n")
+
+            await ctx.send(f"-{fullQuote} added to quote list!")
 
     @commands.command(aliases=["8ball", "eightball", "EightBall", "8Ball"])
     async def eightBall(self, ctx, *, question=""):
