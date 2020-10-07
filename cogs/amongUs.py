@@ -9,7 +9,7 @@ class amongUs(commands.Cog):
         self.client = client
 
     @commands.has_role('Among Us permission')
-    @commands.command(aliases=['kill', 'die', 'k'])
+    @commands.command(aliases=['kill', 'die', 'k', 'K'])
     async def killPlayer(self, ctx, *, members=None):
         if members is None:
             await ctx.send('Please mention at least one valid user!')
@@ -28,7 +28,7 @@ class amongUs(commands.Cog):
         await ctx.send("Player(s) killed!")
 
     @commands.has_role('Among Us permission')
-    @commands.command(aliases=['reset', 'restart', 'r'])
+    @commands.command(aliases=['reset', 'restart', 'r', 'R'])
     async def resetGame(self, ctx):
         deadRole = discord.utils.get(ctx.guild.roles, name="Among Us - Dead")
         deadMembers = deadRole.members
@@ -41,7 +41,7 @@ class amongUs(commands.Cog):
         await ctx.send("Game reset!")
 
     @commands.has_role('Among Us permission')
-    @commands.command(aliases=["mute", "mutea", 'm'])
+    @commands.command(aliases=["mute", "mutea", 'm', 'M'])
     async def muteAll(self, ctx):
         channel = discord.utils.get(ctx.guild.voice_channels, name='Among Us', bitrate=64000)
         members = channel.members
@@ -52,14 +52,14 @@ class amongUs(commands.Cog):
         await ctx.send("Muted channel!")
 
     @commands.has_role('Among Us permission')
-    @commands.command(aliases=["umutea", "unmutea", 'ua'])
+    @commands.command(aliases=["umutea", "unmutea", 'ua', 'UA'])
     async def unmuteAll(self, ctx):
         await self.unmuteAllUsers(ctx)
 
         await ctx.send("Unmuted all players!")
 
     @commands.has_role('Among Us permission')
-    @commands.command(aliases=["umute", "unmute", 'u', 'um'])
+    @commands.command(aliases=["umute", "unmute", 'u', 'um', 'U', 'UM'])
     async def unmuteAlive(self, ctx):
         channel = discord.utils.get(ctx.guild.voice_channels, name='Among Us', bitrate=64000)
         members = channel.members
