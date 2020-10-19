@@ -29,5 +29,11 @@ class Events(commands.Cog):
         print(f"[{currentDT}] PixelBot sucessfully connected to Discord servers")
         await self.client.change_presence(status=discord.Status.online, activity=discord.Game("Version 0.3.1"))
 
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        if '@everyone' in message.content:
+            print('Keyword found in message')
+            # Do stuff here
+
 def setup(client):
     client.add_cog(Events(client))

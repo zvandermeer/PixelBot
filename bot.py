@@ -1,7 +1,8 @@
 try:
     import discord
 except(ModuleNotFoundError):
-    print("We have detected that the required discord.py library is not installed on your system. To install the discord.py library, use 'pip/pip3 install discord'")
+    print("We have detected that the required discord.py library is not installed on your system. To install the "
+          "discord.py library, use 'pip/pip3 install discord'")
     exit()
 
 from supportingFunctions import SupportingFuctions
@@ -125,18 +126,69 @@ async def on_command_error(ctx, error):
                 ctx.message.guild.name) + "' in the '" + ctx.message.channel.name + "' text channel.")
         except AttributeError:
             print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in DM")
+
     elif isinstance(error, commands.MissingRole or commands.MissingPermissions):
         handledError = True
         await ctx.send("You do not have sufficient permissions to use this command. Please contact the server "
                        "administrator if you believe this to be a mistake.")
+        try:
+            print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in '" + str(
+                ctx.message.guild.name) + "' in the '" + ctx.message.channel.name + "' text channel.")
+        except AttributeError:
+            print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in DM")
+
     elif isinstance(error, commands.MissingRequiredArgument):
         handledError = True
         await ctx.send("You are missing arguments for this command. Type !help <command> for help with the command.")
-    elif (handledError == False):
+        try:
+            print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in '" + str(
+                ctx.message.guild.name) + "' in the '" + ctx.message.channel.name + "' text channel.")
+        except AttributeError:
+            print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in DM")
+
+    elif isinstance(error, commands.MissingRole):
+        handledError = True
+        await ctx.send("You are missing the required role to run this command Please contact the server administrator "
+                       "for more information and if you believe this to be a mistake.")
+        try:
+            print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in '" + str(
+                ctx.message.guild.name) + "' in the '" + ctx.message.channel.name + "' text channel.")
+        except AttributeError:
+            print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in DM")
+
+    elif isinstance(error, commands.MissingPermissions):
+        handledError = True
+        await ctx.send("You are missing the required permissions to run this command. Please contact the server "
+                       "administrator for more information and if you believe this to be a mistake")
+        try:
+            print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in '" + str(
+                ctx.message.guild.name) + "' in the '" + ctx.message.channel.name + "' text channel.")
+        except AttributeError:
+            print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in DM")
+
+    elif isinstance(error, commands.NoPrivateMessage):
+        handledError = True
+        await ctx.send("This command cannot be used in a DM. This may mean that the command requires specific "
+                       "permissions, or is simply restricted from running in a DM. Please attempt to run this command"
+                       " in a server.")
+        try:
+            print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in '" + str(
+                ctx.message.guild.name) + "' in the '" + ctx.message.channel.name + "' text channel.")
+        except AttributeError:
+            print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in DM")
+
+    elif not handledError:
         await ctx.send("An error has occurred. This should not happen. Please contact your server admin or the bot "
                        "author for details.")
 
+        try:
+            print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in '" + str(
+                ctx.message.guild.name) + "' in the '" + ctx.message.channel.name + "' text channel.")
+        except AttributeError:
+            print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in DM")
+
         user = client.get_user(309771442763857931)
+
         try:
             await user.send("An error has occurred. Message details: \n" + f"[{currentDT}] Message was sent by " + str(
                 ctx.message.author) + " in '" + str(ctx.message.guild.name) + "' in the '" + ctx.message.channel.name +

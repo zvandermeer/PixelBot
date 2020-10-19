@@ -30,6 +30,23 @@ class modCommands(commands.Cog):
             await ctx.channel.purge(limit=1)
             exitLoop = True
 
+    @commands.command()
+    @commands.dm_only()
+    async def dmclear(self, ctx, amount=0):
+        if amount == 0:
+            await ctx.send("Please enter a number of messages to be deleted.")
+        else:
+            pluralString = ""
+            if amount != 1:
+                pluralString = "s"
+            amount += 1
+            await ctx.channel.purge(limit=amount)
+            amount -= 1
+            await ctx.channel.send(f"{amount} message{pluralString} deleted!")
+            time.sleep(2)
+            await ctx.channel.purge(limit=1)
+            exitLoop = True
+
     @commands.has_permissions(administrator=True)
     @commands.command()
     async def kick(self, ctx, member : discord.Member, *, reason=None):
@@ -56,23 +73,25 @@ class modCommands(commands.Cog):
                 await ctx.send(f"Sucessfully unbanned {user.mention}")
                 return
 
+    @commands.has_permissions(administrator=True)
     @commands.command(aliases=["muteu"])
     async def muteUser(self, ctx, member: discord.Member = None):
         await member.edit(mute=True)
 
+    @commands.has_permissions(administrator=True)
     @commands.command(aliases=["umuteu"])
     async def unmuteUser(self, ctx, member: discord.Member = None):
         await member.edit(mute=False)
 
     @commands.has_permissions(administrator=True)
-    @commands.command(aliases=['quit', 'stop', 'exit'])
     @commands.has_role('Bot Admin')
+    @commands.command(aliases=['quit', 'stop', 'exit'])
     async def shutdown(self, ctx):
         await ctx.send("Bot is shutting down. Please wait...")
         currentDT = SupportingFuctions.getTime()
         print(f"[{currentDT}] Shutting down PixelBot")
         quit()
-    
+
     @commands.has_permissions(administrator=True)
     @commands.has_role('Bot Admin')
     @commands.command()
