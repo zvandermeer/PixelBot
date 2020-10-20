@@ -49,7 +49,7 @@ class funCommands(commands.Cog):
             await ctx.send(embed=embed)
 
         elif quote == "list":
-            await ctx.send("View the quote list here: https://www.ovmcloud.ddns.net/quotes.txt")
+            await ctx.send("View the quote list here: ovmcloud.ddns.net/quotes.txt")
 
         else:
             if '-' in quote:
