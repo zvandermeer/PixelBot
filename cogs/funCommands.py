@@ -4,6 +4,7 @@ from discord.ext import commands
 from random import randint
 import random
 import time
+import platform
 
 eightBallResponses = ["It is certain.", "It is decidedly so.", "Without a doubt.", "Yes - definitely.",
                       "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.",
@@ -63,6 +64,10 @@ class funCommands(commands.Cog):
 
             with open("quotes.txt", 'a') as fileWriter:
                 fileWriter.write(f"{quoteData}\n")
+
+            if platform.system() == "Linux":
+                with open("/var/www/html/quotes.txt", 'a') as fileWriter:
+                    fileWriter.write(f"{quoteData}\n")
 
             await ctx.send(f"-{fullQuote} added to quote list!")
 

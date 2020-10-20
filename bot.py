@@ -3,12 +3,14 @@ try:
 except(ModuleNotFoundError):
     print("We have detected that the required discord.py library is not installed on your system. To install the "
           "discord.py library, use 'pip/pip3 install discord'")
-    exit()
+    sys.exit()
 
 from supportingFunctions import SupportingFuctions
 from discord.ext import commands, tasks
 import os
 import datetime
+from time import sleep
+import sys
 
 from discord.ext import commands
 
@@ -19,7 +21,8 @@ except(FileNotFoundError):
     print(
         "Please add a 'botToken.txt' file containing the token for your bot. Please do not include any other text in "
         "this file.")
-    exit()
+    sleep(5)
+    sys.exit()
 
 commandPrefix = "&"
 client = commands.Bot(command_prefix=commandPrefix)
@@ -56,10 +59,18 @@ async def reload(ctx, extension):
     currentDT = SupportingFuctions.getTime()
     print(f"[{currentDT}] Reloaded {extension} cog")
 
+cogCount = 0
 
-for filename in os.listdir("./cogs"):
+for filename in os.listdir("."):
     if filename.endswith(".py"):
+        cogCount = cogCount + 1
+
         client.load_extension(f"cogs.{filename[:-3]}")
+
+if cogCount is 0:
+    pass
+
+# TODO Rewrite bot to focus on cog integration, and as a takeoff point.
 
 
 # tasks
@@ -217,7 +228,7 @@ if __name__ == "__main__":
 
     if(int(pythonVersion) < 360):
         print("This program only supports Python 3.6 or later. Please update your Python version.")
-        exit()
+        sys.exit()
 
     currentDT = datetime.datetime.now()
     currentDT = str(currentDT)
