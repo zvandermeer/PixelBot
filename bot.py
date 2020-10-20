@@ -61,13 +61,13 @@ async def reload(ctx, extension):
 
 cogCount = 0
 
-for filename in os.listdir("."):
+for filename in os.listdir("./cogs"):
     if filename.endswith(".py"):
         cogCount = cogCount + 1
 
         client.load_extension(f"cogs.{filename[:-3]}")
 
-if cogCount is 0:
+if cogCount == 0:
     pass
 
 # TODO Rewrite bot to focus on cog integration, and as a takeoff point.
