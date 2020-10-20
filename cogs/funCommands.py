@@ -48,6 +48,9 @@ class funCommands(commands.Cog):
             embed.set_author(name=randomQuote["name"], icon_url="")
             await ctx.send(embed=embed)
 
+        elif quote == "list":
+            await ctx.send("View the quote list here: https://www.ovmcloud.ddns.net/quotes.txt")
+
         else:
             if '-' in quote:
                 if quote.count('-') > 1:
