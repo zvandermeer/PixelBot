@@ -45,7 +45,7 @@ class funCommands(commands.Cog):
 
             embed = discord.Embed(title=randomQuote["quote"], description=f"-{randomQuote['author']}",
                                   color=discord.Color.blue())
-            embed.set_author(name=randomQuote["name"], icon_url="")
+            embed.set_author(name="Added by: " + randomQuote["name"], icon_url="")
             await ctx.send(embed=embed)
 
         elif quote == "list":
