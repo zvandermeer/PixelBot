@@ -38,8 +38,6 @@ class funCommands(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    # TODO Add removal of semicolons
-
     @commands.command(aliases=["q", "Q", "Quote", "quotes", "Quotes"])
     async def quote(self, ctx, *, quote=""):
         if quote == "":
@@ -54,6 +52,14 @@ class funCommands(commands.Cog):
             await ctx.send("View the quote list here: http://ovmcloud.ddns.net/quotes.txt")
 
         else:
+            if quote.startswith("add ") or quote.startswith("Add "):
+                quote = quote[4:]
+
+            semicolon = False
+            if ";" in quote:
+                quote = quote.replace(";", ",")
+                semicolon = True
+
             if '-' in quote:
                 if quote.count('-') > 1:
                     quote = quote.split("-")
@@ -65,6 +71,9 @@ class funCommands(commands.Cog):
                 fullQuote = quote
                 quoteAuthor = "Unknown"
 
+            if fullQuote.endswith(" "):
+                fullQuote = fullQuote[:-1]
+
             quoteData = f"{ctx.message.author};{fullQuote};{quoteAuthor}"
 
             with open("quotes.txt", 'a') as fileWriter:
@@ -75,6 +84,10 @@ class funCommands(commands.Cog):
                     fileWriter.write(f"{quoteData}\n")
 
             await ctx.send(f"-{fullQuote} added to quote list!")
+
+            if semicolon is True:
+                await ctx.send("Due to how quotes are saved, semicolons cannot be used. The semicolon in your quote "
+                               "has been replaced with a comma.")
 
     @commands.command(aliases=["8ball", "eightball", "EightBall", "8Ball"])
     async def eightBall(self, ctx, *, question=""):
