@@ -38,7 +38,7 @@ class funCommands(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command()
+    @commands.command(aliases=["q", "Q", "Quote", "quotes", "Quotes"])
     async def quote(self, ctx, *, quote=""):
         if quote == "":
             randomQuote = loadRandomQuote()
