@@ -1,5 +1,5 @@
 # Pixelbot
-A multi-purpose moderation discord bot, with Among Us moderation commands built-in.
+A multi-purpose moderation discord bot, with Among Us moderation commands built-in. \n
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/) [![Try me in repl.it!](https://repl.it/badge/github/ovandermeer/PixelBot)](https://repl.it/github/ovandermeer/PixelBot) 
 ## Installation
 Download the most recent release from the [releases](https://github.com/ovandermeer/PixelBot/releases) page. Once the source code is downloaded, add a file called botToken.txt to the root directory. This file should contain your bot's token, and nothing else. Then, just run bot.py and the bot will start! 
