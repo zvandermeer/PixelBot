@@ -69,9 +69,6 @@ for filename in os.listdir("./cogs"):
 if cogCount == 0:
     pass
 
-# TODO Rewrite bot to focus on cog integration, and as a takeoff point.
-
-
 # tasks
 # @tasks.loop(seconds=10)
 # async def change_status():
@@ -197,7 +194,16 @@ async def on_command_error(ctx, error):
         except AttributeError:
             print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in DM")
 
-        user = client.get_user(309771442763857931)
+        # DM errors to user
+
+        try:
+            with open('errorDM.txt', 'r') as dmFile:
+                userID = dmFile.read()
+
+            user = client.get_user(userID)
+        except(FileNotFoundError):
+            print("There is no errorDM.txt file found. To DM bot errors to a user, please add a errorDM.txt file with "
+                  "the userID and nothing else in the file.")
 
         try:
             await user.send("An error has occurred. Message details: \n" + f"[{currentDT}] Message was sent by " + str(
