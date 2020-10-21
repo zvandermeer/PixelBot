@@ -236,5 +236,5 @@ if __name__ == "__main__":
     currentDT = currentDT[0]
 
     currentDT = SupportingFuctions.getTime()
-    print(f"[{currentDT}] Initializing PixelBot v0.3.1")
+    print(f"[{currentDT}] Initializing PixelBot v0.4.0")
     client.run(botKey)
