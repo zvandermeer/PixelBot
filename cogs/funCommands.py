@@ -38,6 +38,8 @@ class funCommands(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    # TODO Add removal of semicolons
+
     @commands.command(aliases=["q", "Q", "Quote", "quotes", "Quotes"])
     async def quote(self, ctx, *, quote=""):
         if quote == "":
