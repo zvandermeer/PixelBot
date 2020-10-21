@@ -1,3 +1,9 @@
+from supportingFunctions import SupportingFuctions
+import os
+import datetime
+from time import sleep
+import sys
+
 try:
     import discord
 except(ModuleNotFoundError):
@@ -5,14 +11,7 @@ except(ModuleNotFoundError):
           "discord.py library, use 'pip/pip3 install discord'")
     sys.exit()
 
-from supportingFunctions import SupportingFuctions
 from discord.ext import commands, tasks
-import os
-import datetime
-from time import sleep
-import sys
-
-from discord.ext import commands
 
 try:
     with open('botToken.txt', 'r') as file:
