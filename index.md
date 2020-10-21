@@ -5,7 +5,7 @@
 
 <h1 id="pixelbot">Pixelbot</h1>
 <p>A multi-purpose moderation discord bot, with Among Us moderation commands built-in.<br>
-<a href="https://www.python.org/"><img src="http://ForTheBadge.com/images/badges/made-with-python.svg" alt="forthebadge made-with-python"></a> <a href="https://repl.it/github/ovandermeer/PixelBot"><img src="https://repl.it/badge/github/ovandermeer/PixelBot" alt="Try me in repl.it!"></a></p>
+<a href="https://www.python.org/"><img src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg" alt="made-with-python"></a> <a href="https://repl.it/github/ovandermeer/PixelBot"><img src="https://repl.it/badge/github/ovandermeer/PixelBot" alt="Try me in repl.it!"></a></p>
 <h2 id="installation">Installation</h2>
 <p>Download the most recent release from the <a href="https://github.com/ovandermeer/PixelBot/releases">releases</a> page. Once the source code is downloaded, add a file called botToken.txt to the root directory. This file should contain your bot’s token, and nothing else. Then, just run <a href="http://bot.py">bot.py</a> and the bot will start!<br>
 -Note: Python 3.6 or higher is required to run.</p>
