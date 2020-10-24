@@ -60,9 +60,9 @@ class funCommands(commands.Cog):
                 quote = quote.replace(";", ",")
                 semicolon = True
 
-            if "”" in quote or "”" in quote:
+            if "”" in quote or "“" in quote:
                 quote = quote.replace("“", '"')
-                quote = quote.replace("“", '"')
+                quote = quote.replace("”", '"')
 
             if '-' in quote:
                 if quote.count('-') > 1:
