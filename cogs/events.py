@@ -1,4 +1,4 @@
-from supportingFunctions import SupportingFuctions
+from supportingFunctions import SupportingFunctions
 import discord
 from discord.ext import commands
 import datetime
@@ -10,7 +10,7 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        currentDT = SupportingFuctions.getTime()
+        currentDT = SupportingFunctions.getTime()
         print(f'[{currentDT}] {member} has joined a server')
 
         memberString = str(member)
@@ -20,13 +20,13 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
-        currentDT = SupportingFuctions.getTime()
+        currentDT = SupportingFunctions.getTime()
         print(f'[{currentDT}] {member} has left a server')
 
     @commands.Cog.listener()
     async def on_ready(self):
-        currentDT = SupportingFuctions.getTime()
-        print(f"[{currentDT}] PixelBot sucessfully connected to Discord servers")
+        currentDT = SupportingFunctions.getTime()
+        print(f"[{currentDT}] PixelBot successfully connected to Discord servers")
         await self.client.change_presence(status=discord.Status.online, activity=discord.Game("Version 0.4.0"))
 
     @commands.Cog.listener()

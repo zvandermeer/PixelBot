@@ -1,7 +1,7 @@
 import datetime
 
 
-class SupportingFuctions:
+class SupportingFunctions:
     def getTime():
         currentDT = datetime.datetime.now()
         currentDT = str(currentDT)

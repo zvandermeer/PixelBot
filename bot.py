@@ -1,4 +1,4 @@
-from supportingFunctions import SupportingFuctions
+from supportingFunctions import SupportingFunctions
 import os
 import datetime
 from time import sleep
@@ -39,14 +39,14 @@ debugger = False
 async def load(ctx, extension):
     client.load_extension(f"cogs.{extension}")
     await ctx.send("Successfully loaded!")
-    currentDT = SupportingFuctions.getTime()
+    currentDT = SupportingFunctions.getTime()
     print(f"[{currentDT}] Loaded {extension} cog")
 
 @client.command()
 async def unload(ctx, extension):
     client.unload_extension(f"cogs.{extension}")
     await ctx.send("Successfully unloaded!")
-    currentDT = SupportingFuctions.getTime()
+    currentDT = SupportingFunctions.getTime()
     print(f"[{currentDT}] Unloaded {extension} cog")
 
 
@@ -55,7 +55,7 @@ async def reload(ctx, extension):
     client.unload_extension(f"cogs.{extension}")
     client.load_extension(f"cogs.{extension}")
     await ctx.send("Successfully reloaded!")
-    currentDT = SupportingFuctions.getTime()
+    currentDT = SupportingFunctions.getTime()
     print(f"[{currentDT}] Reloaded {extension} cog")
 
 cogCount = 0
@@ -120,7 +120,7 @@ async def loadNonExistentError(ctx, error):
 # errorHandler
 @client.event
 async def on_command_error(ctx, error):
-    currentDT = SupportingFuctions.getTime()
+    currentDT = SupportingFunctions.getTime()
     print(f"[{currentDT}] {error}")
     # if debugger == True:
     #     await ctx.send(f"{error}")
@@ -241,6 +241,6 @@ if __name__ == "__main__":
     currentDT = currentDT[1].split(".")
     currentDT = currentDT[0]
 
-    currentDT = SupportingFuctions.getTime()
+    currentDT = SupportingFunctions.getTime()
     print(f"[{currentDT}] Initializing PixelBot v0.4.0")
     client.run(botKey)

@@ -1,5 +1,5 @@
 import datetime
-from supportingFunctions import SupportingFuctions
+from supportingFunctions import SupportingFunctions
 import discord
 from discord.ext import commands
 import time
@@ -51,13 +51,13 @@ class modCommands(commands.Cog):
     @commands.command()
     async def kick(self, ctx, member : discord.Member, *, reason=None):
         await member.kick(reason=reason)
-        await ctx.send(f"Sucessfully kicked {member.mention}")
+        await ctx.send(f"Successfully kicked {member.mention}")
 
     @commands.has_permissions(administrator=True)
     @commands.command()
     async def ban(self, ctx, member : discord.Member, *, reason=None):
         await member.ban(reason=reason)
-        await ctx.send(f"Sucessfully banned {member.mention}")
+        await ctx.send(f"Successfully banned {member.mention}")
 
     @commands.has_permissions(administrator=True)
     @commands.command()
@@ -70,7 +70,7 @@ class modCommands(commands.Cog):
 
             if (user.name, user.discriminator) == (memberName, memberDiscriminator):
                 await ctx.guild.unban(user)
-                await ctx.send(f"Sucessfully unbanned {user.mention}")
+                await ctx.send(f"Successfully unbanned {user.mention}")
                 return
 
     @commands.has_permissions(administrator=True)
@@ -88,7 +88,7 @@ class modCommands(commands.Cog):
     @commands.command(aliases=['quit', 'stop', 'exit'])
     async def shutdown(self, ctx):
         await ctx.send("Bot is shutting down. Please wait...")
-        currentDT = SupportingFuctions.getTime()
+        currentDT = SupportingFunctions.getTime()
         print(f"[{currentDT}] Shutting down PixelBot")
         quit()
 
@@ -96,7 +96,7 @@ class modCommands(commands.Cog):
     @commands.has_role('Bot Admin')
     @commands.command()
     async def reboot(self, ctx):
-        currentDT = SupportingFuctions.getTime()
+        currentDT = SupportingFunctions.getTime()
         print(f"[{currentDT}] PixelBot restarting\n\n")
         await ctx.send("Bot is rebooting. Please wait...")
         os.system("python3.8 bot.py")
