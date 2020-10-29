@@ -32,8 +32,12 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         if '@everyone' in message.content:
+            ctx = await self.client.get_context(message)
             print('Keyword found in message')
-            # Do stuff here
+            if(message.channel.id != "771126669058375701" or message.channel.id != "759236894327570494" or message.channel.id != "759236932285759518"):
+                await ctx.channel.purge(limit=1)
+                await ctx.send("Please only ping everyone in #announcements , #polls , or #among-us-pings . All are in the top of the channels list.")
+                
 
 def setup(client):
     client.add_cog(Events(client))
