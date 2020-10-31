@@ -10,7 +10,7 @@ try:
     import discord
 except(ModuleNotFoundError):
     installInput = input("We have detected that the required discord.py library is not installed on your system. To install the "
-          "discord.py library, use 'pip/pip3 install discord'\nWould you like to attempt to automatically install the library? (y/n)")
+          "discord.py library, use 'pip/pip3 install discord'\nWould you like to attempt to automatically install the library? (y/n)\n")
     installInput = installInput.lower()
     if installInput == "y":
         if(platform.system() == "Linux" or platform.system() == "Darwin"):
