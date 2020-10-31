@@ -1,14 +1,27 @@
+from os import system
 from supportingFunctions import SupportingFunctions
 import os
 import datetime
 from time import sleep
 import sys
+import platform
 
 try:
     import discord
 except(ModuleNotFoundError):
-    print("We have detected that the required discord.py library is not installed on your system. To install the "
-          "discord.py library, use 'pip/pip3 install discord'")
+    installInput = input("We have detected that the required discord.py library is not installed on your system. To install the "
+          "discord.py library, use 'pip/pip3 install discord'\nWould you like to attempt to automatically install the library? (y/n)")
+    installInput = installInput.lower()
+    if installInput == "y":
+        if(platform.system() == "Linux" or platform.system() == "Darwin"):
+            os.system("pip3 install discord")
+            os.system("python3 bot.py")
+            sys.exit()
+        else:
+            os.system("pip install discord")
+            os.system("python bot.py")
+            sys.exit()
+    print("Please ensure the discord.py library is installed before continuing. Use 'pip/pip3 install discord'")
     sys.exit()
 
 from discord.ext import commands, tasks
@@ -17,8 +30,10 @@ try:
     with open('botToken.txt', 'r') as file:
         botKey = file.read()
 except(FileNotFoundError):
+    with open('botToken.txt', 'w') as fp: 
+        pass
     print(
-        "Please add a 'botToken.txt' file containing the token for your bot. Please do not include any other text in "
+        "Please open the 'botToken.txt' file and input the token for your bot. Please do not include any other text in "
         "this file.")
     sleep(5)
     sys.exit()
