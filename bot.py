@@ -2,9 +2,10 @@ from os import system
 from supportingFunctions import SupportingFunctions
 import os
 import datetime
-from time import sleep
+from time import sleep, time
 import sys
 import platform
+import configparser
 
 try:
     import discord
@@ -26,17 +27,17 @@ except(ModuleNotFoundError):
 
 from discord.ext import commands, tasks
 
-try:
-    with open('botToken.txt', 'r') as file:
-        botKey = file.read()
-except(FileNotFoundError):
-    with open('botToken.txt', 'w') as fp: 
-        pass
-    print(
-        "Please open the 'botToken.txt' file and input the token for your bot. Please do not include any other text in "
-        "this file.")
+config = configparser.ConfigParser()
+if os.path.exists("botProperties.ini"):
+    config.read('botProperties.ini')
+else:
+    with open('botProperties.ini', 'w') as fp: 
+        fp.write(';Please replace "null"\n[Options]\ntoken = null\nerrorDmUser = null\nmanageAtEveryone = False\n;seperate the channnels with ","\nallowedAtEveryoneChannels = \namongUsRequiresRole = False\naddQuotesToApache2Directory = False\nApache2Directory = /var/www/html/\n;Please enter the full web address that you would like to be linked when &quote list is ran\npublicWebAddress = null')
+    print("A new botProperties.ini file has been created. Please paste your botToken in the botProperties.ini file under the 'token' field and restart the bot.")
     sleep(5)
     sys.exit()
+    
+botToken = config['Options']['token']
 
 commandPrefix = "&"
 client = commands.Bot(command_prefix=commandPrefix)
@@ -173,6 +174,8 @@ async def on_command_error(ctx, error):
         await ctx.send("An error has occurred. This should not happen. Please contact your server admin or the bot "
                        "author for details.")
 
+        user = ""
+
         # DM errors to user
         try:
             with open('errorDM.txt', 'r') as dmFile:
@@ -182,14 +185,15 @@ async def on_command_error(ctx, error):
         except(FileNotFoundError):
             print("There is no errorDM.txt file found. To DM bot errors to a user, please add a errorDM.txt file with "
                   "the userID and nothing else in the file.")
-
-        try:
-            await user.send("An error has occurred. Message details: \n" + f"[{currentDT}] Message was sent by " + str(
-                ctx.message.author) + " in '" + str(ctx.message.guild.name) + "' in the '" + ctx.message.channel.name +
-                            f"' text channel. \nError details: '{error}'")
-        except AttributeError:
-            await user.send("An error has occurred. Message details: \n" + f"[{currentDT}] Message was sent by " + str(
-                ctx.message.author) + f" in DM. \nError details: '{error}'")
+                  
+        if user != "":
+            try:
+                await user.send("An error has occurred. Message details: \n" + f"[{currentDT}] Message was sent by " + str(
+                    ctx.message.author) + " in '" + str(ctx.message.guild.name) + "' in the '" + ctx.message.channel.name +
+                                f"' text channel. \nError details: '{error}'")
+            except AttributeError:
+                await user.send("An error has occurred. Message details: \n" + f"[{currentDT}] Message was sent by " + str(
+                    ctx.message.author) + f" in DM. \nError details: '{error}'")
 
     try:
         print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in '" + str(
@@ -197,16 +201,6 @@ async def on_command_error(ctx, error):
     except AttributeError:
         print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in DM\n")
 
-    # @client.command(aliases=["Debug", "debug", "enableDebugMode", "DebugMode", "debugmode", "Debugmode"])
-
-
-# async def debugMode(ctx):
-#     if debugger == False:
-#         debugger = True
-#         await ctx.send("Debugger enabled!")
-#     elif debugger == True:
-#         debugger = False
-#         await ctx.send("Debugger disabled!")
 
 if __name__ == "__main__":
     import sys
@@ -227,8 +221,11 @@ if __name__ == "__main__":
 
     currentDT = SupportingFunctions.getTime()
     print(f"[{currentDT}] Initializing PixelBot v0.4.0")
-    client.run(botKey)
+    try:
+        client.run(botToken)
+    except discord.errors.LoginFailure:
+        print("The token you have entered in the botProperties.ini file is invalid. Please check to make sure you have entered a valid token.")
+        sleep(5)
+        sys.exit()
 
 # TODO bot.properties file contains bot token, DM user, @everyone details (Channels to allow, on/off), Among Us role requirements, apache quote add, quote address
-
-# TODO fix out of range error for quote command
