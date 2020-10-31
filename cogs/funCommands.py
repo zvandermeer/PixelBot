@@ -56,6 +56,8 @@ class funCommands(commands.Cog):
                 quote = quote[4:]
 
             semicolon = False
+            newline = False
+
             if ";" in quote:
                 quote = quote.replace(";", ",")
                 semicolon = True
@@ -63,6 +65,13 @@ class funCommands(commands.Cog):
             if "”" in quote or "“" in quote:
                 quote = quote.replace("“", '"')
                 quote = quote.replace("”", '"')
+
+            if "’" in quote:
+                quote = quote.replace("’", "'")
+
+            if "\n" in quote:
+                quote = quote.replace("\n", " ")
+                newline = True
 
             if '-' in quote:
                 if quote.count('-') > 1:
@@ -92,6 +101,9 @@ class funCommands(commands.Cog):
             if semicolon is True:
                 await ctx.send("Due to how quotes are saved, semicolons cannot be used. The semicolon in your quote "
                                "has been replaced with a comma.")
+
+            if newline is True:
+                await ctx.send("Due to how quotes are saved, new lines cannot be used. The new line in your quote has been removed and replaced with a space.")
 
     @commands.command(aliases=["8ball", "eightball", "EightBall", "8Ball"])
     async def eightBall(self, ctx, *, question=""):

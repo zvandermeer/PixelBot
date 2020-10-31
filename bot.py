@@ -229,6 +229,6 @@ if __name__ == "__main__":
     print(f"[{currentDT}] Initializing PixelBot v0.4.0")
     client.run(botKey)
 
-# TODO bot.properties file contains bot token, DM user, @everyone details (Channels to allow, on/off), Among Us role requirements
+# TODO bot.properties file contains bot token, DM user, @everyone details (Channels to allow, on/off), Among Us role requirements, apache quote add, quote address
 
 # TODO fix out of range error for quote command
