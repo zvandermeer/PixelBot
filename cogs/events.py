@@ -14,9 +14,34 @@ class Events(commands.Cog):
         self.manageAtEveryone = self.config["Options"]["manageAtEveryone"]
         self.manageAtEveryone = self.manageAtEveryone.lower()
         
-        if self.manageAtEveryone != "true" or self.manageAtEveryone != "false":
-            print('Please enter either true or false in the "manageAtEveryone" field in botProperties.ini')
+        if self.manageAtEveryone != "true" and self.manageAtEveryone != "false":
+            print('Please enter either true or false under the "manageAtEveryone" field in botProperties.ini')
             sys.exit()
+
+        self.deleteUnwantedPings = self.config["Options"]["deleteUnwantedPings"]
+        self.deleteUnwantedPings = self.deleteUnwantedPings.lower()
+        
+        if self.deleteUnwantedPings != "true" and self.deleteUnwantedPings != "false":
+            print('Please enter either true or false under the "deleteUnwantedPings" field in botProperties.ini')
+            sys.exit()
+
+        self.allowedChannels = self.config["Options"]["allowedChannelIDs"]
+
+        if self.allowedChannels == "null":
+            print('Please enter channel ID(s) under the "allowedChannelIDs" field in botProperties.ini. Get channel IDs by right clicking on a channel and selecting "Copy ID"')
+            sys.exit()
+
+        if " " in self.allowedChannels:
+            self.allowedChannels = self.allowedChannels.replace(" ", "")
+
+        self.allowedChannels = self.allowedChannels.split(",")
+
+        self.allowedChannels = [int(numeric_string) for numeric_string in self.allowedChannels]
+
+        self.allowedChannelNames = ""
+
+        for channel in self.allowedChannels:
+            
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
@@ -41,15 +66,16 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if self.manageAtEveryone == True:
+        if self.manageAtEveryone == "true":
             if '@everyone' in message.content:
                 currentDT = SupportingFunctions.getTime()
                 ctx = await self.client.get_context(message)
-                print(f'[{currentDT}] @everyone was pinged')
-                if(message.channel.name != "771126669058375701" or message.channel.id != "759236894327570494" or message.channel.id != "759236932285759518"):
+                print(f'[{currentDT}] @everyone was pinged. Message contents:\n{message.author}: "{message.content}"')
 
-                    await ctx.channel.purge(limit=1)
-                    await ctx.send("Please only ping everyone in #announcements , #polls , or #among-us-pings . All are in the top of the channels list.")
+                if(message.channel.id not in self.allowedChannels):
+                    if self.deleteUnwantedPings == "true":
+                        await ctx.channel.purge(limit=1)
+                    await ctx.send(f"Please only ping everyone in {self.allowedChannels}")
                 
 
 def setup(client):
