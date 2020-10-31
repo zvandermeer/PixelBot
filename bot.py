@@ -32,7 +32,7 @@ if os.path.exists("botProperties.ini"):
     config.read('botProperties.ini')
 else:
     with open('botProperties.ini', 'w') as fp: 
-        fp.write(';Please replace "null"\n[Options]\ntoken = null\nerrorDmUser = null\nmanageAtEveryone = False\n;seperate the channnels with ","\nallowedAtEveryoneChannels = \namongUsRequiresRole = False\naddQuotesToApache2Directory = False\nApache2Directory = /var/www/html/\n;Please enter the full web address that you would like to be linked when &quote list is ran\npublicWebAddress = null')
+        fp.write(';Please replace "null"\n[Options]\ntoken = null\n;Right click on the user profile and click "Copy ID". Paste the code below. Leave null if this is not needed.\nerrorDmUser = null\n;If true, @everyone pings will be limited to only specified channels. Separate the channels with "," and make sure to start with #\nmanageAtEveryone = False\nallowedAtEveryoneChannels = null\n;If true, a role named "Among Us permission" is required to use the Among Us commands\namongUsRequiresRole = False\n;If true, the quotes.txt file will attempt to be cloned to the directory two lines down.\naddQuotesToApache2Directory = False\nApache2Directory = /var/www/html/\n;Please enter the full web address that you would like to be linked when "&quote list" is ran\npublicWebAddress = null')
     print("A new botProperties.ini file has been created. Please paste your botToken in the botProperties.ini file under the 'token' field and restart the bot.")
     sleep(5)
     sys.exit()
@@ -177,14 +177,12 @@ async def on_command_error(ctx, error):
         user = ""
 
         # DM errors to user
-        try:
-            with open('errorDM.txt', 'r') as dmFile:
-                userID = dmFile.read()
-
+        userID = config["Options"]["errorDmUser"]
+        if userID != "null":
+            userID = int(userID)
             user = client.get_user(userID)
-        except(FileNotFoundError):
-            print("There is no errorDM.txt file found. To DM bot errors to a user, please add a errorDM.txt file with "
-                  "the userID and nothing else in the file.")
+        else:
+            print(f"[{currentDT}] No user is defined to DM error to, skipping.")
                   
         if user != "":
             try:
@@ -197,9 +195,9 @@ async def on_command_error(ctx, error):
 
     try:
         print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in '" + str(
-            ctx.message.guild.name) + "' in the '" + ctx.message.channel.name + "' text channel.\n")
+            ctx.message.guild.name) + "' in the '" + ctx.message.channel.name + "' text channel.")
     except AttributeError:
-        print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in DM\n")
+        print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in DM")
 
 
 if __name__ == "__main__":
@@ -221,6 +219,12 @@ if __name__ == "__main__":
 
     currentDT = SupportingFunctions.getTime()
     print(f"[{currentDT}] Initializing PixelBot v0.4.0")
+
+    if botToken == "null":
+        print("Bot Token not found. Please paste your botToken in the botProperties.ini file under the 'token' field and restart the bot.")
+        sleep(5)
+        sys.exit()
+
     try:
         client.run(botToken)
     except discord.errors.LoginFailure:

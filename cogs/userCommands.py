@@ -16,6 +16,7 @@ class userCommands(commands.Cog):
     # User controlled events
     @commands.command()
     async def ping(self, ctx):
+        print("Pong!")
         await ctx.send(f"Pong! Bot ping time: {round(self.client.latency * 1000)}ms")
 
     @commands.command(aliases=["changestatus", "updatestatus", "status", "playing"])
