@@ -114,7 +114,7 @@ class funCommands(commands.Cog):
         elif coinState == 1:
             await ctx.send("The coin landed on tails!")
         else:
-            await ctx.send("An internal error has occured")
+            await ctx.send("An internal error has occurred")
 
     @commands.command(aliases=["Hello", "hi", "Hi"])
     async def hello(self, ctx):
