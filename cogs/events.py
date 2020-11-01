@@ -27,7 +27,7 @@ class Events(commands.Cog):
 
         self.allowedChannels = self.config["Options"]["allowedChannelNames"]
 
-        if self.allowedChannels == "null":
+        if self.allowedChannels == "null" and self.manageAtEveryone == "true":
             print('Please enter channel name(s) under the "allowedChannelNames" field in botProperties.ini. Check botProperties.ini for examples')
             sys.exit()
 

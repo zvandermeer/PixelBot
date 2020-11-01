@@ -32,9 +32,30 @@ if os.path.exists("botProperties.ini"):
     config.read('botProperties.ini')
 else:
     with open('botProperties.ini', 'w+') as fp: 
-        fp.write(';Please replace "null"\n[Options]\ntoken = null\n;Right click on the user profile and click "Copy ID". Paste the code below. Leave null if this is not needed.\nerrorDmUser = null\n;If true, @everyone pings will be limited to only specified channels.\nmanageAtEveryone = False\n;Usage example: (announcements,polls,notifications) DO NOT include the hash in front of the channel names.\nallowedChannelNames = null\ndeleteUnwantedPings = True\n;If true, a role named "Among Us permission" is required to use the Among Us commands\namongUsRequiresRole = False\n;If true, the quotes.txt file will attempt to be cloned to the directory below.\ncopyQuotesToWebDirectory = False\nwebDirectory = /var/www/html/\n;Please enter the full web address that you would like to be linked when "&quote list" is ran. \n;Not required if copyQuotesToWebDirectory is false\npublicWebAddress = null')
+        fp.write(';Please replace "null"'
+        '\n[Options]'
+        '\ntoken = null'
+        '\n;Right click on the user profile and click "Copy ID". Paste the code below. Leave null if this is not needed.'
+        '\nerrorDmUser = null\n'
+        ';If true, @everyone pings will be limited to only specified channels.'
+        '\nmanageAtEveryone = False'
+        '\n;Usage example: (announcements,polls,notifications) DO NOT include the hash in front of the channel names.'
+        '\nallowedChannelNames = null'
+        '\ndeleteUnwantedPings = True'
+        '\n;If true, a role named "Among Us permission" is required to use the Among Us commands'
+        '\namongUsRequiresRole = False'
+        '\n;If true, a role named "Bot Admin" will be required to reboot or stop the bot'
+        '\nbotShutdownRequiresRole = True'
+        '\n;If true, the quotes.txt file will attempt to be cloned to the directory below.'
+        '\ncopyQuotesToWebDirectory = False'
+        '\nwebDirectory = /var/www/html/'
+        '\n;Please enter the full web address that you would like to be linked when "&quote list" is ran. '
+        '\n;Not required if copyQuotesToWebDirectory is false'
+        '\npublicWebAddress = null')
+
     os.chmod("botProperties.ini", 0o777)
-    print("A new botProperties.ini file has been created. Please paste your botToken in the botProperties.ini file under the 'token' field and restart the bot.")
+    print("A new botProperties.ini file has been created. Please paste your botToken in the botProperties.ini file under"
+    "the 'token' field and restart the bot.")
     sleep(5)
     sys.exit()
     
@@ -172,8 +193,7 @@ async def on_command_error(ctx, error):
                        " in a server.")
 
     elif not handledError:
-        await ctx.send("An error has occurred. This should not happen. Please contact your server admin or the bot "
-                       "author for details.")
+        await ctx.send("An error has occurred. This should not happen. Please contact your bot admin for details.")
 
         user = ""
 

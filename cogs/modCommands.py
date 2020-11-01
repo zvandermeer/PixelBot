@@ -1,9 +1,11 @@
+import configparser
 import datetime
 from supportingFunctions import SupportingFunctions
 import discord
 from discord.ext import commands
 import time
-import os 
+import os
+import sys
 
 exitLoop = False
 
@@ -12,12 +14,23 @@ class modCommands(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+        self.client = client
+        self.config = configparser.ConfigParser()
+        self.config.read('botProperties.ini')
+
+        self.botShutdownRequiresRole = self.config["Options"]["botShutdownRequiresRole"]
+        self.botShutdownRequiresRole = self.botShutdownRequiresRole.lower()
+        
+        if self.botShutdownRequiresRole != "true" and self.botShutdownRequiresRole != "false":
+            print('Please enter either true or false under the "botShutdownRequiresRole" field in botProperties.ini')
+            sys.exit()
+
     #moderation commands
     @commands.has_permissions(administrator=True)
     @commands.command()
-    async def clear(self, ctx, amount=0):
+    async def clear(self, ctx, amount=0):        
         if amount == 0:
-            await ctx.send("Please enter a number of messages to be deleted.")
+            await ctx.channel.send("Please enter a number of messages to be deleted.")
         else:
             pluralString = ""
             if amount != 1:
@@ -83,24 +96,42 @@ class modCommands(commands.Cog):
     async def unmuteUser(self, ctx, member: discord.Member = None):
         await member.edit(mute=False)
 
-    @commands.has_permissions(administrator=True)
-    @commands.has_role('Bot Admin')
     @commands.command(aliases=['quit', 'stop', 'exit'])
     async def shutdown(self, ctx):
-        await ctx.send("Bot is shutting down. Please wait...")
-        currentDT = SupportingFunctions.getTime()
-        print(f"[{currentDT}] Shutting down PixelBot")
-        quit()
+        runCommand = False
 
-    @commands.has_permissions(administrator=True)
-    @commands.has_role('Bot Admin')
+        if self.botShutdownRequiresRole == "True":
+            if ctx.message.author.server_permissions.administrator:
+                runCommand = True
+        else:
+            runCommand = True
+        
+        if runCommand == True:
+            await ctx.send("Bot is shutting down. Please wait...")
+            currentDT = SupportingFunctions.getTime()
+            print(f"[{currentDT}] Shutting down PixelBot")
+            quit()
+        else:
+            await ctx.send("This command requires the 'Bot Admin' role to run. Please make sure you have this role, and try again.")
+
     @commands.command()
     async def reboot(self, ctx):
-        currentDT = SupportingFunctions.getTime()
-        print(f"[{currentDT}] PixelBot restarting\n\n")
-        await ctx.send("Bot is rebooting. Please wait...")
-        os.system("python3.8 bot.py")
-        exit()
+        runCommand = False
+
+        if self.botShutdownRequiresRole == "True":
+            if ctx.message.author.server_permissions.administrator:
+                runCommand = True
+        else:
+            runCommand = True
+        
+        if runCommand == True:
+            currentDT = SupportingFunctions.getTime()
+            print(f"[{currentDT}] PixelBot restarting\n\n")
+            await ctx.send("Bot is rebooting. Please wait...")
+            os.system("python3.8 bot.py")
+            exit()
+        else:
+            await ctx.send("This command requires the 'Bot Admin' role to run. Please make sure you have this role, and try again.")
 
     #@commands.has_permissions(administrator=True)
     #@commands.command(aliases=['spamMe'])

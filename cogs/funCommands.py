@@ -62,7 +62,7 @@ class funCommands(commands.Cog):
 
         self.publicWebAddress = self.config["Options"]["publicWebAddress"]
 
-        if self.copyQuotesToWebDirectory and self.publicWebAddress == "null":
+        if self.copyQuotesToWebDirectory == "true" and self.publicWebAddress == "null":
             print('Please enter a web address under the "publicWebAddress" felid in botProperties.ini. Please do not leave it "null"')
             sys.exit()
 
