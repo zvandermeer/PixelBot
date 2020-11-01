@@ -13,7 +13,7 @@ pythonVersion = pythonVersion[0].replace(".", "")
 
 if(int(pythonVersion) >= 390):
     print("Due to the Discord.py framework not currently supporting Python 3.9 or later, PixelBot also does not support Python 3.9 or later. Please run PixelBot on a Python version earlier than 3.9.0.")
-    time.sleep(5)
+    sleep(5)
     sys.exit()
 
 try:
