@@ -32,7 +32,7 @@ if os.path.exists("botProperties.ini"):
     config.read('botProperties.ini')
 else:
     with open('botProperties.ini', 'w+') as fp: 
-        fp.write(';Please replace "null"\n[Options]\ntoken = null\n;Right click on the user profile and click "Copy ID". Paste the code below. Leave null if this is not needed.\nerrorDmUser = null\n;If true, @everyone pings will be limited to only specified channels.\nmanageAtEveryone = False\n;Usage example: (announcements,polls,notifications) DO NOT include the hash in front of the channel names.\nallowedChannelNames = null\ndeleteUnwantedPings = True\n;If true, a role named "Among Us permission" is required to use the Among Us commands\namongUsRequiresRole = False\n;If true, the quotes.txt file will attempt to be cloned to the directory two lines down.\ncopyQuotesToWebDirectory = False\nwebDirectory = /var/www/html/\n;Please enter the full web address that you would like to be linked when "&quote list" is ran. \n;Not required if copyQuotesToWebDirectory is false\npublicWebAddress = null')
+        fp.write(';Please replace "null"\n[Options]\ntoken = null\n;Right click on the user profile and click "Copy ID". Paste the code below. Leave null if this is not needed.\nerrorDmUser = null\n;If true, @everyone pings will be limited to only specified channels.\nmanageAtEveryone = False\n;Usage example: (announcements,polls,notifications) DO NOT include the hash in front of the channel names.\nallowedChannelNames = null\ndeleteUnwantedPings = True\n;If true, a role named "Among Us permission" is required to use the Among Us commands\namongUsRequiresRole = False\n;If true, the quotes.txt file will attempt to be cloned to the directory below.\ncopyQuotesToWebDirectory = False\nwebDirectory = /var/www/html/\n;Please enter the full web address that you would like to be linked when "&quote list" is ran. \n;Not required if copyQuotesToWebDirectory is false\npublicWebAddress = null')
     os.chmod("botProperties.ini", 0o777)
     print("A new botProperties.ini file has been created. Please paste your botToken in the botProperties.ini file under the 'token' field and restart the bot.")
     sleep(5)
@@ -219,7 +219,7 @@ if __name__ == "__main__":
     currentDT = currentDT[0]
 
     currentDT = SupportingFunctions.getTime()
-    print(f"[{currentDT}] Initializing PixelBot v0.4.0")
+    print(f"[{currentDT}] Initializing PixelBot v0.4.1")
 
     if botToken == "null":
         print("Bot Token not found. Please paste your botToken in the botProperties.ini file under the 'token' field and restart the bot.")

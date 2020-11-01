@@ -62,7 +62,7 @@ class Events(commands.Cog):
     async def on_ready(self):
         currentDT = SupportingFunctions.getTime()
         print(f"[{currentDT}] PixelBot successfully connected to Discord servers")
-        await self.client.change_presence(status=discord.Status.online, activity=discord.Game("Version 0.4.0"))
+        await self.client.change_presence(status=discord.Status.online, activity=discord.Game("Version 0.4.1"))
 
     @commands.Cog.listener()
     async def on_message(self, message):

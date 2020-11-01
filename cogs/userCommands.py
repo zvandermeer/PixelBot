@@ -55,7 +55,7 @@ class userCommands(commands.Cog):
 
     @commands.command(aliases=["creator", "info"])
     async def about(self, ctx):
-        embed = discord.Embed(title="**PixelBot v0.4.0**", description="This bot is running PixelBot v0.4.0. "
+        embed = discord.Embed(title="**PixelBot v0.4.1**", description="This bot is running PixelBot v0.4.1. "
                                                                        "Developed by "
                                                                        "NinjaPixels. Code is hosted at "
                                                                        "https://github.com/ovandermeer/PixelBot",
