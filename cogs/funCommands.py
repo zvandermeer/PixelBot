@@ -1,3 +1,4 @@
+import configparser
 import datetime
 import discord
 from discord.ext import commands
@@ -5,6 +6,7 @@ from random import randint
 import random
 import time
 import platform
+import sys
 
 eightBallResponses = ["It is certain.", "It is decidedly so.", "Without a doubt.", "Yes - definitely.",
                       "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.",
@@ -38,6 +40,32 @@ class funCommands(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+        self.client = client
+        self.config = configparser.ConfigParser()
+        self.config.read('botProperties.ini')
+
+        self.copyQuotesToWebDirectory = self.config["Options"]["copyQuotesToWebDirectory"]
+        self.copyQuotesToWebDirectory = self.copyQuotesToWebDirectory.lower()
+        
+        if self.copyQuotesToWebDirectory != "true" and self.copyQuotesToWebDirectory != "false":
+            print('Please enter either true or false under the "copyQuotesToWebDirectory" field in botProperties.ini')
+            sys.exit()
+
+        self.webDirectory = self.config["Options"]["webDirectory"]
+        if self.webDirectory.endswith("/") or self.webDirectory.endswith("\\"):
+            pass
+        else:
+            if platform.system == "Windows":
+                self.webDirectory = self.webDirectory + "\\"
+            else:
+                self.webDirectory = self.webDirectory + "/"
+
+        self.publicWebAddress = self.config["Options"]["publicWebAddress"]
+
+        if self.copyQuotesToWebDirectory and self.publicWebAddress == "null":
+            print('Please enter a web address under the "publicWebAddress" felid in botProperties.ini. Please do not leave it "null"')
+            sys.exit()
+
     @commands.command(aliases=["q", "Q", "Quote", "quotes", "Quotes"])
     async def quote(self, ctx, *, quote=""):
         if quote == "":
@@ -48,8 +76,11 @@ class funCommands(commands.Cog):
             embed.set_author(name="Added by: " + randomQuote["name"], icon_url="")
             await ctx.send(embed=embed)
 
-        elif quote == "list":
-            await ctx.send("View the quote list here: http://ovmcloud.ddns.net/quotes.txt")
+        elif quote == "list" or quote == "List":
+            if self.copyQuotesToWebDirectory == "true":
+                await ctx.send(f"View the quote list here: {self.publicWebAddress}")
+            else:
+                await ctx.send("This bot is not configured to clone quotes to a web directory. Please contact your bot admin for more information.")
 
         else:
             if quote.startswith("add ") or quote.startswith("Add "):
@@ -91,9 +122,9 @@ class funCommands(commands.Cog):
 
             with open("quotes.txt", 'a') as fileWriter:
                 fileWriter.write(f"{quoteData}\n")
-
-            if platform.system() == "Linux":
-                with open("/var/www/html/quotes.txt", 'a') as fileWriter:
+            
+            if self.copyQuotesToWebDirectory == "true":
+                with open(f"{self.webDirectory}quotes.txt", 'a') as fileWriter:
                     fileWriter.write(f"{quoteData}\n")
 
             await ctx.send(f"-{fullQuote} added to quote list!")
