@@ -99,12 +99,13 @@ class modCommands(commands.Cog):
     @commands.command(aliases=['quit', 'stop', 'exit'])
     async def shutdown(self, ctx):
         runCommand = False
-
-        if self.botShutdownRequiresRole == "True":
-            if ctx.message.author.server_permissions.administrator:
-                runCommand = True
-        else:
+        if self.botShutdownRequiresRole == "false":
             runCommand = True
+        else:
+            for role in ctx.author.roles:
+                    role = str(role)
+                    if role == "Bot Admin":
+                        runCommand = True
         
         if runCommand == True:
             await ctx.send("Bot is shutting down. Please wait...")
@@ -117,12 +118,13 @@ class modCommands(commands.Cog):
     @commands.command()
     async def reboot(self, ctx):
         runCommand = False
-
-        if self.botShutdownRequiresRole == "True":
-            if ctx.message.author.server_permissions.administrator:
-                runCommand = True
-        else:
+        if self.botShutdownRequiresRole == "false":
             runCommand = True
+        else:
+            for role in ctx.author.roles:
+                    role = str(role)
+                    if role == "Bot Admin":
+                        runCommand = True
         
         if runCommand == True:
             currentDT = SupportingFunctions.getTime()
