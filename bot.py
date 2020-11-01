@@ -7,6 +7,15 @@ import sys
 import platform
 import configparser
 
+pythonVersion = sys.version
+pythonVersion = pythonVersion.split(" ")
+pythonVersion = pythonVersion[0].replace(".", "")
+
+if(int(pythonVersion) >= 390):
+    print("Due to the Discord.py framework not currently supporting Python 3.9 or later, PixelBot also does not support Python 3.9 or later. Please run PixelBot on a Python version earlier than 3.9.0.")
+    time.sleep(5)
+    sys.exit()
+
 try:
     import discord
 except(ModuleNotFoundError):
@@ -222,8 +231,6 @@ async def on_command_error(ctx, error):
 
 
 if __name__ == "__main__":
-    import sys
-    import datetime
     pythonVersion = sys.version
     pythonVersion = pythonVersion.split(" ")
     pythonVersion = pythonVersion[0].replace(".", "")
