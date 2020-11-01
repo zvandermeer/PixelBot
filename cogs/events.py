@@ -25,10 +25,10 @@ class Events(commands.Cog):
             print('Please enter either true or false under the "deleteUnwantedPings" field in botProperties.ini')
             sys.exit()
 
-        self.allowedChannels = self.config["Options"]["allowedChannelIDs"]
+        self.allowedChannels = self.config["Options"]["allowedChannelNames"]
 
         if self.allowedChannels == "null":
-            print('Please enter channel ID(s) under the "allowedChannelIDs" field in botProperties.ini. Get channel IDs by right clicking on a channel and selecting "Copy ID"')
+            print('Please enter channel name(s) under the "allowedChannelNames" field in botProperties.ini. Check botProperties.ini for examples')
             sys.exit()
 
         if " " in self.allowedChannels:
@@ -36,11 +36,11 @@ class Events(commands.Cog):
 
         self.allowedChannels = self.allowedChannels.split(",")
 
-        self.allowedChannels = [int(numeric_string) for numeric_string in self.allowedChannels]
+        self.allowedChannelIDs = ""
 
-        self.allowedChannelNames = ""
-
-        for channel in self.allowedChannels:
+        #for channel in self.allowedChannels:
+        #    channelObject = discord.utils.get(client.guild.channels, name=channel)
+        #    allowedChannelIDs = allowedChannelIDs.append(channelObject.id)
             
 
     @commands.Cog.listener()
@@ -72,10 +72,24 @@ class Events(commands.Cog):
                 ctx = await self.client.get_context(message)
                 print(f'[{currentDT}] @everyone was pinged. Message contents:\n{message.author}: "{message.content}"')
 
-                if(message.channel.id not in self.allowedChannels):
+                if(ctx.message.channel.name not in self.allowedChannels):
                     if self.deleteUnwantedPings == "true":
                         await ctx.channel.purge(limit=1)
-                    await ctx.send(f"Please only ping everyone in {self.allowedChannels}")
+
+                    allowedChannelIDs = []
+
+                    for channel in self.allowedChannels:
+                        tempChannelObject = discord.utils.get(ctx.guild.channels, name=channel)
+                        allowedChannelIDs.append(tempChannelObject.id)
+                
+                    allowedChannelsList = ["<#" + str(channel) for channel in allowedChannelIDs]
+                    allowedChannelMessage = [str(channel) + ">, " for channel in allowedChannelsList]
+                    allowedChannelMessage = " ".join(str(x) for x in allowedChannelMessage)
+                    allowedChannelMessage = allowedChannelMessage.replace("[", "")
+                    allowedChannelMessage = allowedChannelMessage.replace("'", "")
+                    allowedChannelMessage = allowedChannelMessage[:-2]
+
+                    await ctx.send(f"Please only ping everyone in {allowedChannelMessage}")
                 
 
 def setup(client):
