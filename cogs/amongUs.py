@@ -12,13 +12,13 @@ class amongUs(commands.Cog):
         
         self.client = client
         self.config = configparser.ConfigParser()
-        self.config.read('botProperties.ini')
+        self.config.read('config.ini')
 
-        self.amongUsRequiresRole = self.config["Options"]["amongUsRequiresRole"]
+        self.amongUsRequiresRole = self.config["config"]["amongUsRequiresRole"]
         self.amongUsRequiresRole = self.amongUsRequiresRole.lower()
         
         if self.amongUsRequiresRole != "true" and self.amongUsRequiresRole != "false":
-            print('Please enter either true or false under the "amongUsRequiresRole" field in botProperties.ini')
+            print('Please enter either true or false under the "amongUsRequiresRole" field in config.ini')
             sys.exit()
     
     @commands.command(aliases=['kill', 'die', 'k', 'K'])

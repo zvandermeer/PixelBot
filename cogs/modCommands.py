@@ -16,13 +16,13 @@ class modCommands(commands.Cog):
 
         self.client = client
         self.config = configparser.ConfigParser()
-        self.config.read('botProperties.ini')
+        self.config.read('config.ini')
 
-        self.botShutdownRequiresRole = self.config["Options"]["botShutdownRequiresRole"]
+        self.botShutdownRequiresRole = self.config["config"]["botShutdownRequiresRole"]
         self.botShutdownRequiresRole = self.botShutdownRequiresRole.lower()
         
         if self.botShutdownRequiresRole != "true" and self.botShutdownRequiresRole != "false":
-            print('Please enter either true or false under the "botShutdownRequiresRole" field in botProperties.ini')
+            print('Please enter either true or false under the "botShutdownRequiresRole" field in config.ini')
             sys.exit()
 
     #moderation commands

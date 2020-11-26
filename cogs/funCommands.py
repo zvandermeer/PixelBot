@@ -42,16 +42,16 @@ class funCommands(commands.Cog):
 
         self.client = client
         self.config = configparser.ConfigParser()
-        self.config.read('botProperties.ini')
+        self.config.read('config.ini')
 
-        self.copyQuotesToWebDirectory = self.config["Options"]["copyQuotesToWebDirectory"]
+        self.copyQuotesToWebDirectory = self.config["config"]["copyQuotesToWebDirectory"]
         self.copyQuotesToWebDirectory = self.copyQuotesToWebDirectory.lower()
         
         if self.copyQuotesToWebDirectory != "true" and self.copyQuotesToWebDirectory != "false":
-            print('Please enter either true or false under the "copyQuotesToWebDirectory" field in botProperties.ini')
+            print('Please enter either true or false under the "copyQuotesToWebDirectory" field in config.ini')
             sys.exit()
 
-        self.webDirectory = self.config["Options"]["webDirectory"]
+        self.webDirectory = self.config["config"]["webDirectory"]
         if self.webDirectory.endswith("/") or self.webDirectory.endswith("\\"):
             pass
         else:
@@ -60,10 +60,10 @@ class funCommands(commands.Cog):
             else:
                 self.webDirectory = self.webDirectory + "/"
 
-        self.publicWebAddress = self.config["Options"]["publicWebAddress"]
+        self.publicWebAddress = self.config["config"]["publicWebAddress"]
 
         if self.copyQuotesToWebDirectory == "true" and self.publicWebAddress == "null":
-            print('Please enter a web address under the "publicWebAddress" felid in botProperties.ini. Please do not leave it "null"')
+            print('Please enter a web address under the "publicWebAddress" felid in config.ini. Please do not leave it "null"')
             sys.exit()
 
     @commands.command(aliases=["q", "Q", "Quote", "quotes", "Quotes"])

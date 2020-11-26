@@ -1,8 +1,7 @@
-from os import system
 from supportingFunctions import SupportingFunctions
 import os
 import datetime
-from time import sleep, time
+from time import sleep
 import sys
 import platform
 import configparser
@@ -37,49 +36,29 @@ except(ModuleNotFoundError):
 from discord.ext import commands, tasks
 
 config = configparser.ConfigParser()
-if os.path.exists("botProperties.ini"):
-    config.read('botProperties.ini')
+if os.path.exists("config.ini"):
+    config.read('config.ini')
 else:
-    with open('botProperties.ini', 'w+') as fp: 
-        fp.write(';Please replace "null"'
-        '\n[Options]'
-        '\ntoken = null'
-        '\n;Right click on the user profile and click "Copy ID". Paste the code below. Leave null if this is not needed.'
-        '\nerrorDmUser = null\n'
-        ';If true, @everyone pings will be limited to only specified channels.'
-        '\nmanageAtEveryone = False'
-        '\n;Usage example: (announcements,polls,notifications) DO NOT include the hash in front of the channel names.'
-        '\nallowedChannelNames = null'
-        '\ndeleteUnwantedPings = True'
-        '\n;If true, a role named "Among Us permission" is required to use the Among Us commands'
-        '\namongUsRequiresRole = False'
-        '\n;If true, a role named "Bot Admin" will be required to reboot or stop the bot'
-        '\nbotShutdownRequiresRole = True'
-        '\n;If true, the quotes.txt file will attempt to be cloned to the directory below.'
-        '\ncopyQuotesToWebDirectory = False'
-        '\nwebDirectory = /var/www/html/'
-        '\n;Please enter the full web address that you would like to be linked when "&quote list" is ran. '
-        '\n;Not required if copyQuotesToWebDirectory is false'
-        '\npublicWebAddress = null')
+    SupportingFunctions.createConfig()
 
-    os.chmod("botProperties.ini", 0o777)
-    print("A new botProperties.ini file has been created. Please paste your botToken in the botProperties.ini file under"
-    "the 'token' field and restart the bot.")
-    sleep(5)
-    sys.exit()
+configVersion = config['FileDetails']['configVersion']
+configVersion = configVersion.replace(".", "")
+configVersion = int(configVersion)
+
+if configVersion < 14:
     
-botToken = config['Options']['token']
+    SupportingFunctions.createConfig()
+    
+botToken = config['config']['token']
+commandPrefix = config['config']['prefix']
 
-commandPrefix = "&"
-client = commands.Bot(command_prefix=commandPrefix)
-# status = cycle(["Status 1", "Status 2"])
-debugger = False
+if commandPrefix == "":
+    print("Please enter a prefix in the 'prefix' field in 'config.ini'")
 
+intents = discord.Intents.default()
+intents.members = True
 
-# event
-# @client.event
-# async def on_ready():
-#     change_status.start()
+client = commands.Bot(command_prefix=commandPrefix, intents=intents)
 
 # cogs commands
 @client.command()
@@ -116,45 +95,21 @@ for filename in os.listdir("./cogs"):
 if cogCount == 0:
     pass
 
-# tasks
-# @tasks.loop(seconds=10)
-# async def change_status():
-#     await client.change_presence(activity=discord.Game(next(status)))
-
 # cogErrorHandler
-@load.error
-async def loadBlankError(ctx, error):
-    if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send("Please specify the cog you would like to load")
-        handledError = True
-
-
-@reload.error
-async def reloadBlankError(ctx, error):
-    if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send("Please specify the cog you would like to reload")
-        handledError = True
-
-
-@unload.error
-async def unloadBlankError(ctx, error):
-    if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send("Please specify the cog you would like to unload")
-        handledError = True
-
-
 @unload.error
 async def unloadNonExistentError(ctx, error):
     if isinstance(error, commands.CommandInvokeError):
-        await ctx.send("That cog does not exist!")
         handledError = True
+        await ctx.send("That cog does not exist!")
+        return
 
 
 @reload.error
 async def reloadNonExistentError(ctx, error):
     if isinstance(error, commands.CommandInvokeError):
-        await ctx.send("That cog does not exist!")
         handledError = True
+        await ctx.send("That cog does not exist!")
+        return
 
 
 @load.error
@@ -162,6 +117,7 @@ async def loadNonExistentError(ctx, error):
     if isinstance(error, commands.CommandInvokeError):
         await ctx.send("That cog does not exist!")
         handledError = True
+        return
 
 
 # errorHandler
@@ -201,13 +157,17 @@ async def on_command_error(ctx, error):
                        "permissions, or is simply restricted from running in a DM. Please attempt to run this command"
                        " in a server.")
 
+    elif isinstance(error, commands.MemberNotFound):
+        handledError = True
+        await ctx.send(f"Error: {error} Please use '{commandPrefix}help [command]' to find the proper formatting for the command.")
+
     elif not handledError:
         await ctx.send("An error has occurred. This should not happen. Please contact your bot admin for details.")
 
         user = ""
 
         # DM errors to user
-        userID = config["Options"]["errorDmUser"]
+        userID = config["config"]["errorDmUser"]
         if userID != "null":
             userID = int(userID)
             user = client.get_user(userID)
@@ -249,14 +209,14 @@ if __name__ == "__main__":
     print(f"[{currentDT}] Initializing PixelBot v0.4.1")
 
     if botToken == "null":
-        print("Bot Token not found. Please paste your botToken in the botProperties.ini file under the 'token' field and restart the bot.")
+        print("Bot Token not found. Please paste your botToken in the config.ini file under the 'token' field and restart the bot.")
         sleep(5)
         sys.exit()
 
     try:
         client.run(botToken)
     except discord.errors.LoginFailure:
-        print("The token you have entered in the botProperties.ini file is invalid. Please check to make sure you have entered a valid token.")
+        print("The token you have entered in the config.ini file is invalid. Please check to make sure you have entered a valid token.")
         sleep(5)
         sys.exit()
 

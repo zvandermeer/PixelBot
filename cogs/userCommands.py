@@ -1,17 +1,19 @@
+import configparser
 import datetime
 from supportingFunctions import SupportingFunctions
 import discord
 from discord.ext import commands
-from bot import commandPrefix
-import time
-import json
 
 
 class userCommands(commands.Cog):
 
     def __init__(self, client):
         self.client = client
-        self.commandPrefix = "!"
+
+        config = configparser.ConfigParser()
+        config.read('config.ini')
+
+        self.commandPrefix = config['config']['prefix']
 
     # User controlled events
     @commands.command()
@@ -64,7 +66,7 @@ class userCommands(commands.Cog):
         embed.set_author(name="", icon_url="https://cdn.discordapp.com/avatars/690639974772637826/dae6197fc28fdd6a6fb73a9909397556.webp?size=256")
 
         embed.add_field(name="Command help",
-                        value="Type &help for a list of commands and how to use them.",
+                        value=f"Type {self.commandPrefix}help for a list of commands and how to use them.",
                         inline=True)
         embed.add_field(name="Bugs? Issues?",
                         value="Report problems with the bot at:\n https://github.com/ovandermeer/PixelBot/issues",
@@ -77,12 +79,22 @@ class userCommands(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
-    async def testing(self, ctx):
-        embed = discord.Embed(title="*Quote*", description="-quote author", color=discord.Color.green())
+    async def dmSpam(self, ctx, member : discord.Member, amount, *, message):
+        #authorId = ctx.message.author.id
+        #authorObject = self.client.get_user(authorId)
 
-        embed.set_author(name="Jeff", icon_url="https://cdn.discordapp.com/avatars/690639974772637826"
-                                               "/dae6197fc28fdd6a6fb73a9909397556.webp?size=256")
-        await ctx.send(embed=embed)
+        try:
+            amount = int(amount)
+        except ValueError:
+            await ctx.send(f"Unknown amount: {amount}. Please check your command formatting by using '{self.commandPrefix}help dmSpam'")
+        
+        if amount >= 31:
+            await ctx.send("You can't spam more than 30 times so you don't overload the bot. Try again with a smaller number!")
+        else:
+            counter = 0
+            while counter < amount:
+                await member.send(message)
+                counter = counter + 1
 
 
 def setup(client):

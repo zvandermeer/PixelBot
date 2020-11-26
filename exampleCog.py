@@ -2,13 +2,16 @@ import discord
 from discord.ext import commands
 
 
-class Name(commands.Cog):
+# Example cog
+class cogName(commands.Cog):
 
     def __init__(self, client):
         self.client = client
 
-    # Commands go here
-
+    # Example command
+    @commands.command(aliases=["alias1", "alias2"])
+    async def commandName(self, ctx):
+        await ctx.send("Command success!")
 
 def setup(client):
-    client.add_cog(Name(client))
+    client.add_cog(cogName(client))
