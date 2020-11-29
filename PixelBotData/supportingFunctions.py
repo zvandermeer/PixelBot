@@ -33,7 +33,9 @@ class SupportingFunctions:
 
         os.rename('config.ini','config-OLD.ini')
 
-        self.writeConfig
+        sleep(2)
+
+        self.writeConfig()
 
         print("Your config is outdated. A new config has been created. Please copy your details from 'config-OLD.ini' to 'config.ini'. "
         "Please delete the 'config-OLD.ini' file once you have updated the details. Please note the 'config-OLD.ini' will be deleted "
@@ -45,12 +47,22 @@ class SupportingFunctions:
     def writeConfig(self):
         with open('config.ini', 'w+') as fp: 
             fp.write('[FileDetails]'
-            '\nconfigVersion = 1.4'            
+            '\npixelBotConfigVersion = 4'            
             '\n;Please replace "null"'
-            '\n[config]'
+            '\n[pixelBotConfig]'
             '\ntoken = null'
             '\n;The string in the field below will become the bots prefix'
             '\nprefix = &'
+            '\n;The string in the field below will become the bots static status if dynamic status is disabled'
+            '\nbotStatus = Version 0.4.2'
+            '\n;Allows users to use the "changeStatus" command to change the bots status. Ignored if "dynamicBotStatus" is set to true.'
+            '\nstatusChangeCommand = False'
+            '\n;If true, a role named "Bot Admin" will be required to change the bots status'
+            '\nstatusChangeRequiresRole = True'
+            '\n;DMs a new user a custom welcome message when they join a server with the bot'
+            '\nDMnewUsers = True'
+            '\n;Enter the message you would like to DM a new user below. Use {member} to put the members username in the message'
+            '\nnewUserWelcome = Welcome {member}, to my server!'
             '\n;Right click on the user profile and click "Copy ID". Paste the code below. Leave null if this is not needed.'
             '\nerrorDmUser = null'
             '\n;If true, @everyone pings will be limited to only specified channels.'
@@ -107,9 +119,8 @@ class SupportingFunctions:
         else:
             self.createConfig()
 
-        configVersion = config['FileDetails']['configVersion']
-        configVersion = int(configVersion)
+        pixelBotConfigVersion = config['FileDetails']['pixelBotConfigVersion']
+        pixelBotConfigVersion = int(pixelBotConfigVersion)
 
-        if configVersion < 3:  
+        if pixelBotConfigVersion < 4:  
             self.updateConfig()
-

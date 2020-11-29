@@ -1,19 +1,35 @@
 import configparser
 import datetime
-from supportingFunctions import SupportingFunctions
+import sys
+from PixelBotData.supportingFunctions import SupportingFunctions
 import discord
 from discord.ext import commands
 
 
 class userCommands(commands.Cog):
-
     def __init__(self, client):
+        self.mySupport = SupportingFunctions()
+
         self.client = client
 
         config = configparser.ConfigParser()
         config.read('config.ini')
 
-        self.commandPrefix = config['config']['prefix']
+        self.commandPrefix = config['pixelBotConfig']['prefix']
+
+        self.statusChangeCommand = config['pixelBotConfig']['statusChangeCommand']
+        self.statusChangeCommand = self.statusChangeCommand.lower()
+
+        if self.statusChangeCommand != "true" and self.statusChangeCommand != "false":
+            print('Please enter either true or false under the "botShutdownRequiresRole" field in config.ini')
+            sys.exit()
+
+        self.statusChangeRequiresRole = config['pixelBotConfig']['statusChangeRequiresRole']
+        self.statusChangeRequiresRole = self.statusChangeRequiresRole.lower()
+
+        if self.statusChangeRequiresRole != "true" and self.statusChangeRequiresRole != "false":
+            print('Please enter either true or false under the "botShutdownRequiresRole" field in config.ini')
+            sys.exit()
 
     # User controlled events
     @commands.command()
@@ -21,43 +37,44 @@ class userCommands(commands.Cog):
         print("Pong!")
         await ctx.send(f"Pong! Bot ping time: {round(self.client.latency * 1000)}ms")
 
-    # @commands.command(aliases=["changestatus", "updatestatus", "status", "playing"])
-    # async def changeStatus(self, ctx, *, statusInput=""):
-    #    if statusInput == "":
-    #        await ctx.send("Please enter a status for the bot")
-    #    else:
-    #        lowerStatusInput = statusInput.lower()
-    #        if lowerStatusInput.startswith("playing "):
-    #            statusOutput = statusInput.split(" ", 1)
-    #            await self.client.change_presence(status=discord.Status.online, activity=discord.Game(statusOutput[1]))
-    #            await ctx.send(
-    #                f'Status updated to "Playing {statusOutput[1]}"! Please note this is not permenant, and will be reset when the bot is rebooted.')
-    #            currentDT = SupportingFunctions.getTime()
-    #            print(f"[{currentDT}] Status updated to playing '{statusOutput[1]}''")
-    #        else:
-    #            await self.client.change_presence(status=discord.Status.online, activity=discord.Game(statusInput))
-    #            await ctx.send(
-    #                f'Status updated to "Playing {statusInput}"! Please note this is not permenant, and will be reset when the bot is rebooted.')
-    #            currentDT = SupportingFunctions.getTime()
-    #            print(f"[{currentDT}] Status updated to 'playing {statusInput}''")
-
-    # @commands.command(aliases=["prefix", "changeprefix"])
-    # async def changePrefix(self, ctx, newPrefix=""):
-    #     if newPrefix == "":
-    #         await ctx.send("Please enter a prefix.")
-    #     elif newPrefix == self.commandPrefix:
-    #         await ctx.send("That is the current prefix. Please enter a new prefix!")
-    #     else:
-    #         with open("botData.json") as file:
-    #             jsonData = file.read()
-    #             jsonFormatted = json.loads(jsonData)
-    #             jsonFormatted["prefix"] = newPrefix
-    #             jsonData = json.dumps(jsonFormatted)
-    #             file.write(jsonData)
+    @commands.command(aliases=["changestatus", "updatestatus", "status", "playing"])
+    async def changeStatus(self, ctx, *, statusInput=""):
+        if self.statusChangeCommand == "true":
+            runCommand = False
+            if self.statusChangeRequiresRole == "false":
+                runCommand = True
+            else:
+                for role in ctx.author.roles:
+                        role = str(role)
+                        if role == "Bot Admin":
+                            runCommand = True
+            
+            if runCommand == True:
+                if statusInput == "":
+                    await ctx.send("Please enter a status for the bot")
+                else:
+                    lowerStatusInput = statusInput.lower()
+                    if lowerStatusInput.startswith("playing "):
+                        statusOutput = statusInput.split(" ", 1)
+                        await self.client.change_presence(status=discord.Status.online, activity=discord.Game(statusOutput[1]))
+                        await ctx.send(
+                            f'Status updated to "Playing {statusOutput[1]}"! Please note this is not permenant, and will be reset when the bot is rebooted.')
+                        currentDT = self.mySupport.getTime()
+                        print(f"[{currentDT}] Status updated to playing '{statusOutput[1]}''")
+                    else:
+                        await self.client.change_presence(status=discord.Status.online, activity=discord.Game(statusInput))
+                        await ctx.send(
+                            f'Status updated to "Playing {statusInput}"! Please note this is not permenant, and will be reset when the bot is rebooted.')
+                        currentDT = self.mySupport.getTime()
+                        print(f"[{currentDT}] Status updated to 'playing {statusInput}''")
+            else:
+                await ctx.send("This command requires the 'Bot Admin' role to run. Please make sure you have this role, and try again.")
+        else:
+            await ctx.send("This command is currently disabled. Please contact your bot admin if you believe this to be a mistake")
 
     @commands.command(aliases=["creator", "info"])
     async def about(self, ctx):
-        embed = discord.Embed(title="**PixelBot v0.4.1**", description="This bot is running PixelBot v0.4.1. "
+        embed = discord.Embed(title="**PixelBot v0.4.2**", description="This bot is running PixelBot v0.4.2. "
                                                                        "Developed by "
                                                                        "NinjaPixels. Code is hosted at "
                                                                        "https://github.com/ovandermeer/PixelBot",
@@ -99,4 +116,3 @@ class userCommands(commands.Cog):
 
 def setup(client):
     client.add_cog(userCommands(client))
-

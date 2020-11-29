@@ -2,9 +2,11 @@ botToken.txt
 PixelBotData/quotes.txt
 errorDM.txt
 config.ini
+config-OLD.ini
 botProperties.ini
 /__pycache__/
 /cogs/__pycache__/
+/PixelBotData/__pycache__/
 /.vscode/
 /.idea/
 /.run/

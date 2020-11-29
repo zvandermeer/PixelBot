@@ -44,14 +44,14 @@ class funCommands(commands.Cog):
         self.config = configparser.ConfigParser()
         self.config.read('config.ini')
 
-        self.copyQuotesToWebDirectory = self.config["config"]["copyQuotesToWebDirectory"]
+        self.copyQuotesToWebDirectory = self.config["pixelBotConfig"]["copyQuotesToWebDirectory"]
         self.copyQuotesToWebDirectory = self.copyQuotesToWebDirectory.lower()
         
         if self.copyQuotesToWebDirectory != "true" and self.copyQuotesToWebDirectory != "false":
             print('Please enter either true or false under the "copyQuotesToWebDirectory" field in config.ini')
             sys.exit()
 
-        self.webDirectory = self.config["config"]["webDirectory"]
+        self.webDirectory = self.config["pixelBotConfig"]["webDirectory"]
         if self.webDirectory.endswith("/") or self.webDirectory.endswith("\\"):
             pass
         else:
@@ -60,7 +60,7 @@ class funCommands(commands.Cog):
             else:
                 self.webDirectory = self.webDirectory + "/"
 
-        self.publicWebAddress = self.config["config"]["publicWebAddress"]
+        self.publicWebAddress = self.config["pixelBotConfig"]["publicWebAddress"]
 
         if self.copyQuotesToWebDirectory == "true" and self.publicWebAddress == "null":
             print('Please enter a web address under the "publicWebAddress" felid in config.ini. Please do not leave it "null"')

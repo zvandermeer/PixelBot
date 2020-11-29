@@ -1,29 +1,31 @@
-from PixelBotData.SupportingFunctions import SupportingFunctions
+from PixelBotData.supportingFunctions import SupportingFunctions
 import os
 from time import sleep
 import sys
 import configparser
 
+mySupport = SupportingFunctions()
+
 # Checking for supported python version
-SupportingFunctions.checkPythonVersion()
+mySupport.checkPythonVersion()
 
 # Import discord.py library, and installing it if not found
 try:
     import discord
     from discord.ext import commands
 except(ModuleNotFoundError):
-    SupportingFunctions.installDiscord()
+    mySupport.installDiscord()
 
 # checking for config file
-SupportingFunctions.checkConfig()
+mySupport.checkConfig()
 
 # initializing config file
 config = configparser.ConfigParser()
 config.read('config.ini')
 
 # loading prefix and token from config file   
-botToken = config['config']['token']
-commandPrefix = config['config']['prefix']
+botToken = config['pixelBotConfig']['token']
+commandPrefix = config['pixelBotConfig']['prefix']
 
 if commandPrefix == "":
     print("Please enter a prefix in the 'prefix' field in 'config.ini'")
@@ -39,7 +41,7 @@ client = commands.Bot(command_prefix=commandPrefix, intents=intents)
 async def load(ctx, extension):
     client.load_extension(f"cogs.{extension}")
     await ctx.send("Successfully loaded!")
-    currentDT = SupportingFunctions.getTime()
+    currentDT = mySupport.getTime()
     print(f"[{currentDT}] Loaded {extension} cog")
 
 # unload cog
@@ -47,7 +49,7 @@ async def load(ctx, extension):
 async def unload(ctx, extension):
     client.unload_extension(f"cogs.{extension}")
     await ctx.send("Successfully unloaded!")
-    currentDT = SupportingFunctions.getTime()
+    currentDT = mySupport.getTime()
     print(f"[{currentDT}] Unloaded {extension} cog")
 
 # reload cog
@@ -56,7 +58,7 @@ async def reload(ctx, extension):
     client.unload_extension(f"cogs.{extension}")
     client.load_extension(f"cogs.{extension}")
     await ctx.send("Successfully reloaded!")
-    currentDT = SupportingFunctions.getTime()
+    currentDT = mySupport.getTime()
     print(f"[{currentDT}] Reloaded {extension} cog")
 
 # load cogs into bot
@@ -97,16 +99,17 @@ async def loadNonExistentError(ctx, error):
 # error handler
 @client.event
 async def on_command_error(ctx, error):
-    currentDT = SupportingFunctions.getTime()
+    currentDT = mySupport.getTime()
     print(f"[{currentDT}] {error}")
     handledError = False
 
-    # read to see if the error was caused by a cog command
-    with open('PixelBotData/cogError.txt', 'rw') as fp:
-        if fp.read() == "cogError = True":
-            handledError = True
-         
-        fp.write('cogError = False')
+    if os.path.exists('PixelBotData/cogError.txt'):
+        # read to see if the error was caused by a cog command
+        with open('PixelBotData/cogError.txt', 'r') as fp:
+            if fp.read() == "cogError = True":
+                handledError = True
+            with open('PixelBotData/cogError.txt', 'w') as fp:
+                fp.write('cogError = False')
 
     if isinstance(error, commands.CommandNotFound):
         handledError = True
@@ -148,7 +151,7 @@ async def on_command_error(ctx, error):
         user = ""
 
         # DM errors to user
-        userID = config["config"]["errorDmUser"]
+        userID = config["pixelBotConfig"]["errorDmUser"]
         if userID != "null":
             userID = int(userID)
             user = client.get_user(userID)
@@ -173,8 +176,8 @@ async def on_command_error(ctx, error):
 
 if __name__ == "__main__":
 
-    currentDT = SupportingFunctions.getTime()
-    print(f"[{currentDT}] Initializing PixelBot v0.4.1")
+    currentDT = mySupport.getTime()
+    print(f"[{currentDT}] Initializing PixelBot v0.4.2")
 
     if botToken == "null":
         print("Bot Token not found. Please paste your botToken in the config.ini file under the 'token' field and restart the bot.")

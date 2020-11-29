@@ -12,13 +12,15 @@ exitLoop = False
 class modCommands(commands.Cog):
 
     def __init__(self, client):
+        self.mySupport = SupportingFunctions()
+
         self.client = client
 
         self.client = client
         self.config = configparser.ConfigParser()
         self.config.read('config.ini')
 
-        self.botShutdownRequiresRole = self.config["config"]["botShutdownRequiresRole"]
+        self.botShutdownRequiresRole = self.config["pixelBotConfig"]["botShutdownRequiresRole"]
         self.botShutdownRequiresRole = self.botShutdownRequiresRole.lower()
         
         if self.botShutdownRequiresRole != "true" and self.botShutdownRequiresRole != "false":
@@ -109,7 +111,7 @@ class modCommands(commands.Cog):
         
         if runCommand == True:
             await ctx.send("Bot is shutting down. Please wait...")
-            currentDT = SupportingFunctions.getTime()
+            currentDT = self.mySupport.getTime()
             print(f"[{currentDT}] Shutting down PixelBot")
             quit()
         else:
@@ -127,7 +129,7 @@ class modCommands(commands.Cog):
                         runCommand = True
         
         if runCommand == True:
-            currentDT = SupportingFunctions.getTime()
+            currentDT = self.mySupport.getTime()
             print(f"[{currentDT}] PixelBot restarting\n\n")
             await ctx.send("Bot is rebooting. Please wait...")
             os.system("python3.8 bot.py")

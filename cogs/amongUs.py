@@ -14,7 +14,7 @@ class amongUs(commands.Cog):
         self.config = configparser.ConfigParser()
         self.config.read('config.ini')
 
-        self.amongUsRequiresRole = self.config["config"]["amongUsRequiresRole"]
+        self.amongUsRequiresRole = self.config["pixelBotConfig"]["amongUsRequiresRole"]
         self.amongUsRequiresRole = self.amongUsRequiresRole.lower()
         
         if self.amongUsRequiresRole != "true" and self.amongUsRequiresRole != "false":
