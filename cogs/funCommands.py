@@ -17,7 +17,7 @@ eightBallResponses = ["It is certain.", "It is decidedly so.", "Without a doubt.
 
 def loadRandomQuote():
     quoteTotal = 0
-    with open("quotes.txt", "r") as fileReader:
+    with open("PixelBotData/quotes.txt", "r") as fileReader:
         allQuotes = []
         for line in fileReader:
             allQuotes.append(line)
@@ -120,11 +120,11 @@ class funCommands(commands.Cog):
 
             quoteData = f"{ctx.message.author};{fullQuote};{quoteAuthor}"
 
-            with open("quotes.txt", 'a') as fileWriter:
+            with open("PixelBotData/quotes.txt", 'a') as fileWriter:
                 fileWriter.write(f"{quoteData}\n")
             
             if self.copyQuotesToWebDirectory == "true":
-                with open(f"{self.webDirectory}quotes.txt", 'a') as fileWriter:
+                with open(f"{self.webDirectory}PixelBotData/quotes.txt", 'a') as fileWriter:
                     fileWriter.write(f"{quoteData}\n")
 
             await ctx.send(f"-{fullQuote} added to quote list!")

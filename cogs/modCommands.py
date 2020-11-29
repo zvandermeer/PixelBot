@@ -1,6 +1,6 @@
 import configparser
 import datetime
-from supportingFunctions import SupportingFunctions
+from PixelBotData.supportingFunctions import SupportingFunctions
 import discord
 from discord.ext import commands
 import time

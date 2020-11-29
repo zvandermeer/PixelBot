@@ -1,66 +1,40 @@
-from supportingFunctions import SupportingFunctions
+from PixelBotData.SupportingFunctions import SupportingFunctions
 import os
-import datetime
 from time import sleep
 import sys
-import platform
 import configparser
 
-pythonVersion = sys.version
-pythonVersion = pythonVersion.split(" ")
-pythonVersion = pythonVersion[0].replace(".", "")
+# Checking for supported python version
+SupportingFunctions.checkPythonVersion()
 
-if(int(pythonVersion) >= 390):
-    print("Due to the Discord.py framework not currently supporting Python 3.9.0 or later, PixelBot also does not currently support Python 3.9.0 or later. Please run PixelBot on a Python version earlier than 3.9.0.")
-    sleep(5)
-    sys.exit()
-
+# Import discord.py library, and installing it if not found
 try:
     import discord
+    from discord.ext import commands
 except(ModuleNotFoundError):
-    installInput = input("We have detected that the required discord.py library is not installed on your system. To install the "
-          "discord.py library, use 'pip/pip3 install discord'\nWould you like to attempt to automatically install the library? (y/n)\n")
-    installInput = installInput.lower()
-    if installInput == "y":
-        if(platform.system() == "Linux" or platform.system() == "Darwin"):
-            os.system("pip3 install discord")
-            os.system("python3 bot.py")
-            sys.exit()
-        else:
-            os.system("pip install discord")
-            os.system("python bot.py")
-            sys.exit()
-    print("Please ensure the discord.py library is installed before continuing. Use 'pip/pip3 install discord'")
-    sys.exit()
+    SupportingFunctions.installDiscord()
 
-from discord.ext import commands, tasks
+# checking for config file
+SupportingFunctions.checkConfig()
 
+# initializing config file
 config = configparser.ConfigParser()
-if os.path.exists("config.ini"):
-    config.read('config.ini')
-else:
-    SupportingFunctions.createConfig()
+config.read('config.ini')
 
-configVersion = config['FileDetails']['configVersion']
-configVersion = configVersion.replace(".", "")
-configVersion = int(configVersion)
-
-if configVersion < 14:
-    
-    SupportingFunctions.createConfig()
-    
+# loading prefix and token from config file   
 botToken = config['config']['token']
 commandPrefix = config['config']['prefix']
 
 if commandPrefix == "":
     print("Please enter a prefix in the 'prefix' field in 'config.ini'")
 
+# initializing bot object
 intents = discord.Intents.default()
 intents.members = True
-
 client = commands.Bot(command_prefix=commandPrefix, intents=intents)
 
-# cogs commands
+# cog control commands
+# load cog
 @client.command()
 async def load(ctx, extension):
     client.load_extension(f"cogs.{extension}")
@@ -68,6 +42,7 @@ async def load(ctx, extension):
     currentDT = SupportingFunctions.getTime()
     print(f"[{currentDT}] Loaded {extension} cog")
 
+# unload cog
 @client.command()
 async def unload(ctx, extension):
     client.unload_extension(f"cogs.{extension}")
@@ -75,7 +50,7 @@ async def unload(ctx, extension):
     currentDT = SupportingFunctions.getTime()
     print(f"[{currentDT}] Unloaded {extension} cog")
 
-
+# reload cog
 @client.command(aliases=["refresh"])
 async def reload(ctx, extension):
     client.unload_extension(f"cogs.{extension}")
@@ -84,8 +59,8 @@ async def reload(ctx, extension):
     currentDT = SupportingFunctions.getTime()
     print(f"[{currentDT}] Reloaded {extension} cog")
 
+# load cogs into bot
 cogCount = 0
-
 for filename in os.listdir("./cogs"):
     if filename.endswith(".py"):
         cogCount = cogCount + 1
@@ -93,41 +68,46 @@ for filename in os.listdir("./cogs"):
         client.load_extension(f"cogs.{filename[:-3]}")
 
 if cogCount == 0:
-    pass
+    print("No cogs have been initialized. The bot is currently running with minimal functionality. Please put .py cog files in the cogs/ directory.")
 
-# cogErrorHandler
+# Cog error handler
 @unload.error
 async def unloadNonExistentError(ctx, error):
     if isinstance(error, commands.CommandInvokeError):
-        handledError = True
+        # write in file that the error was handled so the error handler bypasses it
+        with open('PixelBotData/cogError.txt', 'w+') as fp: 
+            fp.write('cogError = True')
         await ctx.send("That cog does not exist!")
-        return
-
 
 @reload.error
 async def reloadNonExistentError(ctx, error):
     if isinstance(error, commands.CommandInvokeError):
-        handledError = True
+        with open('PixelBotData/cogError.txt', 'w+') as fp: 
+            fp.write('cogError = True')
         await ctx.send("That cog does not exist!")
-        return
-
 
 @load.error
 async def loadNonExistentError(ctx, error):
     if isinstance(error, commands.CommandInvokeError):
+        with open('PixelBotData/cogError.txt', 'w+') as fp: 
+            fp.write('cogError = True')
         await ctx.send("That cog does not exist!")
-        handledError = True
-        return
 
 
-# errorHandler
+# error handler
 @client.event
 async def on_command_error(ctx, error):
     currentDT = SupportingFunctions.getTime()
     print(f"[{currentDT}] {error}")
-    # if debugger == True:
-    #     await ctx.send(f"{error}")
     handledError = False
+
+    # read to see if the error was caused by a cog command
+    with open('PixelBotData/cogError.txt', 'rw') as fp:
+        if fp.read() == "cogError = True":
+            handledError = True
+         
+        fp.write('cogError = False')
+
     if isinstance(error, commands.CommandNotFound):
         handledError = True
         await ctx.send("Invalid command!")   
@@ -161,6 +141,7 @@ async def on_command_error(ctx, error):
         handledError = True
         await ctx.send(f"Error: {error} Please use '{commandPrefix}help [command]' to find the proper formatting for the command.")
 
+    # if error is not handled, run this
     elif not handledError:
         await ctx.send("An error has occurred. This should not happen. Please contact your bot admin for details.")
 
@@ -191,19 +172,6 @@ async def on_command_error(ctx, error):
 
 
 if __name__ == "__main__":
-    pythonVersion = sys.version
-    pythonVersion = pythonVersion.split(" ")
-    pythonVersion = pythonVersion[0].replace(".", "")
-
-    if(int(pythonVersion) < 360):
-        print("This program only supports Python 3.6 or later. Please update your Python version.")
-        sys.exit()
-
-    currentDT = datetime.datetime.now()
-    currentDT = str(currentDT)
-    currentDT = currentDT.split(" ")
-    currentDT = currentDT[1].split(".")
-    currentDT = currentDT[0]
 
     currentDT = SupportingFunctions.getTime()
     print(f"[{currentDT}] Initializing PixelBot v0.4.1")
@@ -219,5 +187,3 @@ if __name__ == "__main__":
         print("The token you have entered in the config.ini file is invalid. Please check to make sure you have entered a valid token.")
         sleep(5)
         sys.exit()
-
-# TODO bot.properties file contains bot token, DM user, @everyone details (Channels to allow, on/off), Among Us role requirements, apache quote add, quote address
