@@ -124,7 +124,7 @@ class funCommands(commands.Cog):
                 fileWriter.write(f"{quoteData}\n")
             
             if self.copyQuotesToWebDirectory == "true":
-                with open(f"{self.webDirectory}PixelBotData/quotes.txt", 'a') as fileWriter:
+                with open(f"{self.webDirectory}/quotes.txt", 'a') as fileWriter:
                     fileWriter.write(f"{quoteData}\n")
 
             await ctx.send(f"-{fullQuote} added to quote list!")
