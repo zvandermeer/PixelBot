@@ -71,9 +71,15 @@ class funCommands(commands.Cog):
         if quote == "":
             randomQuote = loadRandomQuote()
 
+            members = ctx.message.guild.members
+
+            for member in members:
+                if member.name == randomQuote["name"].split("#")[0]:
+                    quoteAuthor = member
+
             embed = discord.Embed(title=randomQuote["quote"], description=f"-{randomQuote['author']}",
                                   color=discord.Color.blue())
-            embed.set_author(name="Added by: " + randomQuote["name"], icon_url="")
+            embed.set_author(name="Added by: " + randomQuote["name"], icon_url=quoteAuthor.avatar_url)
             await ctx.send(embed=embed)
 
         elif quote == "list" or quote == "List":
