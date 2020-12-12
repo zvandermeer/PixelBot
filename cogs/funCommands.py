@@ -79,7 +79,10 @@ class funCommands(commands.Cog):
 
             embed = discord.Embed(title=randomQuote["quote"], description=f"-{randomQuote['author']}",
                                   color=discord.Color.blue())
-            embed.set_author(name="Added by: " + randomQuote["name"], icon_url=quoteAuthor.avatar_url)
+            try:                      
+                embed.set_author(name="Added by: " + randomQuote["name"], icon_url=quoteAuthor.avatar_url)
+            except UnboundLocalError:
+                embed.set_author(name="Added by: " + randomQuote["name"], icon_url="")
             await ctx.send(embed=embed)
 
         elif quote == "list" or quote == "List":
