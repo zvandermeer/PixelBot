@@ -150,7 +150,10 @@ class funCommands(commands.Cog):
             quoteAuthor = quote[1]
         else:
             fullQuote = quote
-            quoteAuthor = "Unknown"
+            if destination == "david":
+                quoteAuthor = "Dave"
+            else:
+                quoteAuthor = "Unknown"
 
         if fullQuote.endswith(" "):
             fullQuote = fullQuote[:-1]
