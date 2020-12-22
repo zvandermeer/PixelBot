@@ -65,7 +65,7 @@ async def reload(ctx, extension):
 cogCount = 0
 for filename in os.listdir("./cogs"):
     if filename.endswith(".py"):
-        cogCount = cogCount + 1
+        cogCount += 1
 
         client.load_extension(f"cogs.{filename[:-3]}")
 

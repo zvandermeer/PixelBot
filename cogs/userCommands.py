@@ -111,7 +111,7 @@ class userCommands(commands.Cog):
             counter = 0
             while counter < amount:
                 await member.send(message)
-                counter = counter + 1
+                counter += 1
 
 
 def setup(client):
