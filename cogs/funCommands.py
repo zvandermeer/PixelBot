@@ -62,6 +62,9 @@ class funCommands(commands.Cog):
 
         self.publicWebAddress = self.config["pixelBotConfig"]["publicWebAddress"]
 
+        if not self.publicWebAddress.startswith("http"):
+            self.publicWebAddress = "http://" + self.publicWebAddress
+
         if self.copyQuotesToWebDirectory == "true" and self.publicWebAddress == "null":
             print('Please enter a web address under the "publicWebAddress" felid in config.ini. Please do not leave it "null"')
             sys.exit()
