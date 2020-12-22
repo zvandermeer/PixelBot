@@ -15,9 +15,9 @@ eightBallResponses = ["It is certain.", "It is decidedly so.", "Without a doubt.
                       "My sources say no." "Outlook not so good.", "Very doubtful."]
 
 
-def loadRandomQuote():
+def loadRandomQuote(destination):
     quoteTotal = 0
-    with open("PixelBotData/quotes.txt", "r") as fileReader:
+    with open(f"PixelBotData/{destination}.txt", "r") as fileReader:
         allQuotes = []
         for line in fileReader:
             allQuotes.append(line)
@@ -69,7 +69,7 @@ class funCommands(commands.Cog):
     @commands.command(aliases=["q", "Q", "Quote", "quotes", "Quotes"])
     async def quote(self, ctx, *, quote=""):
         if quote == "":
-            randomQuote = loadRandomQuote()
+            randomQuote = loadRandomQuote("quotes")
 
             members = ctx.message.guild.members
 
@@ -97,7 +97,7 @@ class funCommands(commands.Cog):
     @commands.command(aliases=["d", "D", "dave", "Dave", "David"])
     async def david(self, ctx, *, quote=""):
         if quote == "":
-            randomQuote = loadRandomQuote()
+            randomQuote = loadRandomQuote("david")
 
             members = ctx.message.guild.members
 
