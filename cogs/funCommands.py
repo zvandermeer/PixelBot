@@ -117,7 +117,7 @@ class funCommands(commands.Cog):
                 if quote.count('-') > 1:
                     quote = quote.split("-")
                 else:
-                    quote = quote.rsplit("-", 1)
+                    quote = quote.rsplit("-", 0)
                 fullQuote = quote[0]
                 quoteAuthor = quote[1]
             else:
