@@ -6,6 +6,7 @@ from discord.ext import commands
 import time
 import os
 import sys
+import numpy
 
 exitLoop = False
 
@@ -38,12 +39,37 @@ class modCommands(commands.Cog):
             if amount != 1:
                 pluralString = "s"
             amount += 1
-            await ctx.channel.purge(limit=amount)
+
+            if amount > 5:
+                print(f"Over 5. Pre-calculation: {amount}")
+                calculateAmount = amount / 5.0
+                print(f"Over 5. Post-calculation: {calculateAmount}")
+            else:
+                calculateAmount = amount
+                print(f"Under 5. No calculation: {calculateAmount}")
+
+            looping = True
+
+            while looping:
+
+                if calculateAmount >= 1.0:
+                    await ctx.channel.purge(limit=5)
+                    print(f"Over 1. Pre-calculate amount: {calculateAmount}")
+                    calculateAmount = calculateAmount - 1
+                    print(f"Over 1. Post-calculate amount: {calculateAmount}")
+                    time.sleep(2)
+                elif calculateAmount != 0:
+                    print(f"Under 1. Pre-calculation: {calculateAmount}")
+                    calculateAmount = calculateAmount * 5
+                    print(f"Under 1. Post-calculation: {calculateAmount}")
+                    await ctx.channel.purge(limit=calculateAmount)
+                    looping = False
+                elif calculateAmount == 0:
+                    looping = False
+                    print("0.")
+
             amount -= 1
             await ctx.channel.send(f"{amount} message{pluralString} deleted!")
-            time.sleep(2)
-            await ctx.channel.purge(limit=1)
-            exitLoop = True
 
     @commands.command()
     @commands.dm_only()

@@ -190,3 +190,5 @@ if __name__ == "__main__":
         print("The token you have entered in the config.ini file is invalid. Please check to make sure you have entered a valid token.")
         sleep(5)
         sys.exit()
+
+# TODO Make secondary quote scalable, test for numpy, enable or disable fast quote clearing, work with numpy for precise maths
