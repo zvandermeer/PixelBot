@@ -6,6 +6,7 @@ from discord.ext import commands
 import time
 import os
 import sys
+import numpy
 
 exitLoop = False
 
@@ -34,16 +35,57 @@ class modCommands(commands.Cog):
         if amount == 0:
             await ctx.channel.send("Please enter a number of messages to be deleted.")
         else:
+            if amount > 150:
+                await ctx.channel.send("PixelBot does not support clearing more than 150 messages at once due to bot overload issues. If you need to clear more than this, please execute multiple commands in succession.")
+
             pluralString = ""
             if amount != 1:
                 pluralString = "s"
             amount += 1
-            await ctx.channel.purge(limit=amount)
+
+            if amount > 5:
+                print(f"Over 5. Pre-calculation: {amount}")
+                calculateAmount = amount / 5.0
+                calculateAmount = round(calculateAmount, 1)
+                print(f"Over 5. Post-calculation: {calculateAmount}")
+                overFive = True
+            else:
+                calculateAmount = amount
+                print(f"Under 5. No calculation: {calculateAmount}")
+                overFive = False
+                
+
+            looping = True
+
+            while looping:
+                print("loop top")
+                if overFive:
+                    if calculateAmount >= 1.0:
+                        print("enter purge")
+                        await ctx.channel.purge(limit=5)
+                        print("begining timeout")
+                        time.sleep(2.5)
+                        print("Timeout complete")
+                        print(f"Over 1. Pre-calculate amount: {calculateAmount}")
+                        calculateAmount = calculateAmount - 1
+                        calculateAmount = round(calculateAmount, 1)
+                        print(f"Over 1. Post-calculate amount: {calculateAmount}")
+                    elif calculateAmount != 0:
+                        print(f"Under 1. Pre-calculation: {calculateAmount}")
+                        calculateAmount = calculateAmount * 5
+                        calculateAmount = round(calculateAmount)
+                        print(f"Under 1. Post-calculation: {calculateAmount}")
+                        await ctx.channel.purge(limit=calculateAmount)
+                        looping = False
+                    elif calculateAmount == 0:
+                        looping = False
+                        print("0. Finished clear.")
+                else:
+                    await ctx.channel.purge(limit=calculateAmount)
+                    looping = False
+
             amount -= 1
             await ctx.channel.send(f"{amount} message{pluralString} deleted!")
-            time.sleep(2)
-            await ctx.channel.purge(limit=1)
-            exitLoop = True
 
     @commands.command()
     @commands.dm_only()
