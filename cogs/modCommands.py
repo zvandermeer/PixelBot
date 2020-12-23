@@ -6,7 +6,6 @@ from discord.ext import commands
 import time
 import os
 import sys
-import numpy
 
 exitLoop = False
 
