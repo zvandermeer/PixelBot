@@ -109,7 +109,7 @@ class funCommands(commands.Cog):
                     quoteAuthor = member
 
             embed = discord.Embed(title=randomQuote["quote"], description=f"-{randomQuote['author']}",
-                                  color=discord.Color.blue())
+                                  color=discord.Color.purple())
             try:                      
                 embed.set_author(name="Added by: " + randomQuote["name"], icon_url=quoteAuthor.avatar_url)
             except UnboundLocalError:
