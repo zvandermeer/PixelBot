@@ -86,33 +86,33 @@ class quoteCommands(commands.Cog):
         else:
             await self.saveQuote(ctx, quote, "quotes")
 
-    @commands.command(aliases=["d", "D", "dave", "Dave", "David"])
-    async def david(self, ctx, *, quote=""):
-        if quote == "":
-            randomQuote = loadRandomQuote("david")
+    # @commands.command(aliases=["d", "D", "dave", "Dave", "David"])
+    # async def david(self, ctx, *, quote=""):
+    #     if quote == "":
+    #         randomQuote = loadRandomQuote("david")
 
-            members = ctx.message.guild.members
+    #         members = ctx.message.guild.members
 
-            for member in members:
-                if member.name == randomQuote["name"].split("#")[0]:
-                    quoteAuthor = member
+    #         for member in members:
+    #             if member.name == randomQuote["name"].split("#")[0]:
+    #                 quoteAuthor = member
 
-            embed = discord.Embed(title=randomQuote["quote"], description=f"-{randomQuote['author']}",
-                                  color=discord.Color.purple())
-            try:                      
-                embed.set_author(name="Added by: " + randomQuote["name"], icon_url=quoteAuthor.avatar_url)
-            except UnboundLocalError:
-                embed.set_author(name="Added by: " + randomQuote["name"], icon_url="")
-            await ctx.send(embed=embed)
+    #         embed = discord.Embed(title=randomQuote["quote"], description=f"-{randomQuote['author']}",
+    #                               color=discord.Color.purple())
+    #         try:                      
+    #             embed.set_author(name="Added by: " + randomQuote["name"], icon_url=quoteAuthor.avatar_url)
+    #         except UnboundLocalError:
+    #             embed.set_author(name="Added by: " + randomQuote["name"], icon_url="")
+    #         await ctx.send(embed=embed)
 
-        elif quote == "list" or quote == "List":
-            if self.copyQuotesToWebDirectory == "true":
-                await ctx.send(f"View the quote list here: {self.publicWebAddress}")
-            else:
-                await ctx.send("This bot is not configured to clone quotes to a web directory. Please contact your bot admin for more information.")
+    #     elif quote == "list" or quote == "List":
+    #         if self.copyQuotesToWebDirectory == "true":
+    #             await ctx.send(f"View the quote list here: {self.publicWebAddress}")
+    #         else:
+    #             await ctx.send("This bot is not configured to clone quotes to a web directory. Please contact your bot admin for more information.")
 
-        else:
-            await self.saveQuote(ctx, quote, "david")
+    #     else:
+    #         await self.saveQuote(ctx, quote, "david")
 
     async def saveQuote(self, ctx, quote, destination):
         semicolon = False

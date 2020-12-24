@@ -191,4 +191,4 @@ if __name__ == "__main__":
         sleep(5)
         sys.exit()
 
-# TODO Make secondary quote scalable, test for numpy, enable or disable fast quote clearing, work with numpy for precise maths
+# TODO Create multiple quote lists controlled from .ini file, transition from .txt files to SQLite
