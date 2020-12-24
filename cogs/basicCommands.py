@@ -1,12 +1,18 @@
 import configparser
-import datetime
+import random
 import sys
+import time
 from PixelBotData.supportingFunctions import SupportingFunctions
 import discord
 from discord.ext import commands
 
+eightBallResponses = ["It is certain.", "It is decidedly so.", "Without a doubt.", "Yes - definitely.",
+                      "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.",
+                      "Signs point to yes.", "Reply hazy, try again.", "Ask again later.", "Better not tell you now.",
+                      "Cannot predict now.", "Concentrate and ask again.", "Don't count on it.", "My reply is no.",
+                      "My sources say no." "Outlook not so good.", "Very doubtful."]
 
-class userCommands(commands.Cog):
+class basicCommands(commands.Cog):
     def __init__(self, client):
         self.mySupport = SupportingFunctions()
 
@@ -113,6 +119,37 @@ class userCommands(commands.Cog):
                 await member.send(message)
                 counter += 1
 
+    @commands.command(aliases=["8ball", "eightball", "EightBall", "8Ball"])
+    async def eightBall(self, ctx, *, question=""):
+        if question == "":
+            await ctx.send("Please enter a question!")
+        else:
+            await ctx.send(f"Question: {question}\nAnswer: {random.choice(eightBallResponses)}")
+
+    @commands.command(aliases=["rolldice"])
+    async def dice(self, ctx, sides=6):
+        await ctx.send(f"Rolling a {sides} sided dice!")
+        time.sleep(.5)
+        await ctx.send("The number is " + str(random.randint(1, sides)) + "!")
+
+    @commands.command(aliases=["FlipACoin", "flipacoin", "coinflip", "flipcoin"])
+    async def coinFlip(self, ctx):
+        coinState = random.randint(0, 1)
+        if coinState == 0:
+            await ctx.send("The coin landed on heads!")
+        elif coinState == 1:
+            await ctx.send("The coin landed on tails!")
+        else:
+            await ctx.send("An internal error has occurred")
+
+    @commands.command(aliases=["Hello", "hi", "Hi"])
+    async def hello(self, ctx):
+        await ctx.send("Hello! :smiley:")
+
+    @commands.command(aliases=["hellothere", "HelloThere"])
+    async def helloThere(self, ctx):
+        await ctx.send("https://tenor.com/view/grevious-general-kenobi-star-wars-gif-11406339")
+
 
 def setup(client):
-    client.add_cog(userCommands(client))
+    client.add_cog(basicCommands(client))
