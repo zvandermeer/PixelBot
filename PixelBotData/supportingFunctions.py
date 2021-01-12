@@ -47,14 +47,18 @@ class SupportingFunctions:
     def writeConfig(self):
         with open('config.ini', 'w+') as fp: 
             fp.write('[FileDetails]'
-            '\npixelBotConfigVersion = 4'            
+            '\npixelBotConfigVersion = 5'            
             '\n;Please replace "null"'
             '\n[pixelBotConfig]'
             '\ntoken = null'
             '\n;The string in the field below will become the bots prefix'
             '\nprefix = &'
+            ';If true, the bots status will appear as "streaming". The string in the "botStatus" feild will be the status, and the string in the "streamURL" will be the linked URL'
+            '\nstreamingStatus = False'
             '\n;The string in the field below will become the bots static status if dynamic status is disabled'
             '\nbotStatus = Version 0.4.2'
+            '\n;Please make sure this is a Twitch or YouTube link if streamingStatus = True. Otherwise, the status will revert to a default status'
+            '\nstreamURL = null'
             '\n;Allows users to use the "changeStatus" command to change the bots status. Ignored if "dynamicBotStatus" is set to true.'
             '\nstatusChangeCommand = False'
             '\n;If true, a role named "Bot Admin" will be required to change the bots status'
@@ -122,5 +126,5 @@ class SupportingFunctions:
         pixelBotConfigVersion = config['FileDetails']['pixelBotConfigVersion']
         pixelBotConfigVersion = int(pixelBotConfigVersion)
 
-        if pixelBotConfigVersion < 4:  
+        if pixelBotConfigVersion < 5:
             self.updateConfig()

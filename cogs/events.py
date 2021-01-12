@@ -44,7 +44,16 @@ class Events(commands.Cog):
         self.botStatus = self.config["pixelBotConfig"]["botStatus"]
 
         if self.config["pixelBotConfig"]["DMnewUsers"].lower() == "true":
-            self.dmWelcomeMessage = self.config["pixelBotConfig"]["newUserWelcome"]    
+            self.dmWelcomeMessage = self.config["pixelBotConfig"]["newUserWelcome"]   
+
+        self.streamingStatus = self.config["pixelBotConfig"]["streamingStatus"]
+        self.streamingStatus = self.streamingStatus.lower()
+        
+        if self.streamingStatus != "true" and self.streamingStatus != "false":
+            print('Please enter either true or false under the "deleteUnwantedPings" field in config.ini')
+            sys.exit()
+
+        self.streamURL = self.config["pixelBotConfig"]["streamURL"]
     
     # tasks
     # @tasks.loop(seconds=10)
@@ -74,7 +83,11 @@ class Events(commands.Cog):
     async def on_ready(self):
         currentDT = self.mySupport.getTime()
         print(f"[{currentDT}] PixelBot successfully connected to Discord servers")
-        await self.client.change_presence(status=discord.Status.online, activity=discord.Game(self.botStatus))
+        if self.streamingStatus == "true":
+            await self.client.change_presence(status=discord.Status.online, activity=discord.Streaming(name=self.botStatus, url=self.streamURL))
+        else:
+            await self.client.change_presence(status=discord.Status.online, activity=discord.Game(self.botStatus))
+        
         # self.change_status.start()
         
 

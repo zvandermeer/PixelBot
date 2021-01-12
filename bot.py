@@ -122,7 +122,7 @@ async def on_command_error(ctx, error):
 
     elif isinstance(error, commands.MissingRequiredArgument):
         handledError = True
-        await ctx.send("You are missing arguments for this command. Type !help <command> for help with the command.")
+        await ctx.send(f"You are missing arguments for this command. Type {commandPrefix}help <command> for help with the command.")
 
     elif isinstance(error, commands.MissingRole):
         handledError = True
@@ -191,4 +191,4 @@ if __name__ == "__main__":
         sleep(5)
         sys.exit()
 
-# TODO Create multiple quote lists controlled from .ini file, transition from .txt files to SQLite
+# TODO Create multiple quote lists controlled from .ini file, transition from .txt files to SQLite, use more seperated config files
