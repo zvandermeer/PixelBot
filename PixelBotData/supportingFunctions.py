@@ -53,7 +53,7 @@ class SupportingFunctions:
             '\ntoken = null'
             '\n;The string in the field below will become the bots prefix'
             '\nprefix = &'
-            ';If true, the bots status will appear as "streaming". The string in the "botStatus" feild will be the status, and the string in the "streamURL" will be the linked URL'
+            '\n;If true, the bots status will appear as "streaming". The string in the "botStatus" feild will be the status, and the string in the "streamURL" will be the linked URL'
             '\nstreamingStatus = False'
             '\n;The string in the field below will become the bots static status if dynamic status is disabled'
             '\nbotStatus = Version 0.4.2'
