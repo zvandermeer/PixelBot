@@ -31,7 +31,12 @@ class SupportingFunctions:
         if os.path.exists("PixelBotData/config-OLD.ini"):
             os.remove("PixelBotData/config-OLD.ini")
 
-        os.rename('config.ini','config-OLD.ini')
+        while True:
+            try:
+                os.rename('config.ini','config-OLD.ini')
+                break
+            except FileExistsError:
+                os.remove('config-OLD.ini')
 
         sleep(2)
 

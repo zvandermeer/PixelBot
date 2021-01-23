@@ -150,6 +150,11 @@ class basicCommands(commands.Cog):
     async def helloThere(self, ctx):
         await ctx.send("https://tenor.com/view/grevious-general-kenobi-star-wars-gif-11406339")
 
+    @commands.command()
+    async def tempInvite(self, ctx):
+        discord_server_invite = await ctx.guild.voice_channels[0].create_invite()
+        await ctx.send(discord_server_invite)
+
 
 def setup(client):
     client.add_cog(basicCommands(client))
