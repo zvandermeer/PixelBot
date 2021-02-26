@@ -38,11 +38,11 @@ class youtubeDownload(commands.Cog):
         print("post script outside if")
 
         if(platform.system() == "Linux"):
-            shutil.move(f"{latest_file}", f"/var/www/html/{latest_file}")
+            shutil.move(f"{latest_file}", f"/var/www/html/YouTube-Downloads/{latest_file}")
 
             dmUser = ctx.message.author.id
 
-            await dmUser.send(f"Your video download is ready! Download here: {self.YouTubeDownloadAddress}/{latest_file}")
+            await dmUser.send(f"Your video download is ready! Download here: {self.YouTubeDownloadAddress}/YouTube-Downloads/{latest_file}")
 
     # Example command
     @commands.command(aliases=["youtube-dl", "ytdl"])
