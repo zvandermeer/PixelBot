@@ -178,6 +178,13 @@ class modCommands(commands.Cog):
         else:
             await ctx.send("This command requires the 'Bot Admin' role to run. Please make sure you have this role, and try again.")
 
+    @commands.command()
+    async def gibRole(ctx, role: discord.Role):
+        if role in ctx.author.roles:
+            await ctx.author.remove_roles(role)
+        else:
+            await ctx.author.add_roles(role)
+
     #@commands.has_permissions(administrator=True)
     #@commands.command(aliases=['spamMe'])
     #async def spam(self, ctx):
