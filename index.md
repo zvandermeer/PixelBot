@@ -45,7 +45,7 @@ Recalls random quote from the bots quote index</p>
 </li>
 <li>
 <p>&amp;quote “[quote]” -[quote author] [year]<br>
-Adds quote to the bot’s quote index, and attempts to add quote to a file in the apache2 server on linux</p>
+Adds quote to the bot’s quote index, and clones to a web directory (if configured)</p>
 </li>
 <li>
 <p>&amp;quote add "[quote] " -[quote author] [year]<br>
