@@ -1,4 +1,5 @@
 import configparser
+from sys import platform
 import discord
 from discord.ext import commands
 import os
@@ -48,16 +49,18 @@ class youtubeDownload(commands.Cog):
 
             list_of_files = glob.glob('*')
 
-            latest_file = max(list_of_files, key=os.path.getctime)
-            print(f"Latest file: {latest_file}")
+        if(platform.system() == "Linux"):
+            shutil.move(f"{latest_file}", f"/var/www/html/YouTube-Downloads/{latest_file}")
 
-            shutil.move(f"{latest_file}", "youtubeDownloads")
+            #dmUser = ctx.message.author.id
+
+            #await dmUser.send(f"Your video download is ready! Download here: {self.YouTubeDownloadAddress}/YouTube-Downloads/{latest_file}")
 
     # Example command
     @commands.command(aliases=["youtube-dl", "ytdl"])
     async def youtube(self, ctx, videoURL="emptyString", downloadType="mp4", priority="res"):
         if videoURL == "emptyString":
-            await ctx.send(f"{self.commandPrefix}youtube command usage: \n{self.commandPrefix}youtube [Video URL] (Download type: mp4/mp3, default mp4) (Download type: Resolution/res:1080p30, Framrate/fps:720p60, default resolution)")
+            await ctx.send(f"{self.commandPrefix}youtube command usage: \n{self.commandPrefix}youtube [Video URL] (Download type: mp4/mp3, default mp4) (Download type: Resolution/res:1080p30, Framerate/fps:720p60, default resolution)")
 
         authorID = ctx.author.id
 
@@ -78,22 +81,22 @@ class youtubeDownload(commands.Cog):
             if downloadType == "mp4":
                 if priority == "res" or priority == "resolution":
                     print("res prio")
-                    resThread = threading.Thread(target=self.downloadVideo, args=("resolution", videoURL, messageAuthor))
+                    resThread = threading.Thread(target=self.downloadVideo, args=(ctx, "resolution", videoURL))
                     resThread.start()
                 elif priority == "fps" or priority == "frames" or priority == "framerate" or priority == "frame rate":
                     print("frames prio")
-                    framesThread = threading.Thread(target=self.downloadVideo, args=("frames", videoURL, messageAuthor))
+                    framesThread = threading.Thread(target=self.downloadVideo, args=(ctx, "frames", videoURL))
                     framesThread.start()
                 else:
                     print("else 1")
-                    await ctx.send(f"{self.commandPrefix}youtube command usage: \n{self.commandPrefix}youtube [Video URL] (Download type: mp4/mp3, default mp4) (Download type: Resolution/res:1080p30, Framrate/fps:720p60, default resolution)")
+                    await ctx.send(f"{self.commandPrefix}youtube command usage: \n{self.commandPrefix}youtube [Video URL] (Download type: mp4/mp3, default mp4) (Download type: Resolution/res:1080p30, Framerate/fps:720p60, default resolution)")
             elif downloadType == "mp3":
                 print("mp3")
-                audioThread = threading.Thread(target=self.downloadVideo, args=("mp3", videoURL, authorID))
+                audioThread = threading.Thread(target=self.downloadVideo, args=(ctx, "mp3", videoURL))
                 audioThread.start()
             else:
                 print("else 2")
-                await ctx.send(f"{self.commandPrefix}youtube command usage: \n{self.commandPrefix}youtube [Video URL] (Download type: mp4/mp3, default mp4) (Download type: Resolution/res:1080p30, Framrate/fps:720p60, default resolution")
+                await ctx.send(f"{self.commandPrefix}youtube command usage: \n{self.commandPrefix}youtube [Video URL] (Download type: mp4/mp3, default mp4) (Download type: Resolution/res:1080p30, Framerate/fps:720p60, default resolution")
 
 def setup(client):
     client.add_cog(youtubeDownload(client))
