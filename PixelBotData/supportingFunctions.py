@@ -52,7 +52,7 @@ class SupportingFunctions:
     def writeConfig(self):
         with open('config.ini', 'w+') as fp: 
             fp.write('[FileDetails]'
-            '\npixelBotConfigVersion = 5'            
+            '\npixelBotConfigVersion = 6'            
             '\n;Please replace "null"'
             '\n[pixelBotConfig]'
             '\ntoken = null'
@@ -61,7 +61,7 @@ class SupportingFunctions:
             '\n;If true, the bots status will appear as "streaming". The string in the "botStatus" feild will be the status, and the string in the "streamURL" will be the linked URL'
             '\nstreamingStatus = False'
             '\n;The string in the field below will become the bots static status if dynamic status is disabled'
-            '\nbotStatus = Version 0.4.2'
+            '\nbotStatus = Version 0.4.3'
             '\n;Please make sure this is a Twitch or YouTube link if streamingStatus = True. Otherwise, the status will revert to a default status'
             '\nstreamURL = null'
             '\n;Allows users to use the "changeStatus" command to change the bots status. Ignored if "dynamicBotStatus" is set to true.'
@@ -88,7 +88,9 @@ class SupportingFunctions:
             '\nwebDirectory = /var/www/html/'
             '\n;Please enter the full web address that you would like to be linked when the "quote list" command is ran. '
             '\n;Not required if copyQuotesToWebDirectory is false'
-            '\npublicWebAddress = null')
+            '\npublicWebAddress = null'
+            '\n;Prefix address that the bot will provide when returning a download link for a downloaded YouTube video'
+            '\nYouTubeDownloadAddress = null')
 
             os.chmod("config.ini", 0o777)
 
@@ -131,5 +133,5 @@ class SupportingFunctions:
         pixelBotConfigVersion = config['FileDetails']['pixelBotConfigVersion']
         pixelBotConfigVersion = int(pixelBotConfigVersion)
 
-        if pixelBotConfigVersion < 5:
+        if pixelBotConfigVersion < 6:
             self.updateConfig()

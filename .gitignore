@@ -1,6 +1,7 @@
 botToken.txt
 PixelBotData/quotes.txt
 PixelBotData/david.txt
+PixelBotData/cogError.txt
 errorDM.txt
 config.ini
 config-OLD.ini
@@ -12,5 +13,6 @@ botProperties.ini
 /.idea/
 /.run/
 /testDIR/
-ideas.txt
 PixelBotData/cogError.txt
+/youtube/
+ideas.txt

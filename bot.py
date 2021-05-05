@@ -177,7 +177,7 @@ async def on_command_error(ctx, error):
 if __name__ == "__main__":
 
     currentDT = mySupport.getTime()
-    print(f"[{currentDT}] Initializing PixelBot v0.4.2")
+    print(f"[{currentDT}] Initializing PixelBot v0.4.3")
 
     if botToken == "null":
         print("Bot Token not found. Please paste your botToken in the config.ini file under the 'token' field and restart the bot.")
