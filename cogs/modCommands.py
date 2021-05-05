@@ -178,21 +178,5 @@ class modCommands(commands.Cog):
         else:
             await ctx.send("This command requires the 'Bot Admin' role to run. Please make sure you have this role, and try again.")
 
-    #@commands.has_permissions(administrator=True)
-    #@commands.command(aliases=['spamMe'])
-    #async def spam(self, ctx):
-    #    while exitLoop == False:
-            #await ctx.send("@everyone get yeeted")
-            #await ctx.send("You have been yote in the boat")
-    #        print(f"I BE SPAMMING")
-    #        await ctx.send("https://cdn.discordapp.com/attachments/440261154439168001/700080379184545802/i249711442305187847.mp4")
-
-    #@commands.has_permissions(administrator=True)
-    #@commands.command()
-    #async def stopSpam(self, ctx):
-    #    exitLoop = True
-    #    await ctx.send("FINE")
-
-
 def setup(client):
     client.add_cog(modCommands(client))

@@ -61,7 +61,7 @@ class SupportingFunctions:
             '\n;If true, the bots status will appear as "streaming". The string in the "botStatus" feild will be the status, and the string in the "streamURL" will be the linked URL'
             '\nstreamingStatus = False'
             '\n;The string in the field below will become the bots static status if dynamic status is disabled'
-            '\nbotStatus = Version 0.4.2'
+            '\nbotStatus = Version 0.4.3'
             '\n;Please make sure this is a Twitch or YouTube link if streamingStatus = True. Otherwise, the status will revert to a default status'
             '\nstreamURL = null'
             '\n;Allows users to use the "changeStatus" command to change the bots status. Ignored if "dynamicBotStatus" is set to true.'
