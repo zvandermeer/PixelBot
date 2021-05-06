@@ -117,6 +117,14 @@ class Events(commands.Cog):
                     allowedChannelMessage = allowedChannelMessage[:-2]
 
                     await ctx.send(f"Please only ping everyone in {allowedChannelMessage}")
+
+    @commands.Cog.listener()
+    async def on_message_delete(message):
+        if "@" in message:
+            print(f"Message deleted w/ @: '{message}'")
+        else:
+            print(f"Message deleted w/o @: '{message}'")
+
                 
 
 def setup(client):

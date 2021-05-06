@@ -190,5 +190,3 @@ if __name__ == "__main__":
         print("The token you have entered in the config.ini file is invalid. Please check to make sure you have entered a valid token.")
         sleep(5)
         sys.exit()
-
-# TODO Create multiple quote lists controlled from .ini file, transition from .txt files to SQLite, use more seperated config files
