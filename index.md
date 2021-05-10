@@ -1,13 +1,8 @@
----
-
-
----
-
 <h1 id="pixelbot">Pixelbot</h1>
 <p>A multi-purpose moderation discord bot, with Among Us moderation commands built-in.<br>
 <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg" alt="made-with-python"></a> <a href="https://repl.it/github/ovandermeer/PixelBot"><img src="https://repl.it/badge/github/ovandermeer/PixelBot" alt="Try me in repl.it!"></a></p>
 <h2 id="installation">Installation</h2>
-<p>Download the most recent release from the <a href="https://github.com/ovandermeer/PixelBot/releases">releases</a> page. Once the bot is downloaded, configure your bot using the automatically created “botConfig.ini” file. Then, just run <a href="http://bot.py">bot.py</a> and the bot will start!<br>
+<p>Download the most recent release from the <a href="https://github.com/ovandermeer/PixelBot/releases">releases</a> page. DO NOT DOWNLOAD THE SOURCE CODE! Once the bot is downloaded, configure your bot using the automatically created “botConfig.ini” file. Then, just run bot.py and the bot will start!<br>
 -Note: Python 3.6 or higher is required to run. Python 3.9 or higher is currently not supported.</p>
 <h2 id="try-it-before-you-download">Try it before you download!</h2>
 <p>You can run PixelBot in <a href="http://repl.it">repl.it</a> to try it out without having to dowload it! Click the link below to try it now!<br>
@@ -56,4 +51,3 @@ Same as above</p>
 Sends URL for quotelist as configured in botConfig.ini</p>
 </li>
 </ul>
-
