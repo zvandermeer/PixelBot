@@ -54,6 +54,8 @@ class Events(commands.Cog):
             sys.exit()
 
         self.streamURL = self.config["pixelBotConfig"]["streamURL"]
+
+        self.invites = {}
     
     # tasks
     # @tasks.loop(seconds=10)
@@ -119,11 +121,25 @@ class Events(commands.Cog):
                     await ctx.send(f"Please only ping everyone in {allowedChannelMessage}")
 
     @commands.Cog.listener()
-    async def on_message_delete(message):
+    async def on_message_delete(self, message):
         if "@" in message:
             print(f"Message deleted w/ @: '{message}'")
         else:
             print(f"Message deleted w/o @: '{message}'")
+
+    @commands.Cog.listener()
+    async def on_voice_state_update(self, member, preState, postState):
+        if postState.channel is None and preState.channel is not None:
+
+            tempUser = False
+
+            for role in member.roles:
+                role = str(role)
+                if role == "Temporary member":
+                    tempUser = True
+                
+            if tempUser:
+                await member.kick(reason="Temp user disconnected from VC")
 
                 
 

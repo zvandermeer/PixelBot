@@ -7,7 +7,7 @@ import configparser
 mySupport = SupportingFunctions()
 
 # Checking for supported python version
-mySupport.checkPythonVersion()
+# mySupport.checkPythonVersion()
 
 # Import discord.py library, and installing it if not found
 try:

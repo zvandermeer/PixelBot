@@ -110,18 +110,21 @@ class SupportingFunctions:
         print("Please ensure the discord.py library is installed before continuing. Use 'pip/pip3 install discord'")
         sys.exit()
 
-    def checkPythonVersion(self):
-        pythonVersion = sys.version
-        pythonVersion = pythonVersion.split(" ")
-        pythonVersion = pythonVersion[0].replace(".", "")
+    # def checkPythonVersion(self):
+    #     print(f"SysVersion: {sys.version}")
+    #     pythonVersion = sys.version
+    #     pythonVersion = pythonVersion.split(" ")
+    #     pythonVersion = pythonVersion[0].replace(".", "")
 
-        if(int(pythonVersion) >= 390):
-            print("Due to the Discord.py framework not currently supporting Python 3.9 or later, PixelBot also does not currently support Python 3.9 or later. Please run PixelBot on a Python version earlier than 3.9.")
-            sleep(5)
-            sys.exit()
-        if(int(pythonVersion) < 360):
-                print("This program only supports Python 3.6 or later. Please update your Python version.")
-                sys.exit()
+    #     if(int(pythonVersion) >= 390):
+    #         print("Due to the Discord.py framework not currently supporting Python 3.9 or later, PixelBot also does not currently support Python 3.9 or later. Please run PixelBot on a Python version earlier than 3.9.")
+    #         sleep(5)
+    #         sys.exit()
+    #     if(int(pythonVersion) < 360):
+    #             print("This program only supports Python 3.6 or later. Please update your Python version.")
+    #             sys.exit()
+    #
+    # THIS IS NO LONGER NEEDED BUT IS LEFT IN FOR LEGACY REASONS
 
     def checkConfig(self):
         config = configparser.ConfigParser()
