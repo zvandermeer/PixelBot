@@ -23,22 +23,32 @@ class tempInvite(commands.Cog):
                 return inv
 
     @commands.command()
-    async def tempInvite(self, ctx):
+    async def tempInvite(self, ctx, invitedUser=""):
         if ctx.author.voice and ctx.author.voice.channel:
             voice = ctx.author.voice.channel
+
+            discord_server_invite = await voice.create_invite(max_age=3600)
+
+            if invitedUser == "":            
+                await ctx.send(f"This is a one-time use invite link to join the voice channel you are currently in. \n**WARNING: THIS INVITE LINK WILL BE DELETED AFTER IT IS USED ONCE AND WILL EXPIRE IN ONE HOUR.**\nSend this link to whoever you would like to join!\n{discord_server_invite}")
+            else:
+                try:
+                    invitedUser = int(invitedUser)
+                    user = self.client.get_user(invitedUser)
+                    await user.send(f"Hello,\nYou have been invited to temporarily join the voice channel listed below. Upon disconnecting from this voice channel, you will be kicked from the server. \n**WARNING: THIS INVITE LINK WILL BE DELETED AFTER IT IS USED ONCE AND WILL EXPIRE IN ONE HOUR.**\nClick the link below to join!\n{discord_server_invite}")
+                    await ctx.send("User has been DM'ed an invite link!")
+                except AttributeError:
+                    await ctx.send(f"I was unable to send that user a DM. This could mean that I don't share a server with the intended recipient, or the user ID is invalid. Please manually send the user this link:\n{discord_server_invite}\n**WARNING: THIS INVITE LINK WILL BE DELETED AFTER IT IS USED ONCE AND WILL EXPIRE IN ONE HOUR.**")
+                except ValueError:
+                    await ctx.send(f"I was unable to send that user a DM. This could mean that I don't share a server with the intended recipient, or the user ID is invalid. Please manually send the user this link:\n{discord_server_invite}\n**WARNING: THIS INVITE LINK WILL BE DELETED AFTER IT IS USED ONCE AND WILL EXPIRE IN ONE HOUR.**")
+
+            print(f'[{supportingFunctions.getTime()}] Temp link generated: "{discord_server_invite}"')
+
+            # update our invite list after creating a new invite
+            for guild in self.client.guilds:
+                self.invites[guild.id] = await guild.invites()
         else:
-            await ctx.send("You are not connected to a voice channel")
-
-        #discord_server_invite = await ctx.guild.voice_channels[0].create_invite()
-
-        discord_server_invite = await voice.create_invite()
-
-        await ctx.send(discord_server_invite)
-        print(f'[{supportingFunctions.getTime()}] Temp link generated: "{discord_server_invite}"')
-
-        # update our invite list after creating a new invite
-        for guild in self.client.guilds:
-            self.invites[guild.id] = await guild.invites()
+            await ctx.send("You are not connected to a voice channel! Please join one before creating an invite!")
 
     @commands.Cog.listener()
     async def on_ready(self):      
