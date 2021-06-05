@@ -1,23 +1,21 @@
-from PixelBotData.supportingFunctions import SupportingFunctions
+import PixelBotData.supportingFunctions as supportingFunctions
 import os
 from time import sleep
 import sys
 import configparser
 
-mySupport = SupportingFunctions()
-
 # Checking for supported python version
-# mySupport.checkPythonVersion()
+# supportingFunctions.checkPythonVersion()
 
 # Import discord.py library, and installing it if not found
 try:
     import discord
     from discord.ext import commands
 except(ModuleNotFoundError):
-    mySupport.installDiscord()
+    supportingFunctions.installDiscord()
 
 # checking for config file
-mySupport.checkConfig()
+supportingFunctions.checkConfig()
 
 # initializing config file
 config = configparser.ConfigParser()
@@ -41,16 +39,14 @@ client = commands.Bot(command_prefix=commandPrefix, intents=intents)
 async def load(ctx, extension):
     client.load_extension(f"cogs.{extension}")
     await ctx.send("Successfully loaded!")
-    currentDT = mySupport.getTime()
-    print(f"[{currentDT}] Loaded {extension} cog")
+    print(f"[{supportingFunctions.getTime()}] Loaded {extension} cog")
 
 # unload cog
 @client.command()
 async def unload(ctx, extension):
     client.unload_extension(f"cogs.{extension}")
     await ctx.send("Successfully unloaded!")
-    currentDT = mySupport.getTime()
-    print(f"[{currentDT}] Unloaded {extension} cog")
+    print(f"[{supportingFunctions.getTime()}] Unloaded {extension} cog")
 
 # reload cog
 @client.command(aliases=["refresh"])
@@ -58,8 +54,7 @@ async def reload(ctx, extension):
     client.unload_extension(f"cogs.{extension}")
     client.load_extension(f"cogs.{extension}")
     await ctx.send("Successfully reloaded!")
-    currentDT = mySupport.getTime()
-    print(f"[{currentDT}] Reloaded {extension} cog")
+    print(f"[{supportingFunctions.getTime()}] Reloaded {extension} cog")
 
 # load cogs into bot
 cogCount = 0
@@ -99,8 +94,7 @@ async def loadNonExistentError(ctx, error):
 # error handler
 @client.event
 async def on_command_error(ctx, error):
-    currentDT = mySupport.getTime()
-    print(f"[{currentDT}] {error}")
+    print(f"[{supportingFunctions.getTime()}] {error}")
     handledError = False
 
     if os.path.exists('PixelBotData/cogError.txt'):
@@ -156,28 +150,27 @@ async def on_command_error(ctx, error):
             userID = int(userID)
             user = client.get_user(userID)
         else:
-            print(f"[{currentDT}] No user is defined to DM error to, skipping.")
+            print(f"[{supportingFunctions.getTime()}] No user is defined to DM error to, skipping.")
                   
         if user != "":
             try:
-                await user.send("An error has occurred. Message details: \n" + f"[{currentDT}] Message was sent by " + str(
+                await user.send("An error has occurred. Message details: \n" + f"[{supportingFunctions.getTime()}] Message was sent by " + str(
                     ctx.message.author) + " in '" + str(ctx.message.guild.name) + "' in the '" + ctx.message.channel.name +
                                 f"' text channel. \nError details: '{error}'")
             except AttributeError:
-                await user.send("An error has occurred. Message details: \n" + f"[{currentDT}] Message was sent by " + str(
+                await user.send("An error has occurred. Message details: \n" + f"[{supportingFunctions.getTime()}] Message was sent by " + str(
                     ctx.message.author) + f" in DM. \nError details: '{error}'")
 
     try:
-        print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in '" + str(
+        print(f"[{supportingFunctions.getTime()}] Message was sent by " + str(ctx.message.author) + " in '" + str(
             ctx.message.guild.name) + "' in the '" + ctx.message.channel.name + "' text channel.")
     except AttributeError:
-        print(f"[{currentDT}] Message was sent by " + str(ctx.message.author) + " in DM")
+        print(f"[{supportingFunctions.getTime()}] Message was sent by " + str(ctx.message.author) + " in DM")
 
 
 if __name__ == "__main__":
 
-    currentDT = mySupport.getTime()
-    print(f"[{currentDT}] Initializing PixelBot v0.4.3")
+    print(f"[{supportingFunctions.getTime()}] Initializing PixelBot v0.4.3")
 
     if botToken == "null":
         print("Bot Token not found. Please paste your botToken in the config.ini file under the 'token' field and restart the bot.")

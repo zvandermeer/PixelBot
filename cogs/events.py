@@ -1,5 +1,5 @@
 from itertools import cycle
-from PixelBotData.supportingFunctions import SupportingFunctions
+import PixelBotData.supportingFunctions as supportingFunctions
 import discord
 from discord.ext import commands, tasks
 import datetime
@@ -9,8 +9,6 @@ import sys
 class Events(commands.Cog):
 
     def __init__(self, client):
-        self.mySupport = SupportingFunctions()
-
         self.client = client
         self.config = configparser.ConfigParser()
         self.config.read('config.ini')
@@ -65,8 +63,7 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        currentDT = self.mySupport.getTime()
-        print(f'[{currentDT}] {member} has joined a server')
+        print(f'[{supportingFunctions.getTime()}] {member} has joined a server')
 
         memberString = str(member)
         memberString = memberString.split("#")
@@ -77,14 +74,11 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
-        print("Member leave")
-        currentDT = self.mySupport.getTime()
-        print(f'[{currentDT}] {member} has left a server')
+        print(f'[{supportingFunctions.getTime()}] {member} has left a server')
 
     @commands.Cog.listener()
     async def on_ready(self):
-        currentDT = self.mySupport.getTime()
-        print(f"[{currentDT}] PixelBot successfully connected to Discord servers")
+        print(f"[{supportingFunctions.getTime()}] PixelBot successfully connected to Discord servers")
         if self.streamingStatus == "true":
             await self.client.change_presence(status=discord.Status.online, activity=discord.Streaming(name=self.botStatus, url=self.streamURL))
         else:
@@ -97,9 +91,8 @@ class Events(commands.Cog):
     async def on_message(self, message):
 
         if '@everyone' in message.content:
-            currentDT = self.mySupport.getTime()
             ctx = await self.client.get_context(message)
-            print(f'[{currentDT}] @everyone was pinged. Message contents:\n{message.author}: "{message.content}"')
+            print(f'[{supportingFunctions.getTime()}] @everyone was pinged. Message contents:\n{message.author}: "{message.content}"')
             if self.manageAtEveryone == "true":
                 if(ctx.message.channel.name not in self.allowedChannels):
                     if self.deleteUnwantedPings == "true":
@@ -125,23 +118,7 @@ class Events(commands.Cog):
         if "@" in message:
             print(f"Message deleted w/ @: '{message}'")
         else:
-            print(f"Message deleted w/o @: '{message}'")
-
-    @commands.Cog.listener()
-    async def on_voice_state_update(self, member, preState, postState):
-        if postState.channel is None and preState.channel is not None:
-
-            tempUser = False
-
-            for role in member.roles:
-                role = str(role)
-                if role == "Temporary member":
-                    tempUser = True
-                
-            if tempUser:
-                await member.kick(reason="Temp user disconnected from VC")
-
-                
+            print(f"Message deleted w/o @: '{message}'")                
 
 def setup(client):
     client.add_cog(Events(client))

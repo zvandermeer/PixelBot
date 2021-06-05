@@ -1,8 +1,7 @@
 import discord
 from discord.ext import commands
+import PixelBotData.supportingFunctions as supportingFunctions
 
-
-# Example cog
 class tempInvite(commands.Cog):
 
     def __init__(self, client):
@@ -32,10 +31,14 @@ class tempInvite(commands.Cog):
 
         #discord_server_invite = await ctx.guild.voice_channels[0].create_invite()
 
-        discord_server_invite = await voice.create_invite(max_uses=1)
+        discord_server_invite = await voice.create_invite()
 
         await ctx.send(discord_server_invite)
-        print(discord_server_invite)
+        print(f'[{supportingFunctions.getTime()}] Temp link generated: "{discord_server_invite}"')
+
+        # update our invite list after creating a new invite
+        for guild in self.client.guilds:
+            self.invites[guild.id] = await guild.invites()
 
     @commands.Cog.listener()
     async def on_ready(self):      
@@ -78,9 +81,9 @@ class tempInvite(commands.Cog):
                 # the name, invite code used the the person
                 # who created the invite code, or the inviter.
                 
-                print(f"Member {member.name} Joined")
+                print(f'\nMember "{member.name}" Joined')
                 print(f"Invite Code: {invite.code}")
-                print(f"Inviter: {invite.inviter}")
+                print(f"Inviter: {invite.inviter}\n")
 
                 # We will now update our cache so it's ready
                 # for the next user that joins the guild
@@ -91,10 +94,14 @@ class tempInvite(commands.Cog):
                 # one was used and there is no point in
                 # looping when we already got what we wanted
 
-                # Check if user was invited by bot, if so add "temporary user" to them because this is the only way they could have been invited by the bot
-                if invite.inviter == "PixelBot#9752" or invite.inviter == "PixelBot - Dev#4458":
+                # Check if user was invited by bot, if so add "temporary user" to them because this is
+                # the only way they could have been invited by the bot
+
+                inviter = str(invite.inviter)
+                if inviter == "PixelBot#9752" or inviter == "PixelBot - Dev#4458":
                     tempRole = discord.utils.get(member.guild.roles, name="Temporary user role")
                     await member.add_roles(tempRole)
+                    await invite.delete()
 
                 return
 
@@ -105,6 +112,20 @@ class tempInvite(commands.Cog):
         # everything is up to date
 
         self.invites[member.guild.id] = await member.guild.invites()
+
+    @commands.Cog.listener()
+    async def on_voice_state_update(self, member, preState, postState):
+        if postState.channel is None and preState.channel is not None:
+
+            tempUser = False
+
+            for role in member.roles:
+                role = str(role)
+                if role == "Temporary user role":
+                    tempUser = True
+                
+            if tempUser:
+                await member.kick(reason="Temp user disconnected from VC")
 
 def setup(client):
     client.add_cog(tempInvite(client))

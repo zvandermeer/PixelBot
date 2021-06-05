@@ -2,7 +2,7 @@ import configparser
 import random
 import sys
 import time
-from PixelBotData.supportingFunctions import SupportingFunctions
+import PixelBotData.supportingFunctions as supportingFunctions
 import discord
 from discord.ext import commands
 
@@ -14,8 +14,6 @@ eightBallResponses = ["It is certain.", "It is decidedly so.", "Without a doubt.
 
 class basicCommands(commands.Cog):
     def __init__(self, client):
-        self.mySupport = SupportingFunctions()
-
         self.client = client
 
         config = configparser.ConfigParser()
@@ -65,14 +63,12 @@ class basicCommands(commands.Cog):
                         await self.client.change_presence(status=discord.Status.online, activity=discord.Game(statusOutput[1]))
                         await ctx.send(
                             f'Status updated to "Playing {statusOutput[1]}"! Please note this is not permenant, and will be reset when the bot is rebooted.')
-                        currentDT = self.mySupport.getTime()
-                        print(f"[{currentDT}] Status updated to playing '{statusOutput[1]}''")
+                        print(f"[{supportingFunctions.getTime()}] Status updated to playing '{statusOutput[1]}''")
                     else:
                         await self.client.change_presence(status=discord.Status.online, activity=discord.Game(statusInput))
                         await ctx.send(
                             f'Status updated to "Playing {statusInput}"! Please note this is not permenant, and will be reset when the bot is rebooted.')
-                        currentDT = self.mySupport.getTime()
-                        print(f"[{currentDT}] Status updated to 'playing {statusInput}''")
+                        print(f"[{supportingFunctions.getTime()}] Status updated to 'playing {statusInput}''")
             else:
                 await ctx.send("This command requires the 'Bot Admin' role to run. Please make sure you have this role, and try again.")
         else:

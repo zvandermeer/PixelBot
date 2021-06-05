@@ -1,6 +1,6 @@
 import configparser
 import datetime
-from PixelBotData.supportingFunctions import SupportingFunctions
+import PixelBotData.supportingFunctions as supportingFunctions
 import discord
 from discord.ext import commands
 import time
@@ -12,8 +12,6 @@ exitLoop = False
 class modCommands(commands.Cog):
 
     def __init__(self, client):
-        self.mySupport = SupportingFunctions()
-
         self.client = client
 
         self.client = client
@@ -152,8 +150,7 @@ class modCommands(commands.Cog):
         
         if runCommand == True:
             await ctx.send("Bot is shutting down. Please wait...")
-            currentDT = self.mySupport.getTime()
-            print(f"[{currentDT}] Shutting down PixelBot")
+            print(f"[{supportingFunctions.getTime()}] Shutting down PixelBot")
             quit()
         else:
             await ctx.send("This command requires the 'Bot Admin' role to run. Please make sure you have this role, and try again.")
@@ -170,8 +167,7 @@ class modCommands(commands.Cog):
                         runCommand = True
         
         if runCommand == True:
-            currentDT = self.mySupport.getTime()
-            print(f"[{currentDT}] PixelBot restarting\n\n")
+            print(f"[{supportingFunctions.getTime()}] PixelBot restarting\n\n")
             await ctx.send("Bot is rebooting. Please wait...")
             os.system("python3.8 bot.py")
             exit()
