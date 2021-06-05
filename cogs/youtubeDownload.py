@@ -12,21 +12,29 @@ import urllib.request
 import json
 import urllib
 import time
+import platform
 
 # Example cog
 class youtubeDownload(commands.Cog):
 
     def __init__(self, client):
+
+        if platform.system() == "Windows":
+            print("The YouTube Downloading plugin is currently not supported on Windows. Please rename the 'youtubeDownload.py' file to 'youtubeDownlad.py.disabled' or delete it entirely. Windows functionality will be added in a future update.")
+            sys.exit()
+
         self.client = client
 
-        #checking for required libraries
-        ffmpegInstalled = subprocess.check_output(['which', 'ffmpeg'])
-        if ffmpegInstalled == "":
+        # checking for required libraries
+        try:
+            subprocess.check_output(['which', 'ffmpeg'])
+        except subprocess.CalledProcessError:
             print("FFMPEG is not installed. FFMPEG is required to download YouTube videos. You are receiving this message because you have the YouTube Downloading plugin enabled. Please run 'sudo apt install ffmpeg' to continue.")
             sys.exit()
-        AtomicParsleyInstalled = subprocess.check_output(['which', 'AtomicParsley'])
-        if AtomicParsleyInstalled == "":
-            print("AtomicParsley is not installed. AtomicParsley is required to download YouTube videos. You are receiving this message because you have the YouTube Downloading plugin enabled. Please run 'sudo apt install AtomicParsley' to continue.")
+        try:
+            subprocess.check_output(['which', 'AtomicParsley'])
+        except subprocess.CalledProcessError:
+            print("AtomicParsley is not installed. AtomicParsley is required to download YouTube videos. You are receiving this message because you have the YouTube Downloading plugin enabled. Please run 'sudo apt install atomicparsley' to continue.")
             sys.exit()
 
         config = configparser.ConfigParser()
@@ -68,7 +76,6 @@ class youtubeDownload(commands.Cog):
 
             dmUser.send(f"Your video download is ready! Download here: {self.YouTubeDownloadAddress}/YouTube-Downloads/{latest_file}")
 
-    # Example command
     @commands.command(aliases=["youtube-dl", "ytdl"])
     async def youtube(self, ctx, videoURL="emptyString", downloadType="mp4", priority="res"):
         if videoURL == "emptyString":

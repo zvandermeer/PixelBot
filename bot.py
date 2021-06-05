@@ -4,8 +4,7 @@ from time import sleep
 import sys
 import configparser
 
-# Checking for supported python version
-# supportingFunctions.checkPythonVersion()
+print(f"[{supportingFunctions.getTime()}] Initializing PixelBot v0.4.3")
 
 # Import discord.py library, and installing it if not found
 try:
@@ -169,8 +168,6 @@ async def on_command_error(ctx, error):
 
 
 if __name__ == "__main__":
-
-    print(f"[{supportingFunctions.getTime()}] Initializing PixelBot v0.4.3")
 
     if botToken == "null":
         print("Bot Token not found. Please paste your botToken in the config.ini file under the 'token' field and restart the bot.")

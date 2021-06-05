@@ -1,9 +1,10 @@
 import configparser
-import platform
+import sys
 from random import randint
 import sys
 import discord
 from discord.ext import commands
+import platform
 
 def loadRandomQuote(destination):
     quoteTotal = 0
@@ -11,15 +12,10 @@ def loadRandomQuote(destination):
         allQuotes = []
         for line in fileReader:
             allQuotes.append(line)
-        # print(f"allQuotes: {allQuotes}")
         quoteTotal = len(allQuotes)
-        # print(f"quoteTotal: {quoteTotal}")
         quoteInt = randint(1, quoteTotal)
-        # print(f"quoteInt: {quoteInt}")
         selectedQuote = allQuotes[quoteInt - 1]
-        # print(f"selectedQuote: {selectedQuote}")
         parsedQuote = selectedQuote.split(';')
-        # print(f"parsedQuote: {parsedQuote}")
         quoteDict = {"name": parsedQuote[0], "quote": parsedQuote[1], "author": parsedQuote[2]}
 
         return quoteDict
@@ -44,7 +40,7 @@ class quoteCommands(commands.Cog):
         if self.webDirectory.endswith("/") or self.webDirectory.endswith("\\"):
             pass
         else:
-            if platform.system == "Windows":
+            if platform.system() == "Windows":
                 self.webDirectory = self.webDirectory + "\\"
             else:
                 self.webDirectory = self.webDirectory + "/"

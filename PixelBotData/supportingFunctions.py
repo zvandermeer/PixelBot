@@ -1,7 +1,7 @@
 import configparser
 import datetime
 import os
-from sys import platform
+import platform
 from time import sleep
 import sys
 
@@ -53,7 +53,7 @@ def writeConfig():
         '\ntoken = null'
         '\n;The string in the field below will become the bots prefix'
         '\nprefix = &'
-        '\n;If true, the bots status will appear as "streaming". The string in the "botStatus" feild will be the status, and the string in the "streamURL" will be the linked URL'
+        '\n;If true, the bots status will appear as "streaming". The string in the "botStatus" felid will be the status, and the string in the "streamURL" will be the linked URL'
         '\nstreamingStatus = False'
         '\n;The string in the field below will become the bots static status if dynamic status is disabled'
         '\nbotStatus = Version 0.4.3'
@@ -94,35 +94,29 @@ def installDiscord():
         "discord.py library, use 'pip/pip3 install discord'\nWould you like to attempt to automatically install the library? (y/n)\n")
     installInput = installInput.lower()
     if installInput == "y":
-        if(platform == "Linux" or platform == "Darwin"):
-            os.system("pip3 install discord")
-            print("\n\nThe Discord.py library has successfully been installed. Please restart the program to continue.")
+        if(platform.system() == "Linux" or platform.system() == "Darwin"):
+            try:
+                os.system("pip3 install discord")
+            except:
+                print("An unknown error occurred. Please attempt to install manually by typing 'pip3 install discord' into your terminal.")
+                sys.exit()
+            print("\nInstall success! Rebooting...\n")
+            os.system("python3 bot.py")
+            sys.exit()
         else:
-            os.system("pip install discord")
+            try:
+                os.system("pip install discord")
+            except:
+                print("An unknown error occurred. Please attempt to install manually by typing 'pip install discord' into your terminal.")
+                sys.exit()
+            print("\nInstall success! Rebooting...\n")
             os.system("python bot.py")
             sys.exit()
     print("Please ensure the discord.py library is installed before continuing. Use 'pip/pip3 install discord'")
     sys.exit()
 
-def logPrints():
+def logPrintStatements(message):
     pass
-
-
-# def checkPythonVersion():
-#     print(f"SysVersion: {sys.version}")
-#     pythonVersion = sys.version
-#     pythonVersion = pythonVersion.split(" ")
-#     pythonVersion = pythonVersion[0].replace(".", "")
-
-#     if(int(pythonVersion) >= 390):
-#         print("Due to the Discord.py framework not currently supporting Python 3.9 or later, PixelBot also does not currently support Python 3.9 or later. Please run PixelBot on a Python version earlier than 3.9.")
-#         sleep(5)
-#         sys.exit()
-#     if(int(pythonVersion) < 360):
-#             print("This program only supports Python 3.6 or later. Please update your Python version.")
-#             sys.exit()
-#
-# THIS IS NO LONGER NEEDED BUT IS LEFT IN FOR LEGACY REASONS
 
 def checkConfig():
     config = configparser.ConfigParser()
