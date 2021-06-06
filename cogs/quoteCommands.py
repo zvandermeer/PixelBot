@@ -1,10 +1,19 @@
 import configparser
+from logging import warning
 import sys
 from random import randint
 import sys
 import discord
 from discord.ext import commands
 import platform
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("debug.log")]
+)
 
 def loadRandomQuote(destination):
     quoteTotal = 0
@@ -33,7 +42,7 @@ class quoteCommands(commands.Cog):
         self.copyQuotesToWebDirectory = self.copyQuotesToWebDirectory.lower()
         
         if self.copyQuotesToWebDirectory != "true" and self.copyQuotesToWebDirectory != "false":
-            print('Please enter either true or false under the "copyQuotesToWebDirectory" field in config.ini')
+            warning('Please enter either true or false under the "copyQuotesToWebDirectory" field in config.ini')
             sys.exit()
 
         self.webDirectory = self.config["pixelBotConfig"]["webDirectory"]
@@ -51,6 +60,7 @@ class quoteCommands(commands.Cog):
             self.publicWebAddress = "http://" + self.publicWebAddress
 
         if self.copyQuotesToWebDirectory == "true" and self.publicWebAddress == "null":
+            logging.warning('Please enter a web address under the "publicWebAddress" felid in config.ini. Please do not leave it "null"')
             print('Please enter a web address under the "publicWebAddress" felid in config.ini. Please do not leave it "null"')
             sys.exit()
 

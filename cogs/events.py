@@ -5,6 +5,14 @@ from discord.ext import commands, tasks
 import datetime
 import configparser
 import sys
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("debug.log")]
+)
 
 class Events(commands.Cog):
 
@@ -16,6 +24,7 @@ class Events(commands.Cog):
         self.manageAtEveryone = self.manageAtEveryone.lower()
         
         if self.manageAtEveryone != "true" and self.manageAtEveryone != "false":
+            logging.warning('Please enter either true or false under the "manageAtEveryone" field in config.ini')
             print('Please enter either true or false under the "manageAtEveryone" field in config.ini')
             sys.exit()
 
@@ -23,12 +32,14 @@ class Events(commands.Cog):
         self.deleteUnwantedPings = self.deleteUnwantedPings.lower()
         
         if self.deleteUnwantedPings != "true" and self.deleteUnwantedPings != "false":
+            logging.warning('Please enter either true or false under the "deleteUnwantedPings" field in config.ini')
             print('Please enter either true or false under the "deleteUnwantedPings" field in config.ini')
             sys.exit()
 
         self.allowedChannels = self.config["pixelBotConfig"]["allowedChannelNames"]
 
         if self.allowedChannels == "null" and self.manageAtEveryone == "true":
+            logging.warning('Please enter channel name(s) under the "allowedChannelNames" field in config.ini. Check config.ini for examples')
             print('Please enter channel name(s) under the "allowedChannelNames" field in config.ini. Check config.ini for examples')
             sys.exit()
 
@@ -48,6 +59,7 @@ class Events(commands.Cog):
         self.streamingStatus = self.streamingStatus.lower()
         
         if self.streamingStatus != "true" and self.streamingStatus != "false":
+            logging.warning('Please enter either true or false under the "deleteUnwantedPings" field in config.ini')
             print('Please enter either true or false under the "deleteUnwantedPings" field in config.ini')
             sys.exit()
 
@@ -63,6 +75,7 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
+        logging.info(f'[{supportingFunctions.getTime()}] {member} has joined a server')
         print(f'[{supportingFunctions.getTime()}] {member} has joined a server')
 
         memberString = str(member)
@@ -74,10 +87,12 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
+        logging.info(f'[{supportingFunctions.getTime()}] {member} has left a server')
         print(f'[{supportingFunctions.getTime()}] {member} has left a server')
 
     @commands.Cog.listener()
     async def on_ready(self):
+        logging.info(f"[{supportingFunctions.getTime()}] PixelBot successfully connected to Discord servers")
         print(f"[{supportingFunctions.getTime()}] PixelBot successfully connected to Discord servers")
         if self.streamingStatus == "true":
             await self.client.change_presence(status=discord.Status.online, activity=discord.Streaming(name=self.botStatus, url=self.streamURL))
@@ -92,6 +107,7 @@ class Events(commands.Cog):
 
         if '@everyone' in message.content:
             ctx = await self.client.get_context(message)
+            logging.info(f'[{supportingFunctions.getTime()}] @everyone was pinged. Message contents:\n{message.author}: "{message.content}"')
             print(f'[{supportingFunctions.getTime()}] @everyone was pinged. Message contents:\n{message.author}: "{message.content}"')
             if self.manageAtEveryone == "true":
                 if(ctx.message.channel.name not in self.allowedChannels):
@@ -115,10 +131,15 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
-        if "@" in message:
-            print(f"Message deleted w/ @: '{message}'")
+        print("message deleted")
+        logging.info(f"[{supportingFunctions.getTime()}] Message deleted. Message content: '{message.content}' Message author: '{message.author}' Message channel: '{message.channel.name}' Message server: '{message.guild.name}'")
+        print(f"[{supportingFunctions.getTime()}] Message deleted. Message content: '{message.content}' Message author: '{message.author}' Message channel: '{message.channel.name}' Message server: '{message.guild.name}'")
+        if "@" in message.content:
+            logging.debug(f"Message deleted w/ @")
+            print(f"Message deleted w/ @")
         else:
-            print(f"Message deleted w/o @: '{message}'")                
+            logging.debug(f"Message deleted w/o @")
+            print(f"Message deleted w/o @")             
 
 def setup(client):
     client.add_cog(Events(client))

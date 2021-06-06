@@ -1,6 +1,15 @@
+from logging import debug, info
 import discord
 from discord.ext import commands
 import PixelBotData.supportingFunctions as supportingFunctions
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("debug.log")]
+)
 
 class tempInvite(commands.Cog):
 
@@ -42,6 +51,7 @@ class tempInvite(commands.Cog):
                 except ValueError:
                     await ctx.send(f"I was unable to send that user a DM. This could mean that I don't share a server with the intended recipient, or the user ID is invalid. Please manually send the user this link:\n{discord_server_invite}\n**WARNING: THIS INVITE LINK WILL BE DELETED AFTER IT IS USED ONCE AND WILL EXPIRE IN ONE HOUR.**")
 
+            logging.info(f'[{supportingFunctions.getTime()}] Temp link generated: "{discord_server_invite}"')
             print(f'[{supportingFunctions.getTime()}] Temp link generated: "{discord_server_invite}"')
 
             # update our invite list after creating a new invite

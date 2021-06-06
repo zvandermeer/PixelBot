@@ -3,7 +3,16 @@ import os
 from time import sleep
 import sys
 import configparser
+import logging
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("debug.log")]
+)
+
+logging.info(f"Initializing PixelBot v0.4.3")
 print(f"[{supportingFunctions.getTime()}] Initializing PixelBot v0.4.3")
 
 # Import discord.py library, and installing it if not found
@@ -25,6 +34,7 @@ botToken = config['pixelBotConfig']['token']
 commandPrefix = config['pixelBotConfig']['prefix']
 
 if commandPrefix == "":
+    logging.warning("Please enter a prefix in the 'prefix' field in 'config.ini'")
     print("Please enter a prefix in the 'prefix' field in 'config.ini'")
 
 # initializing bot object
@@ -38,6 +48,7 @@ client = commands.Bot(command_prefix=commandPrefix, intents=intents)
 async def load(ctx, extension):
     client.load_extension(f"cogs.{extension}")
     await ctx.send("Successfully loaded!")
+    logging.info(f"[{supportingFunctions.getTime()}] Loaded {extension} cog")
     print(f"[{supportingFunctions.getTime()}] Loaded {extension} cog")
 
 # unload cog
@@ -45,6 +56,7 @@ async def load(ctx, extension):
 async def unload(ctx, extension):
     client.unload_extension(f"cogs.{extension}")
     await ctx.send("Successfully unloaded!")
+    logging.info(f"[{supportingFunctions.getTime()}] Unloaded {extension} cog")
     print(f"[{supportingFunctions.getTime()}] Unloaded {extension} cog")
 
 # reload cog
@@ -53,6 +65,7 @@ async def reload(ctx, extension):
     client.unload_extension(f"cogs.{extension}")
     client.load_extension(f"cogs.{extension}")
     await ctx.send("Successfully reloaded!")
+    logging.info(f"[{supportingFunctions.getTime()}] Reloaded {extension} cog")
     print(f"[{supportingFunctions.getTime()}] Reloaded {extension} cog")
 
 # load cogs into bot
@@ -64,6 +77,7 @@ for filename in os.listdir("./cogs"):
         client.load_extension(f"cogs.{filename[:-3]}")
 
 if cogCount == 0:
+    logging.info("No cogs have been initialized. The bot is currently running with minimal functionality. Please put .py cog files in the cogs/ directory.")
     print("No cogs have been initialized. The bot is currently running with minimal functionality. Please put .py cog files in the cogs/ directory.")
 
 # Cog error handler
@@ -93,6 +107,7 @@ async def loadNonExistentError(ctx, error):
 # error handler
 @client.event
 async def on_command_error(ctx, error):
+    logging.error(f"[{supportingFunctions.getTime()}] {error}")
     print(f"[{supportingFunctions.getTime()}] {error}")
     handledError = False
 
@@ -149,6 +164,7 @@ async def on_command_error(ctx, error):
             userID = int(userID)
             user = client.get_user(userID)
         else:
+            logging.warning(f"[{supportingFunctions.getTime()}] No user is defined to DM error to, skipping.")
             print(f"[{supportingFunctions.getTime()}] No user is defined to DM error to, skipping.")
                   
         if user != "":
@@ -161,15 +177,19 @@ async def on_command_error(ctx, error):
                     ctx.message.author) + f" in DM. \nError details: '{error}'")
 
     try:
+        logging.warning(f"[{supportingFunctions.getTime()}] Message was sent by " + str(ctx.message.author) + " in '" + str(
+            ctx.message.guild.name) + "' in the '" + ctx.message.channel.name + "' text channel.")
         print(f"[{supportingFunctions.getTime()}] Message was sent by " + str(ctx.message.author) + " in '" + str(
             ctx.message.guild.name) + "' in the '" + ctx.message.channel.name + "' text channel.")
     except AttributeError:
+        logging.warning(f"[{supportingFunctions.getTime()}] Message was sent by " + str(ctx.message.author) + " in DM")
         print(f"[{supportingFunctions.getTime()}] Message was sent by " + str(ctx.message.author) + " in DM")
 
 
 if __name__ == "__main__":
 
     if botToken == "null":
+        logging.critical("Bot Token not found. Please paste your botToken in the config.ini file under the 'token' field and restart the bot.")
         print("Bot Token not found. Please paste your botToken in the config.ini file under the 'token' field and restart the bot.")
         sleep(5)
         sys.exit()
@@ -177,6 +197,7 @@ if __name__ == "__main__":
     try:
         client.run(botToken)
     except discord.errors.LoginFailure:
+        logging.critical("The token you have entered in the config.ini file is invalid. Please check to make sure you have entered a valid token.")
         print("The token you have entered in the config.ini file is invalid. Please check to make sure you have entered a valid token.")
         sleep(5)
         sys.exit()

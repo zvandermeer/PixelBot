@@ -6,6 +6,14 @@ from discord.ext import commands
 import time
 import os
 import sys
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("debug.log")]
+)
 
 exitLoop = False
 
@@ -22,6 +30,7 @@ class modCommands(commands.Cog):
         self.botShutdownRequiresRole = self.botShutdownRequiresRole.lower()
         
         if self.botShutdownRequiresRole != "true" and self.botShutdownRequiresRole != "false":
+            logging.warning('Please enter either true or false under the "botShutdownRequiresRole" field in config.ini')
             print('Please enter either true or false under the "botShutdownRequiresRole" field in config.ini')
             sys.exit()
 
@@ -41,42 +50,42 @@ class modCommands(commands.Cog):
             amount += 1
 
             if amount > 5:
-                print(f"Over 5. Pre-calculation: {amount}")
+                logging.debug(f"Over 5. Pre-calculation: {amount}")
                 calculateAmount = amount / 5.0
                 calculateAmount = round(calculateAmount, 1)
-                print(f"Over 5. Post-calculation: {calculateAmount}")
+                logging.debug(f"Over 5. Post-calculation: {calculateAmount}")
                 overFive = True
             else:
                 calculateAmount = amount
-                print(f"Under 5. No calculation: {calculateAmount}")
+                logging.debug(f"Under 5. No calculation: {calculateAmount}")
                 overFive = False
                 
 
             looping = True
 
             while looping:
-                print("loop top")
+                logging.debug("loop top")
                 if overFive:
                     if calculateAmount >= 1.0:
-                        print("enter purge")
+                        logging.debug("enter purge")
                         await ctx.channel.purge(limit=5)
-                        print("begining timeout")
+                        logging.debug("begining timeout")
                         time.sleep(2.5)
-                        print("Timeout complete")
-                        print(f"Over 1. Pre-calculate amount: {calculateAmount}")
+                        logging.debug("Timeout complete")
+                        logging.debug(f"Over 1. Pre-calculate amount: {calculateAmount}")
                         calculateAmount = calculateAmount - 1
                         calculateAmount = round(calculateAmount, 1)
-                        print(f"Over 1. Post-calculate amount: {calculateAmount}")
+                        logging.debug(f"Over 1. Post-calculate amount: {calculateAmount}")
                     elif calculateAmount != 0:
-                        print(f"Under 1. Pre-calculation: {calculateAmount}")
+                        logging.debug(f"Under 1. Pre-calculation: {calculateAmount}")
                         calculateAmount = calculateAmount * 5
                         calculateAmount = round(calculateAmount)
-                        print(f"Under 1. Post-calculation: {calculateAmount}")
+                        logging.debug(f"Under 1. Post-calculation: {calculateAmount}")
                         await ctx.channel.purge(limit=calculateAmount)
                         looping = False
                     elif calculateAmount == 0:
                         looping = False
-                        print("0. Finished clear.")
+                        logging.debug("0. Finished clear.")
                 else:
                     await ctx.channel.purge(limit=calculateAmount)
                     looping = False
@@ -150,6 +159,7 @@ class modCommands(commands.Cog):
         
         if runCommand == True:
             await ctx.send("Bot is shutting down. Please wait...")
+            logging.info(f"[{supportingFunctions.getTime()}] Shutting down PixelBot")
             print(f"[{supportingFunctions.getTime()}] Shutting down PixelBot")
             quit()
         else:
@@ -167,6 +177,7 @@ class modCommands(commands.Cog):
                         runCommand = True
         
         if runCommand == True:
+            logging.info(f"[{supportingFunctions.getTime()}] PixelBot restarting\n\n")
             print(f"[{supportingFunctions.getTime()}] PixelBot restarting\n\n")
             await ctx.send("Bot is rebooting. Please wait...")
             os.system("python3.8 bot.py")

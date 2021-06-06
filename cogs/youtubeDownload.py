@@ -1,4 +1,5 @@
 import configparser
+from logging import critical, debug
 import discord
 from discord.ext import commands
 import os
@@ -13,6 +14,14 @@ import json
 import urllib
 import time
 import platform
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("debug.log")]
+)
 
 # Example cog
 class youtubeDownload(commands.Cog):
@@ -20,6 +29,7 @@ class youtubeDownload(commands.Cog):
     def __init__(self, client):
 
         if platform.system() == "Windows":
+            logging.critical("The YouTube Downloading plugin is currently not supported on Windows. Please rename the 'youtubeDownload.py' file to 'youtubeDownlad.py.disabled' or delete it entirely. Windows functionality will be added in a future update.")
             print("The YouTube Downloading plugin is currently not supported on Windows. Please rename the 'youtubeDownload.py' file to 'youtubeDownlad.py.disabled' or delete it entirely. Windows functionality will be added in a future update.")
             sys.exit()
 
@@ -29,11 +39,13 @@ class youtubeDownload(commands.Cog):
         try:
             subprocess.check_output(['which', 'ffmpeg'])
         except subprocess.CalledProcessError:
+            logging.critical("FFMPEG is not installed. FFMPEG is required to download YouTube videos. You are receiving this message because you have the YouTube Downloading plugin enabled. Please run 'sudo apt install ffmpeg' to continue.")
             print("FFMPEG is not installed. FFMPEG is required to download YouTube videos. You are receiving this message because you have the YouTube Downloading plugin enabled. Please run 'sudo apt install ffmpeg' to continue.")
             sys.exit()
         try:
             subprocess.check_output(['which', 'AtomicParsley'])
         except subprocess.CalledProcessError:
+            logging.critical("AtomicParsley is not installed. AtomicParsley is required to download YouTube videos. You are receiving this message because you have the YouTube Downloading plugin enabled. Please run 'sudo apt install atomicparsley' to continue.")
             print("AtomicParsley is not installed. AtomicParsley is required to download YouTube videos. You are receiving this message because you have the YouTube Downloading plugin enabled. Please run 'sudo apt install atomicparsley' to continue.")
             sys.exit()
 
@@ -51,6 +63,7 @@ class youtubeDownload(commands.Cog):
             elif type=="mp3":
                 os.system(f'youtube-dl -x --audio-format mp3 {videoURL}')
             else:
+                logging.error(f"Internal Error: Type = {type}")
                 print(f"Internal Error: Type = {type}")
 
         else:
@@ -61,6 +74,7 @@ class youtubeDownload(commands.Cog):
             elif type=="mp3":
                 os.system(f'powershell.exe youtube-dl -x --audio-format mp3 {videoURL}')
             else:
+                logging.error(f"Internal Error: Type = {type}")
                 print(f"Internal Error: Type = {type}")
 
         if(platform.system() == "Linux"):
@@ -68,6 +82,7 @@ class youtubeDownload(commands.Cog):
             list_of_files = glob.glob('*')
 
             latest_file = max(list_of_files, key=os.path.getctime)
+            logging.debug(f"Latest file: {latest_file}")
             print(f"Latest file: {latest_file}") 
 
             shutil.move(f"{latest_file}", f"/var/www/html/YouTube-Downloads/{latest_file}")
@@ -99,26 +114,32 @@ class youtubeDownload(commands.Cog):
                 videoURL = videoURL[0]
             if downloadType == "mp4":
                 if priority == "res" or priority == "resolution":
+                    logging.debug("res prio")
                     print("res prio")
                     resThread = threading.Thread(target=self.downloadVideo, args=(ctx, "resolution", videoURL))
                     resThread.start()
 
                 elif priority == "fps" or priority == "frames" or priority == "framerate" or priority == "frame rate":
+                    logging.debug("frames prio")
                     print("frames prio")
                     framesThread = threading.Thread(target=self.downloadVideo, args=(ctx, "frames", videoURL))
                     framesThread.start()
 
                     time.sleep(2)
                     for file in glob.glob("*.temp.mp4"):
+                        logging.debug(file)
                         print(file)
                 else:
+                    logging.debug("else 1")
                     print("else 1")
                     await ctx.send(f"{self.commandPrefix}youtube command usage: \n{self.commandPrefix}youtube [Video URL] (Download type: mp4/mp3, default mp4) (Download type: Resolution/res:1080p30, Framerate/fps:720p60, default resolution)")
             elif downloadType == "mp3":
-                print("mp3")
+                logging.debug("mp3")
+                print
                 audioThread = threading.Thread(target=self.downloadVideo, args=(ctx, "mp3", videoURL))
                 audioThread.start()
             else:
+                logging.debug("else 2")
                 print("else 2")
                 await ctx.send(f"{self.commandPrefix}youtube command usage: \n{self.commandPrefix}youtube [Video URL] (Download type: mp4/mp3, default mp4) (Download type: Resolution/res:1080p30, Framerate/fps:720p60, default resolution")
 

@@ -2,6 +2,14 @@ import discord
 from discord.ext import commands
 import configparser
 import sys
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("debug.log")]
+)
 
 from time import sleep
 
@@ -18,6 +26,7 @@ class amongUs(commands.Cog):
         self.amongUsRequiresRole = self.amongUsRequiresRole.lower()
         
         if self.amongUsRequiresRole != "true" and self.amongUsRequiresRole != "false":
+            logging.warning('Please enter either true or false under the "amongUsRequiresRole" field in config.ini')
             print('Please enter either true or false under the "amongUsRequiresRole" field in config.ini')
             sys.exit()
     

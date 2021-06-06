@@ -1,9 +1,18 @@
 import configparser
 import datetime
+import logging
 import os
 import platform
 from time import sleep
 import sys
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("debug.log")]
+)
 
 def getTime():
     currentDT = datetime.datetime.now()
@@ -17,6 +26,8 @@ def getTime():
 def createConfig():
     writeConfig()
 
+    logging.info("A new config.ini file has been created. Please paste your botToken in the config.ini file under"
+    "the 'token' field and restart the bot.")
     print("A new config.ini file has been created. Please paste your botToken in the config.ini file under"
     "the 'token' field and restart the bot.")
     sleep(5)
@@ -37,6 +48,9 @@ def updateConfig():
 
     writeConfig()
 
+    logging.warning("Your config is outdated. A new config has been created. Please copy your details from 'config-OLD.ini' to 'config.ini'. "
+    "Please delete the 'config-OLD.ini' file once you have updated the details. Please note the 'config-OLD.ini' will be deleted "
+    "next time a config update is required.")
     print("Your config is outdated. A new config has been created. Please copy your details from 'config-OLD.ini' to 'config.ini'. "
     "Please delete the 'config-OLD.ini' file once you have updated the details. Please note the 'config-OLD.ini' will be deleted "
     "next time a config update is required.")
@@ -98,8 +112,10 @@ def installDiscord():
             try:
                 os.system("pip3 install discord")
             except:
+                logging.error("An unknown error occurred. Please attempt to install manually by typing 'pip3 install discord' into your terminal.")
                 print("An unknown error occurred. Please attempt to install manually by typing 'pip3 install discord' into your terminal.")
                 sys.exit()
+            logging.info("\nInstall success! Rebooting...\n")
             print("\nInstall success! Rebooting...\n")
             os.system("python3 bot.py")
             sys.exit()
@@ -107,11 +123,14 @@ def installDiscord():
             try:
                 os.system("pip install discord")
             except:
+                logging.error("An unknown error occurred. Please attempt to install manually by typing 'pip install discord' into your terminal.")
                 print("An unknown error occurred. Please attempt to install manually by typing 'pip install discord' into your terminal.")
                 sys.exit()
+            logging.info("\nInstall success! Rebooting...\n")
             print("\nInstall success! Rebooting...\n")
             os.system("python bot.py")
             sys.exit()
+    logging.warning("Please ensure the discord.py library is installed before continuing. Use 'pip/pip3 install discord'")
     print("Please ensure the discord.py library is installed before continuing. Use 'pip/pip3 install discord'")
     sys.exit()
 
