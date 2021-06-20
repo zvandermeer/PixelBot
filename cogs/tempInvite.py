@@ -96,11 +96,11 @@ class tempInvite(commands.Cog):
                 # we will print a couple things in our console:
                 # the name, invite code used the the person
                 # who created the invite code, or the inviter.
-                logging.info(f'\nMember "{member.name}" Joined')
+                logging.info(f'Member "{member.name}" Joined')
                 print(f'\nMember "{member.name}" Joined')
                 logging.info(f"Invite Code: {invite.code}")
                 print(f"Invite Code: {invite.code}")
-                logging.info(f"Inviter: {invite.inviter}\n")
+                logging.info(f"Inviter: {invite.inviter}")
                 print(f"Inviter: {invite.inviter}\n")
 
                 # We will now update our cache so it's ready
