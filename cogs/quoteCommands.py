@@ -68,12 +68,11 @@ class quoteCommands(commands.Cog):
     async def quote(self, ctx, *, quote=""):
         if quote == "":
             randomQuote = loadRandomQuote("quotes")
-
-            members = ctx.message.guild.members
-
-            for member in members:
-                if member.name == randomQuote["name"].split("#")[0]:
-                    quoteAuthor = member
+            
+            for guild in self.client.guilds:
+                for member in guild.members:
+                    if member.name == randomQuote["name"].split("#")[0]:
+                        quoteAuthor = member
 
             embed = discord.Embed(title=randomQuote["quote"], description=f"-{randomQuote['author']}",
                                   color=discord.Color.blue())
