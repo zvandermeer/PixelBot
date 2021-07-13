@@ -22,6 +22,8 @@ class Events(commands.Cog):
         self.config.read('config.ini')
         self.manageAtEveryone = self.config["pixelBotConfig"]["manageAtEveryone"]
         self.manageAtEveryone = self.manageAtEveryone.lower()
+
+        self.commandPrefix = self.config['pixelBotConfig']['prefix']
         
         if self.manageAtEveryone != "true" and self.manageAtEveryone != "false":
             logging.warning('Please enter either true or false under the "manageAtEveryone" field in config.ini')
@@ -104,9 +106,9 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
+        ctx = await self.client.get_context(message)
 
         if '@everyone' in message.content:
-            ctx = await self.client.get_context(message)
             logging.info(f'[{supportingFunctions.getTime()}] @everyone was pinged. Message contents:\n{message.author}: "{message.content}"')
             print(f'[{supportingFunctions.getTime()}] @everyone was pinged. Message contents:\n{message.author}: "{message.content}"')
             if self.manageAtEveryone == "true":
@@ -128,6 +130,28 @@ class Events(commands.Cog):
                     allowedChannelMessage = allowedChannelMessage[:-2]
 
                     await ctx.send(f"Please only ping everyone in {allowedChannelMessage}")
+
+        if f'<@!{self.client.user.id}>' in message.content:
+            embed = discord.Embed(title="**PixelBot v0.4.3**", description="This bot is running PixelBot v0.4.3. "
+                                                                       "Developed by "
+                                                                       "NinjaPixels. Code is hosted at "
+                                                                       "https://github.com/ovandermeer/PixelBot",
+                              color=discord.Color.green())
+
+            embed.set_author(name="", icon_url="https://cdn.discordapp.com/avatars/690639974772637826/dae6197fc28fdd6a6fb73a9909397556.webp?size=256")
+
+            embed.add_field(name="Command help",
+                            value=f"Type {self.commandPrefix}help for a list of commands and how to use them.",
+                            inline=True)
+            embed.add_field(name="Bugs? Issues?",
+                            value="Report problems with the bot at:\n https://github.com/ovandermeer/PixelBot/issues",
+                            inline=False)
+            embed.add_field(name="Documentation",
+                            value="Documentation and more detailed command help can be found at: "
+                                "https://ovandermeer.github.io/PixelBot/",
+                            inline=False)
+
+            await ctx.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
