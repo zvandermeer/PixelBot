@@ -146,44 +146,44 @@ class modCommands(commands.Cog):
     async def unmuteUser(self, ctx, member: discord.Member = None):
         await member.edit(mute=False)
 
-    @commands.command(aliases=['quit', 'stop', 'exit'])
-    async def shutdown(self, ctx):
-        runCommand = False
-        if self.botShutdownRequiresRole == "false":
-            runCommand = True
-        else:
-            for role in ctx.author.roles:
-                    role = str(role)
-                    if role == "Bot Admin":
-                        runCommand = True
+    # @commands.command(aliases=['quit', 'stop', 'exit'])
+    # async def shutdown(self, ctx):
+    #     runCommand = False
+    #     if self.botShutdownRequiresRole == "false":
+    #         runCommand = True
+    #     else:
+    #         adminRole = discord.utils.get(ctx.guild.roles, id=759434973764648972)
+    #         for role in ctx.author.roles:
+    #             if role == adminRole:
+    #                 runCommand = True
         
-        if runCommand == True:
-            await ctx.send("Bot is shutting down. Please wait...")
-            logging.info(f"[{supportingFunctions.getTime()}] Shutting down PixelBot")
-            print(f"[{supportingFunctions.getTime()}] Shutting down PixelBot")
-            quit()
-        else:
-            await ctx.send("This command requires the 'Bot Admin' role to run. Please make sure you have this role, and try again.")
+    #     if runCommand == True:
+    #         await ctx.send("Bot is shutting down. Please wait...")
+    #         logging.info(f"[{supportingFunctions.getTime()}] Shutting down PixelBot")
+    #         print(f"[{supportingFunctions.getTime()}] Shutting down PixelBot")
+    #         quit()
+    #     else:
+    #         await ctx.send("This command requires the 'Bot Admin' role to run. Please make sure you have this role, and try again.")
 
-    @commands.command()
-    async def reboot(self, ctx):
-        runCommand = False
-        if self.botShutdownRequiresRole == "false":
-            runCommand = True
-        else:
-            for role in ctx.author.roles:
-                    role = str(role)
-                    if role == "Bot Admin":
-                        runCommand = True
+    # @commands.command()
+    # async def reboot(self, ctx):
+    #     runCommand = False
+    #     if self.botShutdownRequiresRole == "false":
+    #         runCommand = True
+    #     else:
+    #         adminRole = discord.utils.get(ctx.guild.roles, id=759434973764648972)
+    #         for role in ctx.author.roles:
+    #             if role == adminRole:
+    #                 runCommand = True
         
-        if runCommand == True:
-            logging.info(f"[{supportingFunctions.getTime()}] PixelBot restarting\n\n")
-            print(f"[{supportingFunctions.getTime()}] PixelBot restarting\n\n")
-            await ctx.send("Bot is rebooting. Please wait...")
-            os.system("python3.8 bot.py")
-            exit()
-        else:
-            await ctx.send("This command requires the 'Bot Admin' role to run. Please make sure you have this role, and try again.")
+    #     if runCommand == True:
+    #         logging.info(f"[{supportingFunctions.getTime()}] PixelBot restarting\n\n")
+    #         print(f"[{supportingFunctions.getTime()}] PixelBot restarting\n\n")
+    #         await ctx.send("Bot is rebooting. Please wait...")
+    #         os.system("python3.8 bot.py")
+    #         exit()
+    #     else:
+    #         await ctx.send("This command requires the 'Bot Admin' role to run. Please make sure you have this role, and try again.")
 
 def setup(client):
     client.add_cog(modCommands(client))
