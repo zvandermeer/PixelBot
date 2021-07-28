@@ -152,6 +152,9 @@ class Events(commands.Cog):
                             inline=False)
 
             await ctx.send(embed=embed)
+        
+        if message.content.lower() == "fuck you":
+            await ctx.send("https://cdn.discordapp.com/attachments/869719055530082335/869733463874469958/peter.mp4")
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
