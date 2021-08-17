@@ -1,3 +1,4 @@
+import PixelBotData.supportingFunctions as supportingFunctions
 import configparser
 import datetime
 import logging
@@ -28,7 +29,7 @@ def createConfig():
 
     logging.info("A new config.ini file has been created. Please paste your botToken in the config.ini file under"
     "the 'token' field and restart the bot.")
-    print("[{supportingFunctions.getTime()}] A new config.ini file has been created. Please paste your botToken in the config.ini file under"
+    print(f"[{supportingFunctions.getTime()}] A new config.ini file has been created. Please paste your botToken in the config.ini file under"
     "the 'token' field and restart the bot.")
     sleep(5)
     sys.exit()
@@ -51,7 +52,7 @@ def updateConfig():
     logging.warning("Your config is outdated. A new config has been created. Please copy your details from 'config-OLD.ini' to 'config.ini'. "
     "Please delete the 'config-OLD.ini' file once you have updated the details. Please note the 'config-OLD.ini' will be deleted "
     "next time a config update is required.")
-    print("[{supportingFunctions.getTime()}] Your config is outdated. A new config has been created. Please copy your details from 'config-OLD.ini' to 'config.ini'. "
+    print(f"[{supportingFunctions.getTime()}] Your config is outdated. A new config has been created. Please copy your details from 'config-OLD.ini' to 'config.ini'. "
     "Please delete the 'config-OLD.ini' file once you have updated the details. Please note the 'config-OLD.ini' will be deleted "
     "next time a config update is required.")
 
