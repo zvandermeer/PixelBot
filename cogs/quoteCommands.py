@@ -1,3 +1,4 @@
+import PixelBotData.supportingFunctions as supportingFunctions
 import configparser
 from logging import warning
 import sys
@@ -61,7 +62,7 @@ class quoteCommands(commands.Cog):
 
         if self.copyQuotesToWebDirectory == "true" and self.publicWebAddress == "null":
             logging.warning('Please enter a web address under the "publicWebAddress" felid in config.ini. Please do not leave it "null"')
-            print('Please enter a web address under the "publicWebAddress" felid in config.ini. Please do not leave it "null"')
+            print(f'[{supportingFunctions.getTime()}] Please enter a web address under the "publicWebAddress" felid in config.ini. Please do not leave it "null"')
             sys.exit()
 
     @commands.command(aliases=["q", "Q", "Quote", "quotes", "Quotes"])

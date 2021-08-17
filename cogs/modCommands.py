@@ -31,7 +31,7 @@ class modCommands(commands.Cog):
         
         if self.botShutdownRequiresRole != "true" and self.botShutdownRequiresRole != "false":
             logging.warning('Please enter either true or false under the "botShutdownRequiresRole" field in config.ini')
-            print('Please enter either true or false under the "botShutdownRequiresRole" field in config.ini')
+            print(f'[{supportingFunctions.getTime()}] Please enter either true or false under the "botShutdownRequiresRole" field in config.ini')
             sys.exit()
 
     #moderation commands
@@ -93,23 +93,6 @@ class modCommands(commands.Cog):
             amount -= 1
             await ctx.channel.send(f"{amount} message{pluralString} deleted!")
 
-    @commands.command()
-    @commands.dm_only()
-    async def dmclear(self, ctx, amount=0):
-        if amount == 0:
-            await ctx.send("Please enter a number of messages to be deleted.")
-        else:
-            pluralString = ""
-            if amount != 1:
-                pluralString = "s"
-            amount += 1
-            await ctx.channel.purge(limit=amount)
-            amount -= 1
-            await ctx.channel.send(f"{amount} message{pluralString} deleted!")
-            time.sleep(2)
-            await ctx.channel.purge(limit=1)
-            exitLoop = True
-
     @commands.has_permissions(administrator=True)
     @commands.command()
     async def kick(self, ctx, member : discord.Member, *, reason=None):
@@ -146,44 +129,22 @@ class modCommands(commands.Cog):
     async def unmuteUser(self, ctx, member: discord.Member = None):
         await member.edit(mute=False)
 
-    # @commands.command(aliases=['quit', 'stop', 'exit'])
-    # async def shutdown(self, ctx):
-    #     runCommand = False
-    #     if self.botShutdownRequiresRole == "false":
-    #         runCommand = True
-    #     else:
-    #         adminRole = discord.utils.get(ctx.guild.roles, id=759434973764648972)
-    #         for role in ctx.author.roles:
-    #             if role == adminRole:
-    #                 runCommand = True
+    @commands.command(aliases=['quit', 'stop', 'exit'])
+    async def shutdown(self, ctx):
+        runCommand = False
+        if self.botShutdownRequiresRole == "false":
+            runCommand = True
+        else:
+            if ctx.message.author == self.client.get_user(self.botAdmin):
+                runCommand = True
         
-    #     if runCommand == True:
-    #         await ctx.send("Bot is shutting down. Please wait...")
-    #         logging.info(f"[{supportingFunctions.getTime()}] Shutting down PixelBot")
-    #         print(f"[{supportingFunctions.getTime()}] Shutting down PixelBot")
-    #         quit()
-    #     else:
-    #         await ctx.send("This command requires the 'Bot Admin' role to run. Please make sure you have this role, and try again.")
-
-    # @commands.command()
-    # async def reboot(self, ctx):
-    #     runCommand = False
-    #     if self.botShutdownRequiresRole == "false":
-    #         runCommand = True
-    #     else:
-    #         adminRole = discord.utils.get(ctx.guild.roles, id=759434973764648972)
-    #         for role in ctx.author.roles:
-    #             if role == adminRole:
-    #                 runCommand = True
-        
-    #     if runCommand == True:
-    #         logging.info(f"[{supportingFunctions.getTime()}] PixelBot restarting\n\n")
-    #         print(f"[{supportingFunctions.getTime()}] PixelBot restarting\n\n")
-    #         await ctx.send("Bot is rebooting. Please wait...")
-    #         os.system("python3.8 bot.py")
-    #         exit()
-    #     else:
-    #         await ctx.send("This command requires the 'Bot Admin' role to run. Please make sure you have this role, and try again.")
+        if runCommand == True:
+            await ctx.send("Bot is shutting down. Please wait...")
+            logging.info("Shutting down PixelBot")
+            print(f"[{supportingFunctions.getTime()}] Shutting down PixelBot")
+            quit()
+        else:
+            await ctx.send("Only the bot admin can run this command. please contact your bot admin if you believe this to be a mistake")
 
 def setup(client):
     client.add_cog(modCommands(client))

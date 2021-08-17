@@ -2,6 +2,8 @@ import configparser
 import random
 import sys
 import time
+
+from discord import activity
 import PixelBotData.supportingFunctions as supportingFunctions
 import discord
 from discord.ext import commands
@@ -34,34 +36,38 @@ class basicCommands(commands.Cog):
 
         if self.statusChangeCommand != "true" and self.statusChangeCommand != "false":
             logging.warning('Please enter either true or false under the "botShutdownRequiresRole" field in config.ini')
-            print('Please enter either true or false under the "botShutdownRequiresRole" field in config.ini')
+            print(f'[{supportingFunctions.getTime()}] Please enter either true or false under the "botShutdownRequiresRole" field in config.ini')
             sys.exit()
 
-        self.statusChangeRequiresRole = config['pixelBotConfig']['statusChangeRequiresRole']
-        self.statusChangeRequiresRole = self.statusChangeRequiresRole.lower()
+        self.statusChangeOnlyAdmin = config['pixelBotConfig']['statusChangeOnlyAdmin']
+        self.statusChangeOnlyAdmin = self.statusChangeOnlyAdmin.lower()
 
-        if self.statusChangeRequiresRole != "true" and self.statusChangeRequiresRole != "false":
+        if self.statusChangeOnlyAdmin != "true" and self.statusChangeOnlyAdmin != "false":
             ('Please enter either true or false under the "botShutdownRequiresRole" field in config.ini')
             sys.exit()
+
+        self.botAdmin = config['pixelBotConfig']['botAdmin']
+        self.botAdmin = int(self.botAdmin)
+
+        self.botStatus = config["pixelBotConfig"]["botStatus"]
 
     # User controlled events
     @commands.command()
     async def ping(self, ctx):
         logging.info(f"Bot ping latency: {round(self.client.latency * 1000)}ms")
-        print(f"Bot ping latency: {round(self.client.latency * 1000)}ms")
+        print(f"[{supportingFunctions.getTime()}] Bot ping latency: {round(self.client.latency * 1000)}ms")
         await ctx.send(f"Pong! Bot ping time: {round(self.client.latency * 1000)}ms")
 
     @commands.command(aliases=["changestatus", "updatestatus", "status", "playing"])
     async def changeStatus(self, ctx, *, statusInput=""):
         if self.statusChangeCommand == "true":
             runCommand = False
-            if self.statusChangeRequiresRole == "false":
+            if self.statusChangeOnlyAdmin == "false":
                 runCommand = True
             else:
-                for role in ctx.author.roles:
-                        role = str(role)
-                        if role == "Bot Admin":
-                            runCommand = True
+
+                if ctx.message.author == self.client.get_user(self.botAdmin):
+                    runCommand = True
             
             if runCommand == True:
                 if statusInput == "":
@@ -72,19 +78,36 @@ class basicCommands(commands.Cog):
                         statusOutput = statusInput.split(" ", 1)
                         await self.client.change_presence(status=discord.Status.online, activity=discord.Game(statusOutput[1]))
                         await ctx.send(
-                            f'Status updated to "Playing {statusOutput[1]}"! Please note this is not permenant, and will be reset when the bot is rebooted.')
-                        logging.info(f"[{supportingFunctions.getTime()}] Status updated to playing '{statusOutput[1]}''")
+                            f'Status updated to "Playing **{statusOutput[1]}**"! Please note this is not permenant, and will be reset when the bot is rebooted.')
+                        logging.info(f"Status updated to playing '{statusOutput[1]}''")
                         print(f"[{supportingFunctions.getTime()}] Status updated to playing '{statusOutput[1]}''")
                     else:
                         await self.client.change_presence(status=discord.Status.online, activity=discord.Game(statusInput))
                         await ctx.send(
-                            f'Status updated to "Playing {statusInput}"! Please note this is not permenant, and will be reset when the bot is rebooted.')
-                        logging.info(f"[{supportingFunctions.getTime()}] Status updated to 'playing {statusInput}''")
-                        print(f"[{supportingFunctions.getTime()}] Status updated to 'playing {statusInput}''")
+                            f'Status updated to "Playing **{statusInput}**". Please note this is not permenant, and will be reset when the bot is rebooted.')
+                        logging.info(f"Status updated to 'Playing {statusInput}'")
+                        print(f"[{supportingFunctions.getTime()}] Status updated to 'Playing {statusInput}'")
             else:
-                await ctx.send("This command requires the 'Bot Admin' role to run. Please make sure you have this role, and try again.")
+                await ctx.send("This command can only be run by the bot admin. Please contact your bot admin if you believe this to be a mistake.")
         else:
-            await ctx.send("This command is currently disabled. Please contact your bot admin if you believe this to be a mistake")
+            await ctx.send("This command is currently disabled. Please contact your bot admin if you believe this to be a mistake.")
+
+    @commands.command(aliases=["resetstatus"])
+    async def resetStatus(self, ctx):
+        if self.statusChangeCommand == "true":
+            runCommand = False
+            if self.statusChangeOnlyAdmin == "false":
+                runCommand = True
+            else:
+
+                if ctx.message.author == self.client.get_user(self.botAdmin):
+                    runCommand = True
+            
+            if runCommand == True:
+                await self.client.change_presence(status=discord.Status.online, activity=discord.Game(self.botStatus))
+
+                await ctx.send("Status has been reset!")
+
 
     @commands.command(aliases=["creator", "info"])
     async def about(self, ctx):

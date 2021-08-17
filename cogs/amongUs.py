@@ -3,6 +3,7 @@ from discord.ext import commands
 import configparser
 import sys
 import logging
+import PixelBotData.supportingFunctions as supportingFunctions
 
 logging.basicConfig(
     level=logging.INFO,
@@ -27,7 +28,7 @@ class amongUs(commands.Cog):
         
         if self.amongUsRequiresRole != "true" and self.amongUsRequiresRole != "false":
             logging.warning('Please enter either true or false under the "amongUsRequiresRole" field in config.ini')
-            print('Please enter either true or false under the "amongUsRequiresRole" field in config.ini')
+            print(f'[{supportingFunctions.getTime()}] Please enter either true or false under the "amongUsRequiresRole" field in config.ini')
             sys.exit()
     
     @commands.command(aliases=['kill', 'die', 'k', 'K'])

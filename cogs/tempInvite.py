@@ -97,11 +97,11 @@ class tempInvite(commands.Cog):
                 # the name, invite code used the the person
                 # who created the invite code, or the inviter.
                 logging.info(f'Member "{member.name}" Joined')
-                print(f'\nMember "{member.name}" Joined')
+                print(f'\n[{supportingFunctions.getTime()}] Member "{member.name}" Joined')
                 logging.info(f"Invite Code: {invite.code}")
-                print(f"Invite Code: {invite.code}")
+                print(f"[{supportingFunctions.getTime()}] Invite Code: {invite.code}")
                 logging.info(f"Inviter: {invite.inviter}")
-                print(f"Inviter: {invite.inviter}\n")
+                print(f"[{supportingFunctions.getTime()}] Inviter: {invite.inviter}\n")
 
                 # We will now update our cache so it's ready
                 # for the next user that joins the guild
