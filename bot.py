@@ -22,6 +22,8 @@ try:
 except(ModuleNotFoundError):
     logging.warning("The required Python libraries were not found on your system. Please run 'pip install requirements.txt' to install them")
     print(f"[{supportingFunctions.getTime()}] The required Python libraries were not found on your system. Please run 'pip install requirements.txt' to install them")
+    sleep(5)
+    sys.exit
 
 # checking for config file
 supportingFunctions.checkConfig()
