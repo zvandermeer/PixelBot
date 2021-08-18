@@ -35,15 +35,16 @@ class basicCommands(commands.Cog):
         self.statusChangeCommand = self.statusChangeCommand.lower()
 
         if self.statusChangeCommand != "true" and self.statusChangeCommand != "false":
-            logging.warning('Please enter either true or false under the "botShutdownRequiresRole" field in config.ini')
-            print(f'[{supportingFunctions.getTime()}] Please enter either true or false under the "botShutdownRequiresRole" field in config.ini')
+            logging.warning('Please enter either true or false under the "statusChangeCommand" field in config.ini')
+            print(f'[{supportingFunctions.getTime()}] Please enter either true or false under the "statusChangeCommand" field in config.ini')
             sys.exit()
 
         self.statusChangeOnlyAdmin = config['pixelBotConfig']['statusChangeOnlyAdmin']
         self.statusChangeOnlyAdmin = self.statusChangeOnlyAdmin.lower()
 
         if self.statusChangeOnlyAdmin != "true" and self.statusChangeOnlyAdmin != "false":
-            ('Please enter either true or false under the "botShutdownRequiresRole" field in config.ini')
+            logging.warning('Please enter either true or false under the "statusChangeOnlyAdmin" field in config.ini')
+            print(f'[{supportingFunctions.getTime()}] Please enter either true or false under the "statusChangeOnlyAdmin" field in config.ini')
             sys.exit()
 
         self.botAdmin = config['pixelBotConfig']['botAdmin']

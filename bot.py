@@ -20,7 +20,7 @@ try:
     import discord
     from discord.ext import commands
 except(ModuleNotFoundError):
-    logging.warning("The required Python libraries were not found on your system. Please run 'pip install requirements.txt' to install them")
+    logging.critical("The required Python libraries were not found on your system. Please run 'pip install -r requirements.txt' to install them")
     print(f"[{supportingFunctions.getTime()}] The required Python libraries were not found on your system. Please run 'pip install -r requirements.txt' to install them")
     sleep(5)
     sys.exit()
@@ -37,13 +37,25 @@ botToken = config['pixelBotConfig']['token']
 commandPrefix = config['pixelBotConfig']['prefix']
 
 if commandPrefix == "":
-    logging.warning("Please enter a prefix in the 'prefix' field in 'config.ini'")
+    logging.critical("Please enter a prefix in the 'prefix' field in 'config.ini'")
     print(f"[{supportingFunctions.getTime()}] Please enter a prefix in the 'prefix' field in 'config.ini'")
+    sleep(5)
+    sys.exit()
 
 # initializing bot object
 intents = discord.Intents.default()
 intents.members = True
 client = commands.Bot(command_prefix=commandPrefix, intents=intents)
+
+userID = config["pixelBotConfig"]["botAdmin"]
+if userID != "null":
+    userID = int(userID)
+    user = client.get_user(userID)
+else:
+    logging.warning("NO USER IS SET AS THE BOT ADMIN IN 'CONFIG.INI'. CERTAIN FUNCTIONALITY OF THE BOT WILL NOT BE AVAILABLE. SET A BOT ADMIN USER IN 'CONFIG.INI' TO REMOVE THIS MESSAGE")
+    print(f"[{supportingFunctions.getTime()}] WARNING: NO USER IS SET AS THE BOT ADMIN IN 'CONFIG.INI'. CERTAIN FUNCTIONALITY OF THE BOT WILL NOT BE AVAILABLE. SET A BOT ADMIN USER IN 'CONFIG.INI' TO REMOVE THIS MESSAGE")
+    
+    user = "null"
 
 # cog control commands
 # load cog
@@ -79,9 +91,28 @@ for filename in os.listdir("./cogs"):
 
         client.load_extension(f"cogs.{filename[:-3]}")
 
+experimentalCogs = config['pixelBotConfig']['experimentalCogs']
+experimentalCogs = experimentalCogs.lower()
+
+if experimentalCogs != "true" and experimentalCogs != "false":
+    logging.warning('Please enter either true or false under the "experimentalCogs" field in config.ini')
+    print(f'[{supportingFunctions.getTime()}] Please enter either true or false under the "experimentalCogs" field in config.ini')
+    sys.exit()
+
+if experimentalCogs == "true":
+    logging.info("You are currently running the bot with experimental cogs enabled. Experimental cogs are cogs that are still in an experimental state and may not work properly. Disable 'experimental cogs' in config.ini to remove this message.")
+    print(f"[{supportingFunctions.getTime()}] You are currently running the bot with experimental cogs enabled. Experimental cogs are cogs that are still in an experimental state and may not work properly. Disable 'experimental cogs' in config.ini to remove this message.")
+
+    for filename in os.listdir("./experimental-cogs"):
+        if filename.endswith(".py"):
+            cogCount += 1
+
+            client.load_extension(f"experimental-cogs.{filename[:-3]}")
+
+
 if cogCount == 0:
-    logging.info("No cogs have been initialized. The bot is currently running with minimal functionality. Please put .py cog files in the cogs/ directory.")
-    print(f"[{supportingFunctions.getTime()}] No cogs have been initialized. The bot is currently running with minimal functionality. Please put .py cog files in the cogs/ directory.")
+    logging.info("No cogs have been initialized. The bot is currently running with minimal functionality. Please put .py cog files in the 'cogs' directory.")
+    print(f"[{supportingFunctions.getTime()}] No cogs have been initialized. The bot is currently running with minimal functionality. Please put .py cog files in the 'cogs' directory.")
 
 # Cog error handler
 @unload.error
@@ -159,18 +190,8 @@ async def on_command_error(ctx, error):
     elif not handledError:
         await ctx.send("An error has occurred. This should not happen. Please contact your bot admin for details.")
 
-        user = ""
-
         # DM errors to user
-        userID = config["pixelBotConfig"]["botAdmin"]
-        if userID != "null":
-            userID = int(userID)
-            user = client.get_user(userID)
-        else:
-            logging.warning("No user is defined to DM error to, skipping.")
-            print(f"[{supportingFunctions.getTime()}] No user is defined to DM error to, skipping.")
-                  
-        if user != "":
+        if user != "null":
             try:
                 await user.send("An error has occurred. Message details: \n" + f"[{supportingFunctions.getTime()}] Message was sent by " + str(
                     ctx.message.author) + " in '" + str(ctx.message.guild.name) + "' in the '" + ctx.message.channel.name +
@@ -178,6 +199,9 @@ async def on_command_error(ctx, error):
             except AttributeError:
                 await user.send("An error has occurred. Message details: \n" + f"[{supportingFunctions.getTime()}] Message was sent by " + str(
                     ctx.message.author) + f" in DM. \nError details: '{error}'")
+        else:
+            logging.warning("No user is defined to DM error to, skipping.")
+            print(f"[{supportingFunctions.getTime()}] No user is defined to DM error to, skipping.")
 
     try:
         logging.warning("Message was sent by " + str(ctx.message.author) + " in '" + str(
