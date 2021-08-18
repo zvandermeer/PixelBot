@@ -1,16 +1,21 @@
+---
+
+
+---
+
 <h1 id="pixelbot">Pixelbot</h1>
 <p>A multi-purpose moderation discord bot, with Among Us moderation commands built-in.<br>
 <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg" alt="made-with-python"></a> <a href="https://repl.it/github/ovandermeer/PixelBot"><img src="https://repl.it/badge/github/ovandermeer/PixelBot" alt="Try me in repl.it!"></a></p>
 <h2 id="installation">Installation</h2>
-<p>Download the most recent release from the <a href="https://github.com/ovandermeer/PixelBot/releases">releases</a> page. DO NOT DOWNLOAD THE SOURCE CODE! Once the bot is downloaded, configure your bot using the automatically created “botConfig.ini” file. Then, just run bot.py and the bot will start!<br>
--Note: Python 3.6 or higher is required to run. Python 3.9 or higher is currently not supported.</p>
+<p>Download the most recent release from the <a href="https://github.com/ovandermeer/PixelBot/releases">releases</a> page. Once the bot is downloaded, configure your bot using the automatically created “botConfig.ini” file. Then, just run <a href="http://bot.py">bot.py</a> and the bot will start!<br>
+-Note: Python 3.6 or higher is required to run.</p>
 <h2 id="try-it-before-you-download">Try it before you download!</h2>
-<p>You can run PixelBot in <a href="http://repl.it">repl.it</a> to try it out without having to dowload it! Click the link below to try it now!<br>
+<p>You can run PixelBot in <a href="http://repl.it">repl.it</a> to try it out without having to download it! Click the link below to try it now!<br>
 <a href="https://repl.it/github/ovandermeer/PixelBot"><img src="https://repl.it/badge/github/ovandermeer/PixelBot" alt="Try me in repl.it!"></a></p>
 <h2 id="among-us-commands">Among Us Commands</h2>
 <p>The main feature of this bot is it’s Among Us moderation commands. Before you can use them, a little bit of set-up on your server is required.</p>
 <ol>
-<li>Create a voice channnel called “Among Us”</li>
+<li>Create a voice channel called “Among Us”</li>
 <li>Create a role called “Among Us - Dead”. Note that the bot will give this to users once they die, so don’t give the role higher priority or permissions then you want your users to have</li>
 <li>You’re good to go! Note that you must be using the “Among Us” voice channel while playing Among Us, otherwise the bot will not work.</li>
 </ol>
@@ -40,7 +45,7 @@ Recalls random quote from the bots quote index</p>
 </li>
 <li>
 <p>&amp;quote “[quote]” -[quote author] [year]<br>
-Adds quote to the bot’s quote index, and clones to a web directory (if configured)</p>
+Adds quote to the bots quote index, and clones to a web directory (if</p>
 </li>
 <li>
 <p>&amp;quote add "[quote] " -[quote author] [year]<br>
