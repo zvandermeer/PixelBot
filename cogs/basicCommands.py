@@ -2,7 +2,6 @@ import configparser
 import random
 import sys
 import time
-
 from discord import activity
 import PixelBotData.supportingFunctions as supportingFunctions
 import discord
@@ -13,7 +12,7 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[
-        logging.FileHandler("debug.log")]
+        logging.FileHandler(f"debug-{supportingFunctions.getDate()}.log")]
 )
 
 eightBallResponses = ["It is certain.", "It is decidedly so.", "Without a doubt.", "Yes - definitely.",
@@ -47,8 +46,17 @@ class basicCommands(commands.Cog):
             print(f'[{supportingFunctions.getTime()}] Please enter either true or false under the "statusChangeOnlyAdmin" field in config.ini')
             sys.exit()
 
+        self.messageAdminCommand = config['pixelBotConfig']['messageAdminCommand']
+        self.messageAdminCommand = self.messageAdminCommand.lower()
+
+        if self.messageAdminCommand != "true" and self.messageAdminCommand != "false":
+            logging.warning('Please enter either true or false under the "messageAdminCommand" field in config.ini')
+            print(f'[{supportingFunctions.getTime()}] Please enter either true or false under the "messageAdminCommand" field in config.ini')
+            sys.exit()
+
         self.botAdmin = config['pixelBotConfig']['botAdmin']
         self.botAdmin = int(self.botAdmin)
+        self.botAdmin = self.client.get_user(self.botAdmin)
 
         self.botStatus = config["pixelBotConfig"]["botStatus"]
 
@@ -67,7 +75,7 @@ class basicCommands(commands.Cog):
                 runCommand = True
             else:
 
-                if ctx.message.author == self.client.get_user(self.botAdmin):
+                if ctx.message.author == self.botAdmin:
                     runCommand = True
             
             if runCommand == True:
@@ -101,7 +109,7 @@ class basicCommands(commands.Cog):
                 runCommand = True
             else:
 
-                if ctx.message.author == self.client.get_user(self.botAdmin):
+                if ctx.message.author == self.botAdmin:
                     runCommand = True
             
             if runCommand == True:
@@ -133,23 +141,23 @@ class basicCommands(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @commands.command()
-    async def dmSpam(self, ctx, member : discord.Member, amount, *, message):
-        #authorId = ctx.message.author.id
-        #authorObject = self.client.get_user(authorId)
+    # @commands.command()
+    # async def dmSpam(self, ctx, member : discord.Member, amount, *, message):
+    #     #authorId = ctx.message.author.id
+    #     #authorObject = self.client.get_user(authorId)
 
-        try:
-            amount = int(amount)
-        except ValueError:
-            await ctx.send(f"Unknown amount: {amount}. Please check your command formatting by using '{self.commandPrefix}help dmSpam'")
+    #     try:
+    #         amount = int(amount)
+    #     except ValueError:
+    #         await ctx.send(f"Unknown amount: {amount}. Please check your command formatting by using '{self.commandPrefix}help dmSpam'")
         
-        if amount >= 31:
-            await ctx.send("You can't spam more than 30 times so you don't overload the bot. Try again with a smaller number!")
-        else:
-            counter = 0
-            while counter < amount:
-                await member.send(message)
-                counter += 1
+    #     if amount >= 31:
+    #         await ctx.send("You can't spam more than 30 times so you don't overload the bot. Try again with a smaller number!")
+    #     else:
+    #         counter = 0
+    #         while counter < amount:
+    #             await member.send(message)
+    #             counter += 1
 
     @commands.command(aliases=["8ball", "eightball", "EightBall", "8Ball"])
     async def eightBall(self, ctx, *, question=""):
@@ -181,6 +189,16 @@ class basicCommands(commands.Cog):
     @commands.command(aliases=["hellothere", "HelloThere"])
     async def helloThere(self, ctx):
         await ctx.send("https://tenor.com/view/grevious-general-kenobi-star-wars-gif-11406339")
+
+    @commands.command(aliases=["dmadmin", "messageadmin", "pingadmin"])
+    async def messageAdmin(self, ctx, *, message):
+        if self.messageAdminCommand == "true":
+            author = ctx.message.author
+            await self.botAdmin.send(f'[{supportingFunctions.getTime()}]: {author} has sent you a message: "{message}"')
+            await ctx.send("Your message has been sent!")
+        else:
+            await ctx.send("This command is currently disabled. Please contact your bot admin if you believe this to be a mistake.")
+        
 
 def setup(client):
     client.add_cog(basicCommands(client))

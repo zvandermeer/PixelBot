@@ -8,11 +8,17 @@ from time import sleep
 import sys
 import logging
 
+def getDate():
+    now = datetime.datetime.now()
+    date = now.strftime("%Y-%m-%d")
+
+    return date
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[
-        logging.FileHandler("debug.log")]
+        logging.FileHandler(f"debug-{getDate()}.log")]
 )
 
 def getTime():
@@ -69,7 +75,7 @@ def writeConfig():
         '\n;The user ID in the field below will be set as the "Bot Admin" please refer to the documentation for the roles of the Bot Admin.'
         '\nbotAdmin = null'
         '\n;If enabled, users of the server will be able to use the "messageAdmin" command to contact the user set as "Bot Admin"'
-        '\nmessageAdmin = False'
+        '\nmessageAdminCommand = False'
         '\n;The string in the field below will become the bots status when booted'
         '\nbotStatus = Version 0.4.3'
         '\n;If true, the bots status will appear as "streaming". The string in the "botStatus" felid will be the status, and the string in the "streamURL" will be the linked URL'
@@ -99,7 +105,7 @@ def writeConfig():
         '\n;Please enter the full web address that you would like to be linked when the "quote list" command is ran. Not required if copyQuotesToWebDirectory is false'
         '\npublicWebAddress = null'
         '\n;If enabled, cogs placed in the "experimental-cogs" folder will be loaded'
-        '\nexperimentalCogs = false'
+        '\nexperimentalCogs = False'
         '\n;Prefix address that the bot will provide when returning a download link for a downloaded YouTube video. Part of an experimental cog, not required if "experimentalCogs" is set to false'
         '\nYouTubeDownloadAddress = null'
         '\n[FileDetails]'
