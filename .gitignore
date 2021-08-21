@@ -19,3 +19,4 @@ PixelBotData/cogError.txt
 ideas.txt
 *.log
 *.disabled
+debug*.log
