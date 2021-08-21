@@ -34,6 +34,9 @@ class modCommands(commands.Cog):
             print(f'[{supportingFunctions.getTime()}] Please enter either true or false under the "botShutdownRequiresRole" field in config.ini')
             sys.exit()
 
+        self.userID = self.config["pixelBotConfig"]["botAdmin"]
+        self.userID = int(self.userID)
+
     #moderation commands
     @commands.has_permissions(administrator=True)
     @commands.command()
@@ -135,7 +138,7 @@ class modCommands(commands.Cog):
         if self.botShutdownRequiresRole == "false":
             runCommand = True
         else:
-            if ctx.message.author == self.client.get_user(self.botAdmin):
+            if ctx.message.author == self.client.get_user(self.userID):
                 runCommand = True
         
         if runCommand == True:

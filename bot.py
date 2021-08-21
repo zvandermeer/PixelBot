@@ -48,40 +48,45 @@ intents.members = True
 client = commands.Bot(command_prefix=commandPrefix, intents=intents)
 
 userID = config["pixelBotConfig"]["botAdmin"]
-if userID != "null":
-    userID = int(userID)
-    user = client.get_user(userID)
-else:
+if userID == "null":
     logging.warning("NO USER IS SET AS THE BOT ADMIN IN 'CONFIG.INI'. CERTAIN FUNCTIONALITY OF THE BOT WILL NOT BE AVAILABLE. SET A BOT ADMIN USER IN 'CONFIG.INI' TO REMOVE THIS MESSAGE")
     print(f"[{supportingFunctions.getTime()}] WARNING: NO USER IS SET AS THE BOT ADMIN IN 'CONFIG.INI'. CERTAIN FUNCTIONALITY OF THE BOT WILL NOT BE AVAILABLE. SET A BOT ADMIN USER IN 'CONFIG.INI' TO REMOVE THIS MESSAGE")
-    
-    user = "null"
+else:
+    userID = int(userID)
 
 # cog control commands
 # load cog
 @client.command()
 async def load(ctx, extension):
-    client.load_extension(f"cogs.{extension}")
-    await ctx.send("Successfully loaded!")
-    logging.info("Loaded {extension} cog")
-    print(f"[{supportingFunctions.getTime()}] Loaded {extension} cog")
+    if userID == "null":
+        pass #include something here if no user is set
+    else:
+        if ctx.message.author == client.get_user(userID):
+            client.load_extension(f"cogs.{extension}")
+            await ctx.send("Successfully loaded!")
+            logging.info("Loaded {extension} cog")
+            print(f"[{supportingFunctions.getTime()}] Loaded {extension} cog")
+        else:
+            pass #include something here if user is not admin
 
 # unload cog
 @client.command()
 async def unload(ctx, extension):
-    client.unload_extension(f"cogs.{extension}")
-    await ctx.send("Successfully unloaded!")
-    logging.info("Unloaded {extension} cog")
-    print(f"[{supportingFunctions.getTime()}] Unloaded {extension} cog")
+    if ctx.message.author == client.get_user(userID):
+        client.unload_extension(f"cogs.{extension}")
+        await ctx.send("Successfully unloaded!")
+        logging.info("Unloaded {extension} cog")
+        print(f"[{supportingFunctions.getTime()}] Unloaded {extension} cog")
 
 # reload cog
 @client.command(aliases=["refresh"])
 async def reload(ctx, extension):
-    client.unload_extension(f"cogs.{extension}")
-    client.load_extension(f"cogs.{extension}")
-    await ctx.send("Successfully reloaded!")
-    logging.info("Reloaded {extension} cog")
-    print(f"[{supportingFunctions.getTime()}] Reloaded {extension} cog")
+    if ctx.message.author == client.get_user(userID):
+        client.unload_extension(f"cogs.{extension}")
+        client.load_extension(f"cogs.{extension}")
+        await ctx.send("Successfully reloaded!")
+        logging.info("Reloaded {extension} cog")
+        print(f"[{supportingFunctions.getTime()}] Reloaded {extension} cog")
 
 # load cogs into bot
 cogCount = 0
@@ -141,7 +146,7 @@ async def loadNonExistentError(ctx, error):
 # error handler
 @client.event
 async def on_command_error(ctx, error):
-    logging.error("{error}")
+    logging.error(f"{error}")
     print(f"[{supportingFunctions.getTime()}] {error}")
     handledError = False
 
@@ -191,7 +196,8 @@ async def on_command_error(ctx, error):
         await ctx.send("An error has occurred. This should not happen. Please contact your bot admin for details.")
 
         # DM errors to user
-        if user != "null":
+        if userID != "null":
+            user = client.get_user(userID)
             try:
                 await user.send("An error has occurred. Message details: \n" + f"[{supportingFunctions.getTime()}] Message was sent by " + str(
                     ctx.message.author) + " in '" + str(ctx.message.guild.name) + "' in the '" + ctx.message.channel.name +
