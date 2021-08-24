@@ -1,53 +1,87 @@
-<h1 id="pixelbot">Pixelbot</h1>
-<p>A multi-purpose moderation discord bot, with Among Us moderation commands built-in.<br>
-<a href="https://www.python.org/"><img src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg" alt="made-with-python"></a> <a href="https://repl.it/github/ovandermeer/PixelBot"><img src="https://repl.it/badge/github/ovandermeer/PixelBot" alt="Try me in repl.it!"></a></p>
-<h2 id="installation">Installation</h2>
-<p>Download the most recent release from the <a href="https://github.com/ovandermeer/PixelBot/releases">releases</a> page. DO NOT DOWNLOAD THE SOURCE CODE! Once the bot is downloaded, configure your bot using the automatically created “botConfig.ini” file. Then, just run bot.py and the bot will start!<br>
--Note: Python 3.6 or higher is required to run. Python 3.9 or higher is currently not supported.</p>
-<h2 id="try-it-before-you-download">Try it before you download!</h2>
-<p>You can run PixelBot in <a href="http://repl.it">repl.it</a> to try it out without having to dowload it! Click the link below to try it now!<br>
-<a href="https://repl.it/github/ovandermeer/PixelBot"><img src="https://repl.it/badge/github/ovandermeer/PixelBot" alt="Try me in repl.it!"></a></p>
-<h2 id="among-us-commands">Among Us Commands</h2>
-<p>The main feature of this bot is it’s Among Us moderation commands. Before you can use them, a little bit of set-up on your server is required.</p>
-<ol>
-<li>Create a voice channnel called “Among Us”</li>
-<li>Create a role called “Among Us - Dead”. Note that the bot will give this to users once they die, so don’t give the role higher priority or permissions then you want your users to have</li>
-<li>You’re good to go! Note that you must be using the “Among Us” voice channel while playing Among Us, otherwise the bot will not work.</li>
-</ol>
-<p>Command list:</p>
-<ul>
-<li>&amp;kill<br>
-Mention member(s) after this command to give them the role “Among Us - Dead” When a user has this role, the bot will not unmute them when &amp;unmute is called.<br>
-Example: “&amp;kill @NinjaPixels @bobIsCool @yay121”</li>
-<li>&amp;reset<br>
-Removed the “Among Us - Dead” role from all users in the “Among Us” voice channel. Use this at the end of the round so that everyone can talk again. Also unmutes all users.<br>
-Example: “&amp;reset”</li>
-<li>&amp;mute<br>
-Mutes all users in the “Among Us” voice channel.<br>
-Example: “&amp;mute”</li>
-<li>&amp;unmute<br>
-Unmutes all users that do not have the “Among Us - Dead” role in the “Among Us” voice channel.<br>
-Example: “&amp;unmute”</li>
-<li>&amp;muteAll / unmuteAll<br>
-Mutes or unmutes all users in the “Among Us” voice channel, regardless of role.<br>
-Example: “&amp;mute/&amp;unmute”</li>
-</ul>
-<h2 id="quote-commands">Quote Commands</h2>
-<ul>
-<li>
-<p>&amp;quote<br>
-Recalls random quote from the bots quote index</p>
-</li>
-<li>
-<p>&amp;quote “[quote]” -[quote author] [year]<br>
-Adds quote to the bot’s quote index, and clones to a web directory (if configured)</p>
-</li>
-<li>
-<p>&amp;quote add "[quote] " -[quote author] [year]<br>
-Same as above</p>
-</li>
-<li>
-<p>&amp;quote list<br>
-Sends URL for quotelist as configured in botConfig.ini</p>
-</li>
-</ul>
+# Pixelbot
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+
+A multi-purpose moderation discord bot
+## Installation
+Download the most recent release from the [releases](https://github.com/ovandermeer/PixelBot/releases) page. Alternatively, download the source code of the repository to download the most recent (and likely unstable) release. Once the bot is downloaded, configure your bot using the automatically created "botConfig.ini" file. Then, just run bot.py and the bot will start! 
+-Note: Python 3.6 or higher is required to run.
+# Command Documentation
+All commands in the list below are formatted as following:
+
+ - [Command Prefix] [Command] [arguments]
+ [Command description] 
+
+Square brackets represent required arguments, curly represent optional arguments.
+
+## Among Us Commands
+The main feature of this bot is it's Among Us moderation commands. Before you can use them, a little bit of set-up on your server is required.
+
+ 1. Create a voice channel called "Among Us"
+ 2. Create a role called "Among Us - Dead". Note that the bot will give this to users once they die, so don't give the role higher priority or permissions then you want your users to have
+ 3. You're good to go! Note that you must be using the "Among Us" voice channel while playing Among Us, otherwise the bot will not work.
+
+Command list:
+- &kill [user(s) to kill]
+Mention member(s) after this command to give them the role "Among Us - Dead" When a user has this role, the bot will not unmute them when &unmute is called.
+Example: "&kill @NinjaPixels @bobIsCool @yay121"
+- &reset
+Removed the "Among Us - Dead" role from all users in the "Among Us" voice channel. Use this at the end of the round so that everyone can talk again. Also unmutes all users.
+- &mute
+Mutes all users in the "Among Us" voice channel.
+- &unmute
+Unmutes all users that do not have the "Among Us - Dead" role in the "Among Us" voice channel.
+- &muteAll / unmuteAll
+Mutes or unmutes all users in the "Among Us" voice channel, regardless of role.
+## Quote Commands
+- &quote
+Recalls random quote from the bots quote index
+- &quote "[quote]" -[quote author]
+Adds quote to the bots quote index, and clones to a web directory (if configured). Quote is split on the last "-" character, and anything following it is set as the author of the quote.
+- &quote add "[quote] " -[quote author]
+Same as above
+- &quote list
+Sends a link to the full list of quotes (if configured in botconfig.ini)
+## Basic user commands
+- &ping
+Pings the bot and lists the ping speed
+- &status [status]
+Changes the bots status. Can be configured to be ran by only the bot admin in config.ini. Effective until bot restart, will it will read the status from the config file again
+- &resetStatus
+Resets the status to what is listed in the config file
+- &about
+Sends details about the bot, including author, documentation, and bug reporting
+- &eightBall
+A basic Magic 8 Ball command
+- &dice
+A basic dice rolling command
+- &coinFlip
+A basic coin flip command
+- &helloThere
+Funni Star wars reference
+- &messageAdmin [message]
+Command that allows users to send messages to the bot admin directly. Messages will be sent as a DM from the bot, so even if users don't know who the bot admin is they can still contact them. Can be disabled from config.
+## Admin Commands
+- &clear [amount to clear]
+Command that allows server admins to delete a specific number of messages from a channel
+- &kick [user to kick]
+Kicks a specified user from the server
+- &ban [user to ban]
+Bans a specified user from the server
+- &unban [user to unban, formatted as "username#user tag"]
+Unbans a specified user from the server
+- &muteUser [user to mute]
+Mutes a specified user in VC
+- &unmuteUser [user to unmute]
+Unmutes a specified user in VC
+- &shutdown
+Shuts down the bot. Can only be run by the Bot Admin.
+## Temporary Invitation Command
+Sends a one-time use invite link to join the voice channel that the inviter is currently in. The invite will be deleted after it is used, and the user will be kicked from the server upon disconnecting from the voice channel.
+
+Can be improved on by making all channels invisible and private by default.
+
+Useful if you want someone to join the voice chat in a server, but not allow them to actually be in the server or see any of the text channels.
+
+### Usage:
+- &tempInvite {user to temporarily invite}
+If the user shares a server with the bot, then they can be mentioned/written (format: "user#user tag") and they will receive the invite link in a DM. Otherwise, the link will be sent in the chat and the user can be dmed the invite link separately.
