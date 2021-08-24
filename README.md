@@ -1,6 +1,7 @@
 # Pixelbot
-A multi-purpose moderation discord bot
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+
+A multi-purpose moderation discord bot
 ## Installation
 Download the most recent release from the [releases](https://github.com/ovandermeer/PixelBot/releases) page. Alternatively, download the source code of the repository to download the most recent (and likely unstable) release. Once the bot is downloaded, configure your bot using the automatically created "botConfig.ini" file. Then, just run bot.py and the bot will start! 
 -Note: Python 3.6 or higher is required to run.
