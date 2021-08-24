@@ -132,7 +132,7 @@ class Events(commands.Cog):
                     await ctx.send(f"Please only ping everyone in {allowedChannelMessage}")
 
         if f'<@!{self.client.user.id}>' in message.content:
-            embed = discord.Embed(title="**PixelBot v0.4.3**", description="This bot is running PixelBot v0.4.3. "
+            embed = discord.Embed(title="**PixelBot v0.5.0**", description="This bot is running PixelBot v0.5.0. "
                                                                        "Developed by "
                                                                        "NinjaPixels. Code is hosted at "
                                                                        "https://github.com/ovandermeer/PixelBot",

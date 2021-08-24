@@ -12,8 +12,8 @@ logging.basicConfig(
         logging.FileHandler(f"debug-{supportingFunctions.getDate()}.log")]
 )
 
-logging.info(f"Initializing PixelBot v0.4.3")
-print(f"[{supportingFunctions.getTime()}] Initializing PixelBot v0.4.3")
+logging.info(f"Initializing PixelBot v0.5.0")
+print(f"[{supportingFunctions.getTime()}] Initializing PixelBot v0.5.0")
 
 # Import discord.py library, and installing it if not found
 try:

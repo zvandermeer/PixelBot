@@ -77,7 +77,7 @@ def writeConfig():
         '\n;If enabled, users of the server will be able to use the "messageAdmin" command to contact the user set as "Bot Admin"'
         '\nmessageAdminCommand = False'
         '\n;The string in the field below will become the bots status when booted'
-        '\nbotStatus = Version 0.4.3'
+        '\nbotStatus = Version 0.5.0'
         '\n;If true, the bots status will appear as "streaming". The string in the "botStatus" felid will be the status, and the string in the "streamURL" will be the linked URL'
         '\nstreamingStatus = False'
         '\n;Please make sure this is a Twitch or YouTube link if "streamingStatus = True". Otherwise, the status will revert to a default status'
