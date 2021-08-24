@@ -109,7 +109,7 @@ def writeConfig():
         '\n;Prefix address that the bot will provide when returning a download link for a downloaded YouTube video. Part of an experimental cog, not required if "experimentalCogs" is set to false'
         '\nYouTubeDownloadAddress = null'
         '\n[FileDetails]'
-        '\npixelBotConfigVersion = 7')
+        '\nconfigVersion = 7')
 
         os.chmod("config.ini", 0o777)
 
@@ -151,8 +151,8 @@ def checkConfig():
     else:
         createConfig()
 
-    pixelBotConfigVersion = config['FileDetails']['pixelBotConfigVersion']
-    pixelBotConfigVersion = int(pixelBotConfigVersion)
+    configVersion = config['FileDetails']['configVersion']
+    configVersion = int(configVersion)
 
-    if pixelBotConfigVersion < 7:
+    if configVersion < 7:
         updateConfig()

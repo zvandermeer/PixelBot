@@ -59,7 +59,9 @@ else:
 @client.command()
 async def load(ctx, extension):
     if userID == "null":
-        pass #include something here if no user is set
+        print(f"[{supportingFunctions.getTime()}] No user is defined as admin in config.ini, unable to run cog loading commands")
+        logging.info("No user is defined as admin in config.ini, unable to run cog loading commands")
+        await ctx.send("No user is defined as the admin in the PixelBot config, therefore this command cannot be ran. If you are the bot admin, please paste your user ID into the config file.")
     else:
         if ctx.message.author == client.get_user(userID):
             client.load_extension(f"cogs.{extension}")
@@ -67,26 +69,47 @@ async def load(ctx, extension):
             logging.info("Loaded {extension} cog")
             print(f"[{supportingFunctions.getTime()}] Loaded {extension} cog")
         else:
-            pass #include something here if user is not admin
+            print(f"[{supportingFunctions.getTime()}] User is not bot admin")
+            logging.info("User is not bot admin")
+            await ctx.send("Only the bot administrator can run this command.")
 
 # unload cog
 @client.command()
 async def unload(ctx, extension):
-    if ctx.message.author == client.get_user(userID):
-        client.unload_extension(f"cogs.{extension}")
-        await ctx.send("Successfully unloaded!")
-        logging.info("Unloaded {extension} cog")
-        print(f"[{supportingFunctions.getTime()}] Unloaded {extension} cog")
+    if userID == "null":
+        print(f"[{supportingFunctions.getTime()}] No user is defined as admin in config.ini, unable to run cog loading commands")
+        logging.info("No user is defined as admin in config.ini, unable to run cog loading commands")
+        await ctx.send("No user is defined as the admin in the PixelBot config, therefore this command cannot be ran. If you are the bot admin, please paste your user ID into the config file.")
+    else:
+        if ctx.message.author == client.get_user(userID):
+            client.unload_extension(f"cogs.{extension}")
+            await ctx.send("Successfully unloaded!")
+            logging.info("Unloaded {extension} cog")
+            print(f"[{supportingFunctions.getTime()}] Unloaded {extension} cog")
+        else:
+            print(f"[{supportingFunctions.getTime()}] User is not bot admin")
+            logging.info("User is not bot admin")
+            await ctx.send("Only the bot administrator can run this command.")
+
 
 # reload cog
 @client.command(aliases=["refresh"])
 async def reload(ctx, extension):
-    if ctx.message.author == client.get_user(userID):
-        client.unload_extension(f"cogs.{extension}")
-        client.load_extension(f"cogs.{extension}")
-        await ctx.send("Successfully reloaded!")
-        logging.info("Reloaded {extension} cog")
-        print(f"[{supportingFunctions.getTime()}] Reloaded {extension} cog")
+    if userID == "null":
+        print(f"[{supportingFunctions.getTime()}] No user is defined as admin in config.ini, unable to run cog loading commands")
+        logging.info("No user is defined as admin in config.ini, unable to run cog loading commands")
+        await ctx.send("No user is defined as the admin in the PixelBot config, therefore this command cannot be ran. If you are the bot admin, please paste your user ID into the config file.")
+    else:
+        if ctx.message.author == client.get_user(userID):
+            client.unload_extension(f"cogs.{extension}")
+            client.load_extension(f"cogs.{extension}")
+            await ctx.send("Successfully reloaded!")
+            logging.info("Reloaded {extension} cog")
+            print(f"[{supportingFunctions.getTime()}] Reloaded {extension} cog")
+        else:
+            print(f"[{supportingFunctions.getTime()}] User is not bot admin")
+            logging.info("User is not bot admin")
+            await ctx.send("Only the bot administrator can run this command.")
 
 # load cogs into bot
 cogCount = 0
